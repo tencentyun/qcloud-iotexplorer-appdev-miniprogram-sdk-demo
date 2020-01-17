@@ -1,0 +1,12 @@
+{
+	"pages": [
+		"pages/index/index",
+		"pages/panel/panel",
+		"pages/softap/softap"
+	],
+	"window": {},
+	"navigateToMiniProgramAppIdList": [],
+	"permission": {},
+	"usingComponents": {},
+	"sitemapLocation": "sitemap.json"
+}

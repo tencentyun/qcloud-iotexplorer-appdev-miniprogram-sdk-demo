@@ -1,0 +1,40 @@
+<view class="panel-list">
+	<view class="panel-item" wx:for="{{dataTemplate.properties}}" bindtap="onTapItem" data-item="{{item}}">
+		<view class="item-name">
+			{{item.name}}
+		</view>
+		<view class="item-value">
+			<block wx:if="{{item.define.type === 'bool'}}">
+				<view class="switch-cover"/>
+				<switch checked="{{deviceData[item.id]}}"/>
+			</block>
+			<block wx:elif="{{item.define.type === 'enum'}}">
+				<picker bindchange="onPickerChange" value="{{item.value}}" range="{{item.mappingList}}" range-key="label" data-item="{{item}}">
+					<view class="picker">
+						{{item.mappingList[item.value].label || '-'}}
+					</view>
+				</picker>
+			</block>
+			<block wx:else>
+				{{item.value}}
+			</block>
+		</view>
+	</view>
+</view>
+
+<view class="modal" wx:if="{{numberDialog.visible && numberDialog.panelConfig}}">
+	<view class="modal-mask" bindtap="onHideDialog"/>
+	<view class="modal-dialog">
+		{{numberDialog.panelConfig.name}}
+		<slider
+			max="{{numberDialog.panelConfig.define.max}}"
+			min="{{numberDialog.panelConfig.define.min}}"
+			step="{{numberDialog.panelConfig.define.step}}"
+			value="{{numberDialog.panelConfig.value}}"
+			show-value
+			bindchange="onDialogChange"
+		/>
+
+		<button bindtap="onDialogSubmit">确定</button>
+	</view>
+</view>
