@@ -5,9 +5,10 @@ export const appendParams = (url, data = {}) => {
 		let value = data[key];
 
 		if (typeof value !== 'undefined') {
-			try {
-				value = JSON.stringify(value);
-			} catch (err) {
+			if (isPlainObject(value)) {
+				try {
+					value = JSON.stringify(value);
+				} catch (err) {}
 			}
 
 			paramArr.push(`${key}=${encodeURIComponent(value)}`);

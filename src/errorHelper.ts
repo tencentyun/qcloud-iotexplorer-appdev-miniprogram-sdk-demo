@@ -29,7 +29,7 @@ export const genVerifyLoginFailError = (error?: any) => {
 };
 
 export const isVerifyLoginError = (error) => {
-	return error && (error.code || '').indexOf('InvalidAccessToken') > -1;
+	return error && String(error.code || '').indexOf('InvalidAccessToken') > -1;
 };
 
 export const handleVerifyLoginError = (error) => {

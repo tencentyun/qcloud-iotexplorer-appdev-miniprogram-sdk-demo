@@ -1,4 +1,5 @@
-import { LoginManager } from './loginManager';
+import 'miniprogram-api-typings';
+import { LoginManager, LoginManagerOptions } from './loginManager';
 import EventEmitter from './libs/event-emmiter';
 import { IotWebsocket } from './IotWebsocket';
 import logger, { LogLevel } from './logger';
@@ -18,7 +19,7 @@ export interface QcloudIotExplorerAppDevSdkWsOptions extends IotWebsocketOptions
 }
 
 export interface QcloudIotExplorerAppDevSdkOptions {
-	getAccessToken: Function;
+	getAccessToken: LoginManagerOptions["getAccessToken"];
 	appKey?: string;
 	apiPlatform?: string;
 	debug?: boolean;
@@ -26,9 +27,6 @@ export interface QcloudIotExplorerAppDevSdkOptions {
 }
 
 export class QcloudIotExplorerAppDevSdk extends EventEmitter {
-	static EventTypes = EventTypes;
-	static ConnectDeviceStepCode = ConnectDeviceStepCode;
-	static ConnectDeviceErrorCode = ConnectDeviceErrorCode;
 	isManuallyClose = false;
 	_defaultFamilyIdPromise = null;
 	ws: IotWebsocket;
@@ -37,7 +35,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 	_initPromise: Promise<void>;
 
 	constructor({
-		getAccessToken = noop,
+		getAccessToken,
 		appKey = '',
 		apiPlatform = '',
 		debug = false,
@@ -64,7 +62,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 
 		this.ws.on('error', (error) => {
 			logger.debug('websocket error', error);
-			this.emit(EventTypes.wsError, error);
+			this.emit(EventTypes.WsError, error);
 
 			if (autoReconnect) {
 				this._reconnectWs();
@@ -73,7 +71,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 
 		this.ws.on('close', ({ code, reason } = {} as any) => {
 			logger.debug('websocket close', { code, reason });
-			this.emit(EventTypes.wsClose, { code, reason });
+			this.emit(EventTypes.WsClose, { code, reason });
 			if (autoReconnect) {
 				this._onWebsocketClose();
 			}
@@ -128,7 +126,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 		}));
 	}
 
-	getDefaultFamilyId() {
+	getDefaultFamilyId(): Promise<string> {
 		return this._defaultFamilyIdPromise || (this._defaultFamilyIdPromise = new Promise(async (resolve, reject) => {
 			try {
 				const { FamilyList, Total } = await this.requestApi('AppGetFamilyList', { Offset: 0, Limit: 100 });
@@ -163,8 +161,8 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 		this.ws.disconnect();
 	}
 
-	async subscribeDevices(deviceList = []) {
-		this.ws.subscribe(deviceList.map((item) => {
+	async subscribeDevices(deviceList: string[] | any[]) {
+		this.ws.subscribe((deviceList || []).map((item) => {
 			if (typeof item === 'string') {
 				return item;
 			} else if (item && item.DeviceId) {
@@ -225,7 +223,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 	_handlePushEvent(pushEvent) {
 		if (!pushEvent) pushEvent = {};
 
-		this.emit(EventTypes.wsPush, pushEvent);
+		this.emit(EventTypes.WsPush, pushEvent);
 
 		let { action, params } = pushEvent;
 
@@ -286,7 +284,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 									logger.error('handle report event error', err);
 								}
 
-								this.emit(EventTypes.wsReport, {
+								this.emit(EventTypes.WsReport, {
 									deviceId: DeviceId,
 									deviceData,
 								});
@@ -318,7 +316,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 												};
 											}
 
-											this.emit(EventTypes.wsControl, {
+											this.emit(EventTypes.WsControl, {
 												deviceId: DeviceId,
 												deviceData,
 											});
@@ -337,7 +335,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 					case 'StatusChange': {
 						const DeviceStatus = SubType === 'Online' ? 1 : 0;
 
-						this.emit(EventTypes.wsStatusChange, {
+						this.emit(EventTypes.WsStatusChange, {
 							deviceId: DeviceId,
 							deviceStatus: DeviceStatus,
 						});

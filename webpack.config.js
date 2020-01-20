@@ -6,7 +6,7 @@ const rootPath = path.resolve(__dirname);
 
 const name = 'qcloud-iotexplorer-appdev-sdk';
 
-module.exports = ({ mode = 'development' } = {}) => {
+module.exports = ({ mode = 'development', target } = {}) => {
 	const devMode = mode === 'development';
 
 	return {
@@ -23,7 +23,7 @@ module.exports = ({ mode = 'development' } = {}) => {
 		output: {
 			pathinfo: devMode,
 
-			path: devMode ? path.join(rootPath, './dist/debug') : path.join(rootPath, './dist/release'),
+			path: devMode ? path.join(rootPath, target === 'miniprogram' ? './demo/miniprogram' :  './dist/debug') : path.join(rootPath, './dist/release'),
 			filename: 'qcloud-iotexplorer-appdev-sdk.js',
 			libraryTarget: 'umd',
 		},

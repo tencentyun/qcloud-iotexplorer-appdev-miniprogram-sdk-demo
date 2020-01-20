@@ -12,20 +12,29 @@ import { QcloudIotExplorerAppDevSdk } from "./sdk";
 const accessTokenStorageKey = '__qcloud-iotexplorer-appdev-sdk-accessToken';
 
 export interface LoginManagerOptions {
-	getAccessToken: Function;
+	getAccessToken: () => Promise<{ Token: string; ExpireAt?: number; }>;
 	appKey?: string;
+}
+
+export interface UserInfo {
+	Avatar: string;
+	CountryCode: string;
+	Email: string;
+	NickName: string;
+	PhoneNumber: string;
+	UserID: string;
 }
 
 export class LoginManager extends EventEmitter {
 	accessToken: string = '';
 	appKey: string = '';
 	isLogin: boolean = false;
-	userInfo: any = null;
-	getAccessToken: () => Promise<{ Token: string; ExpireAt?: number; }>;
+	userInfo: UserInfo = null;
+	getAccessToken: LoginManagerOptions["getAccessToken"];
 
 	sdk: QcloudIotExplorerAppDevSdk;
 
-	constructor(sdk: QcloudIotExplorerAppDevSdk, { getAccessToken, appKey }) {
+	constructor(sdk: QcloudIotExplorerAppDevSdk, { getAccessToken, appKey }: LoginManagerOptions) {
 		super();
 
 		this.sdk = sdk;

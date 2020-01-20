@@ -33,10 +33,16 @@ export interface ConnectDeviceOptions {
 	waitUdpResponseDuration?: number;
 	udpCommunicationRetryTime?: number;
 	stepDurationGap?: number;
-	onProgress?: Function;
-	onError?: Function;
-	onComplete?: Function;
-	handleAddDevice?: Function;
+	onProgress?: (progressEvent: { code: ConnectDeviceStepCode; msg: string; detail?: any; }) => any;
+	onError?: (errorEvent: { code: ConnectDeviceErrorCode; msg: string; detail?: any; }) => any;
+	onComplete?: () => any;
+	handleAddDevice?: (deviceSignature: {
+		Signature: string;
+		DeviceTimestamp: number;
+		ProductId: string;
+		DeviceName: string;
+		ConnId: string;
+	}) => Promise<any>;
 }
 
 export interface WifiInfo {

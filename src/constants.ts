@@ -1,12 +1,12 @@
 export enum EventTypes {
-	ready = 'ready',
-	error = 'error',
-	wsError = 'ws_error',
-	wsClose = 'ws_close',
-	wsPush = 'wsPush',
-	wsReport = 'wsReport',
-	wsControl = 'wsControl',
-	wsStatusChange = 'wsStatusChange',
+	Ready = 'ready',
+	Error = 'error',
+	WsError = 'ws_error',
+	WsClose = 'ws_close',
+	WsPush = 'wsPush',
+	WsReport = 'wsReport',
+	WsControl = 'wsControl',
+	WsStatusChange = 'wsStatusChange',
 }
 
 export enum ConnectDeviceErrorCode {

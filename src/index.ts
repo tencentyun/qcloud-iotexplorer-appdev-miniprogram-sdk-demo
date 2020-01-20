@@ -1,5 +1,2 @@
-import 'miniprogram-api-typings';
-
-import { QcloudIotExplorerAppDevSdk } from "./sdk";
-
-export default QcloudIotExplorerAppDevSdk;
+export * from './constants';
+export * from './sdk';

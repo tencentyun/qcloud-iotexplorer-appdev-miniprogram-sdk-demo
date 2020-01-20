@@ -1,3 +1,6 @@
+declare const navigator;
+declare const window;
+
 export const isMiniProgram = (function () {
 	// 通过关键 api 是否存在来判断小程序环境
 	try {

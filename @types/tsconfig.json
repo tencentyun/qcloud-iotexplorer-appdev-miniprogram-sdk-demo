@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"experimentalDecorators": true,
 		"moduleResolution": "node",
-		"module": "commonjs",
+		"module": "amd",
 		"target": "es5",
 		"lib": [
 			"es2017"
@@ -12,13 +12,13 @@
 		"sourceMap": true,
 		"downlevelIteration": true,
 		"esModuleInterop": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"outDir": "../dist",
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"outFile": "../dist/release/qcloud-iotexplorer-appdev-sdk.js"
 	},
-	"include": [
-		"src"
-	],
-	"exclude": [
-		"src/vendor",
-		"node_modules"
+	"files": [
+		"index.d.ts"
 	]
 }

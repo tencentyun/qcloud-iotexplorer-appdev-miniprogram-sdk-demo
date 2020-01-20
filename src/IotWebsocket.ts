@@ -19,7 +19,7 @@ const defaultOptions: IotWebsocketOptions = {
 
 export class IotWebsocket extends EventEmitter {
 	sdk: QcloudIotExplorerAppDevSdk;
-	requestHandlerMap: Map<string, any>;
+	requestHandlerMap: any;
 	options: IotWebsocketOptions;
 	_connected: boolean;
 	_subscribeDeviceIdList: string[];
@@ -30,7 +30,7 @@ export class IotWebsocket extends EventEmitter {
 	constructor(sdk: QcloudIotExplorerAppDevSdk, options: IotWebsocketOptions) {
 		super();
 		this.sdk = sdk;
-		this.requestHandlerMap = new Map();
+		this.requestHandlerMap = {};
 		this.options = Object.assign({}, defaultOptions, options);
 		this._connected = false;
 		this._subscribeDeviceIdList = [];
@@ -77,8 +77,8 @@ export class IotWebsocket extends EventEmitter {
 
 					if (data.push) {
 						this.emit('push', data);
-					} else if (typeof data.reqId !== 'undefined' && this.requestHandlerMap.has(data.reqId)) {
-						this.requestHandlerMap.get(data.reqId)(null, data);
+					} else if (typeof data.reqId !== 'undefined' && this.requestHandlerMap[data.reqId]) {
+						this.requestHandlerMap[data.reqId](null, data);
 					}
 				});
 
@@ -121,7 +121,7 @@ export class IotWebsocket extends EventEmitter {
 		}
 	}
 
-	async send(action, params = {}, { reqId } = {} as any) {
+	async send(action, params = {}, { reqId } = {} as any): Promise<any> {
 		if (!reqId) {
 			reqId = shortid();
 		}
@@ -138,7 +138,7 @@ export class IotWebsocket extends EventEmitter {
 			try {
 				return await Promise.race([
 					new Promise((resolve, reject) => {
-						this.requestHandlerMap.set(reqId, (err, data) => {
+						this.requestHandlerMap[reqId] = (err, data) => {
 							if (err) {
 								reject(err);
 							} else {
@@ -148,7 +148,7 @@ export class IotWebsocket extends EventEmitter {
 
 								return resolve(data.data);
 							}
-						});
+						};
 					}),
 					new Promise((resolve, reject) => {
 						setTimeout(() => {
@@ -157,7 +157,7 @@ export class IotWebsocket extends EventEmitter {
 					}),
 				]);
 			} finally {
-				this.requestHandlerMap.delete(reqId);
+				delete this.requestHandlerMap[reqId];
 			}
 		} else {
 			logger.warn('Try send ws message but no ws instance', action, params);
