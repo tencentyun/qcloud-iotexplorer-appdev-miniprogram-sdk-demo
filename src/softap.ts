@@ -4,6 +4,7 @@ import shortid from './vendor/shortid';
 import logger from './logger';
 import { QcloudIotExplorerAppDevSdk } from "./sdk";
 import { ConnectDeviceErrorCode, SoftApErrorMsg, ConnectDeviceStepCode, SoftApStepMsg } from "./constants";
+import { normalizeError } from "./errorHelper";
 
 const decodeUdpMsg = (message) => {
 	const unit8Arr = new Uint8Array(message);
@@ -32,17 +33,17 @@ export interface ConnectDeviceOptions {
 	udpPort?: number;
 	waitUdpResponseDuration?: number;
 	udpCommunicationRetryTime?: number;
-	stepDurationGap?: number;
-	onProgress?: (progressEvent: { code: ConnectDeviceStepCode; msg: string; detail?: any; }) => any;
-	onError?: (errorEvent: { code: ConnectDeviceErrorCode; msg: string; detail?: any; }) => any;
-	onComplete?: () => any;
+	stepGap?: number;
+	onProgress?: (progressEvent: { code: ConnectDeviceStepCode; msg: string; detail?: any; }) => void;
+	onError?: (errorEvent: { code: ConnectDeviceErrorCode; msg: string; detail?: any; }) => void;
+	onComplete?: () => void;
 	handleAddDevice?: (deviceSignature: {
 		Signature: string;
 		DeviceTimestamp: number;
 		ProductId: string;
 		DeviceName: string;
 		ConnId: string;
-	}) => Promise<any>;
+	}) => Promise<void>;
 }
 
 export interface WifiInfo {
@@ -58,7 +59,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 	udpPort = 8266,
 	waitUdpResponseDuration = 2000,
 	udpCommunicationRetryTime = 5,
-	stepDurationGap = 3000,
+	stepGap = 3000,
 	onProgress = noop,
 	onError = noop,
 	onComplete = noop,
@@ -84,7 +85,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 			onProgress({
 				code: stepCode,
 				msg: SoftApStepMsg[stepCode],
-				detail,
+				...detail,
 			});
 		};
 
@@ -140,7 +141,11 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 
 					reject({ code: ConnectDeviceErrorCode.UDP_NOT_RESPONSED });
 				} catch (err) {
-					reject({ code: ConnectDeviceErrorCode.SEND_UDP_MSG_FAIL, detail: { error: err } });
+					err = normalizeError(err);
+
+					err.code = ConnectDeviceErrorCode.SEND_UDP_MSG_FAIL;
+
+					reject(err);
 				}
 			});
 		};
@@ -176,7 +181,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 
 				udpInstance.onError(errMsg => onErrorPromise.reject({
 					code: ConnectDeviceErrorCode.UDP_ERROR,
-					detail: { errMsg },
+					errMsg,
 				}));
 
 				udpInstance.onMessage((resp) => {
@@ -193,7 +198,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 							if (message.deviceReply === 'Current_Error') {
 								onProgressErrorPromise.reject({
 									code: ConnectDeviceErrorCode.DEVICE_ERROR,
-									detail: message,
+									errMsg: message,
 								});
 							} else if (message.deviceReply === 'Previous_Error') { // 上一次连接过程中发生的，还未来得及发出去的错误信息，直接上报，不产生副作用
 								logger.debug('softap-receive-prev-error', {
@@ -211,7 +216,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 				});
 
 				const doConnect = async () => {
-					const stepCheck = async (duration = stepDurationGap) => {
+					const stepCheck = async (duration = stepGap) => {
 						await delay(duration);
 
 						if (connectAborted) {
@@ -237,12 +242,12 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 					});
 
 					if (response.deviceReply !== 'dataRecived') {
-						throw { code: ConnectDeviceErrorCode.INVALID_UDP_RESPONSE, detail: response };
+						throw { code: ConnectDeviceErrorCode.INVALID_UDP_RESPONSE, response };
 					}
 
 					await stepCheck(5000);
 
-					setProgress(ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_SUCCESS, response);
+					setProgress(ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_SUCCESS, { response });
 
 					setProgress(ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_START);
 
@@ -270,7 +275,7 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 
 					await stepCheck();
 
-					setProgress(ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_SUCCESS, signInfo);
+					setProgress(ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_SUCCESS, { signature: signInfo });
 
 					udpInstance.close();
 
@@ -299,7 +304,13 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 						});
 
 						if (!isConfirm) {
-							throw { code: ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL, detail: { error: err } };
+							const error = { code: ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL } as any;
+
+							if (err && err.errMsg) {
+								error.errMsg = err.errMsg;
+							}
+
+							throw error;
 						}
 
 						userSkipReconnectWifi = true;
@@ -333,7 +344,10 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 									if (isConfirm) {
 										return doAddDevice();
 									} else {
-										return Promise.reject({ code: ConnectDeviceErrorCode.ADD_DEVICE_FAIL, detail: { error: err } });
+										return Promise.reject({
+											code: ConnectDeviceErrorCode.ADD_DEVICE_FAIL,
+											errMsg: err.errMsg,
+										});
 									}
 								} else {
 									const isConfirm = await confirm(getErrorMsg(err), '', {
@@ -346,13 +360,11 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 									if (isConfirm) {
 										return doAddDevice();
 									} else {
+										err = normalizeError(err);
+
 										err.code = ConnectDeviceErrorCode.ADD_DEVICE_FAIL;
-										return Promise.reject({
-											code: ConnectDeviceErrorCode.ADD_DEVICE_FAIL,
-											detail: { error: err },
-											msg: getErrorMsg(err),
-											reqId: err.reqId,
-										});
+
+										return Promise.reject(err);
 									}
 								}
 							}
@@ -362,16 +374,18 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 					};
 
 					setProgress(ConnectDeviceStepCode.ADD_DEVICE_START, {
-						Signature: signInfo.signature,
-						DeviceTimestamp: signInfo.timestamp,
-						ProductId: signInfo.productId,
-						DeviceName: signInfo.deviceName,
-						ConnId: signInfo.connId,
+						params: {
+							Signature: signInfo.signature,
+							DeviceTimestamp: signInfo.timestamp,
+							ProductId: signInfo.productId,
+							DeviceName: signInfo.deviceName,
+							ConnId: signInfo.connId,
+						},
 					});
 
 					const addDeviceResp = await doAddDevice();
 
-					setProgress(ConnectDeviceStepCode.ADD_DEVICE_SUCCESS, addDeviceResp);
+					setProgress(ConnectDeviceStepCode.ADD_DEVICE_SUCCESS, { response: addDeviceResp });
 				};
 
 				await Promise.race([
@@ -401,11 +415,13 @@ export async function connectDevice(sdk: QcloudIotExplorerAppDevSdk, {
 
 				setProgress(ConnectDeviceStepCode.CONNECT_SOFTAP_SUCCESS);
 			} catch (err) {
-				if (err.code === ConnectDeviceErrorCode.SSID_NOT_MATCH) {
-					throw { code: ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL };
+				const error = { code: ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL } as any;
+
+				if (err && err.errMsg) {
+					error.errMsg = err.errMsg;
 				}
 
-				throw err;
+				throw error;
 			}
 		}
 

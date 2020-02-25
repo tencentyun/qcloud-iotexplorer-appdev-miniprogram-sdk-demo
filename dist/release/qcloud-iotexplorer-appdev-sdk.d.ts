@@ -1,3 +1,81 @@
+declare module "constants" {
+    export enum EventTypes {
+        Ready = "ready",
+        Error = "error",
+        WsError = "ws_error",
+        WsClose = "ws_close",
+        WsPush = "wsPush",
+        WsReport = "wsReport",
+        WsControl = "wsControl",
+        WsStatusChange = "wsStatusChange"
+    }
+    export enum ErrorCode {
+        WX_API_NEED_AUTH = "WX_API_NEED_AUTH",
+        GET_USERINFO_NEED_AUTH = "GET_USERINFO_NEED_AUTH",
+        WX_API_FAIL = "WX_API_FAIL",
+        VERIFY_LOGIN_FAIL = "VERIFY_LOGIN_FAIL",
+        INTERNAL_ERROR = "INTERNAL_ERROR"
+    }
+    export enum ConnectDeviceErrorCode {
+        UDP_NOT_RESPONSED = "UDP_NOT_RESPONSED",
+        SSID_NOT_MATCH = "SSID_NOT_MATCH",
+        CONNECT_SOFTAP_FAIL = "CONNECT_SOFTAP_FAIL",
+        CONNECT_TARGET_WIFI_FAIL = "CONNECT_TARGET_WIFI_FAIL",
+        UDP_ERROR = "UDP_ERROR",
+        UDP_CLOSED = "UDP_CLOSED",
+        DEVICE_ERROR = "DEVICE_ERROR",
+        INVALID_UDP_RESPONSE = "INVALID_UDP_RESPONSE",
+        DEVICE_CONNECT_MQTT_FAIL = "DEVICE_CONNECT_MQTT_FAIL",
+        DEVICE_CONNECT_WIFI_FAIL = "DEVICE_CONNECT_WIFI_FAIL",
+        ADD_DEVICE_FAIL = "ADD_DEVICE_FAIL",
+        SEND_UDP_MSG_FAIL = "SEND_UDP_MSG_FAIL"
+    }
+    export const SoftApErrorMsg: {
+        [ConnectDeviceErrorCode.UDP_NOT_RESPONSED]: string;
+        [ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL]: string;
+        [ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL]: string;
+        [ConnectDeviceErrorCode.UDP_ERROR]: string;
+        [ConnectDeviceErrorCode.UDP_CLOSED]: string;
+        [ConnectDeviceErrorCode.DEVICE_ERROR]: string;
+        [ConnectDeviceErrorCode.INVALID_UDP_RESPONSE]: string;
+        [ConnectDeviceErrorCode.DEVICE_CONNECT_MQTT_FAIL]: string;
+        [ConnectDeviceErrorCode.DEVICE_CONNECT_WIFI_FAIL]: string;
+        [ConnectDeviceErrorCode.ADD_DEVICE_FAIL]: string;
+        [ConnectDeviceErrorCode.SEND_UDP_MSG_FAIL]: string;
+    };
+    export enum ConnectDeviceStepCode {
+        CONNECT_DEVICE_START = "CONNECT_DEVICE_START",
+        CONNECT_SOFTAP_START = "CONNECT_SOFTAP_START",
+        CONNECT_SOFTAP_SUCCESS = "CONNECT_SOFTAP_SUCCESS",
+        CREATE_UDP_CONNECTION_START = "CREATE_UDP_CONNECTION_START",
+        CREATE_UDP_CONNECTION_SUCCESS = "CREATE_UDP_CONNECTION_SUCCESS",
+        SEND_TARGET_WIFIINFO_START = "SEND_TARGET_WIFIINFO_START",
+        SEND_TARGET_WIFIINFO_SUCCESS = "SEND_TARGET_WIFIINFO_SUCCESS",
+        GET_DEVICE_SIGNATURE_START = "GET_DEVICE_SIGNATURE_START",
+        GET_DEVICE_SIGNATURE_SUCCESS = "GET_DEVICE_SIGNATURE_SUCCESS",
+        CONNECT_TARGET_WIFI_START = "RECONNECT_TARGET_WIFI_START",
+        CONNECT_TARGET_WIFI_SUCCESS = "RECONNECT_TARGET_WIFI_SUCCESS",
+        ADD_DEVICE_START = "ADD_DEVICE_START",
+        ADD_DEVICE_SUCCESS = "ADD_DEVICE_SUCCESS",
+        CONNECT_DEVICE_SUCCESS = "CONNECT_DEVICE_SUCCESS"
+    }
+    export const SoftApStepMsg: {
+        [ConnectDeviceStepCode.CONNECT_DEVICE_START]: string;
+        [ConnectDeviceStepCode.CONNECT_SOFTAP_START]: string;
+        [ConnectDeviceStepCode.CONNECT_SOFTAP_SUCCESS]: string;
+        [ConnectDeviceStepCode.CREATE_UDP_CONNECTION_START]: string;
+        [ConnectDeviceStepCode.CREATE_UDP_CONNECTION_SUCCESS]: string;
+        [ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_START]: string;
+        [ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_SUCCESS]: string;
+        [ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_START]: string;
+        [ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_SUCCESS]: string;
+        [ConnectDeviceStepCode.CONNECT_TARGET_WIFI_START]: string;
+        [ConnectDeviceStepCode.CONNECT_TARGET_WIFI_SUCCESS]: string;
+        [ConnectDeviceStepCode.ADD_DEVICE_START]: string;
+        [ConnectDeviceStepCode.ADD_DEVICE_SUCCESS]: string;
+        [ConnectDeviceStepCode.CONNECT_DEVICE_SUCCESS]: string;
+    };
+}
 declare module "libs/event-emmiter" {
     export default class EventEmitter {
         on(type: any, listener: any): this;
@@ -61,6 +139,15 @@ declare module "libs/storage" {
     export default _default_1;
 }
 declare module "errorHelper" {
+    /**
+     * 标准化错误输出，分为三个类型：
+     * 1. 小程序 api 报错：{ errMsg }
+     * 2. cgi 报错： { code, msg }
+     * 3. Error 对象
+     *
+     * 标准化输出为： { code, msg, ...detail }
+     * @param error
+     */
     export const normalizeError: (error: any) => any;
     export const genVerifyLoginFailError: (error?: any) => any;
     export const isVerifyLoginError: (error: any) => boolean;
@@ -165,82 +252,11 @@ declare module "IotWebsocket" {
         connect(): Promise<void>;
         subscribe(deviceIdList: any): void;
         disconnect(): void;
-        send(action: any, params?: {}, { reqId }?: any): Promise<unknown>;
+        send(action: any, params?: {}, { reqId }?: any): Promise<any>;
         callYunApi(Action: any, ActionParams?: any, { doNotRetry }?: any): any;
         sendWsHeatBeat(): any;
         activePush(deviceList?: any[]): void;
     }
-}
-declare module "constants" {
-    export enum EventTypes {
-        Ready = "ready",
-        Error = "error",
-        WsError = "ws_error",
-        WsClose = "ws_close",
-        WsPush = "wsPush",
-        WsReport = "wsReport",
-        WsControl = "wsControl",
-        WsStatusChange = "wsStatusChange"
-    }
-    export enum ConnectDeviceErrorCode {
-        UDP_NOT_RESPONSED = "UDP_NOT_RESPONSED",
-        SSID_NOT_MATCH = "SSID_NOT_MATCH",
-        CONNECT_SOFTAP_FAIL = "CONNECT_SOFTAP_FAIL",
-        CONNECT_TARGET_WIFI_FAIL = "CONNECT_TARGET_WIFI_FAIL",
-        UDP_ERROR = "UDP_ERROR",
-        UDP_CLOSED = "UDP_CLOSED",
-        DEVICE_ERROR = "DEVICE_ERROR",
-        INVALID_UDP_RESPONSE = "INVALID_UDP_RESPONSE",
-        DEVICE_CONNECT_MQTT_FAIL = "DEVICE_CONNECT_MQTT_FAIL",
-        DEVICE_CONNECT_WIFI_FAIL = "DEVICE_CONNECT_WIFI_FAIL",
-        ADD_DEVICE_FAIL = "ADD_DEVICE_FAIL",
-        SEND_UDP_MSG_FAIL = "SEND_UDP_MSG_FAIL"
-    }
-    export const SoftApErrorMsg: {
-        [ConnectDeviceErrorCode.UDP_NOT_RESPONSED]: string;
-        [ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL]: string;
-        [ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL]: string;
-        [ConnectDeviceErrorCode.UDP_ERROR]: string;
-        [ConnectDeviceErrorCode.UDP_CLOSED]: string;
-        [ConnectDeviceErrorCode.DEVICE_ERROR]: string;
-        [ConnectDeviceErrorCode.INVALID_UDP_RESPONSE]: string;
-        [ConnectDeviceErrorCode.DEVICE_CONNECT_MQTT_FAIL]: string;
-        [ConnectDeviceErrorCode.DEVICE_CONNECT_WIFI_FAIL]: string;
-        [ConnectDeviceErrorCode.ADD_DEVICE_FAIL]: string;
-        [ConnectDeviceErrorCode.SEND_UDP_MSG_FAIL]: string;
-    };
-    export enum ConnectDeviceStepCode {
-        CONNECT_DEVICE_START = "CONNECT_DEVICE_START",
-        CONNECT_SOFTAP_START = "CONNECT_SOFTAP_START",
-        CONNECT_SOFTAP_SUCCESS = "CONNECT_SOFTAP_SUCCESS",
-        CREATE_UDP_CONNECTION_START = "CREATE_UDP_CONNECTION_START",
-        CREATE_UDP_CONNECTION_SUCCESS = "CREATE_UDP_CONNECTION_SUCCESS",
-        SEND_TARGET_WIFIINFO_START = "SEND_TARGET_WIFIINFO_START",
-        SEND_TARGET_WIFIINFO_SUCCESS = "SEND_TARGET_WIFIINFO_SUCCESS",
-        GET_DEVICE_SIGNATURE_START = "GET_DEVICE_SIGNATURE_START",
-        GET_DEVICE_SIGNATURE_SUCCESS = "GET_DEVICE_SIGNATURE_SUCCESS",
-        CONNECT_TARGET_WIFI_START = "RECONNECT_TARGET_WIFI_START",
-        CONNECT_TARGET_WIFI_SUCCESS = "RECONNECT_TARGET_WIFI_SUCCESS",
-        ADD_DEVICE_START = "ADD_DEVICE_START",
-        ADD_DEVICE_SUCCESS = "ADD_DEVICE_SUCCESS",
-        CONNECT_DEVICE_SUCCESS = "CONNECT_DEVICE_SUCCESS"
-    }
-    export const SoftApStepMsg: {
-        [ConnectDeviceStepCode.CONNECT_DEVICE_START]: string;
-        [ConnectDeviceStepCode.CONNECT_SOFTAP_START]: string;
-        [ConnectDeviceStepCode.CONNECT_SOFTAP_SUCCESS]: string;
-        [ConnectDeviceStepCode.CREATE_UDP_CONNECTION_START]: string;
-        [ConnectDeviceStepCode.CREATE_UDP_CONNECTION_SUCCESS]: string;
-        [ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_START]: string;
-        [ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_SUCCESS]: string;
-        [ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_START]: string;
-        [ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_SUCCESS]: string;
-        [ConnectDeviceStepCode.CONNECT_TARGET_WIFI_START]: string;
-        [ConnectDeviceStepCode.CONNECT_TARGET_WIFI_SUCCESS]: string;
-        [ConnectDeviceStepCode.ADD_DEVICE_START]: string;
-        [ConnectDeviceStepCode.ADD_DEVICE_SUCCESS]: string;
-        [ConnectDeviceStepCode.CONNECT_DEVICE_SUCCESS]: string;
-    };
 }
 declare module "softap" {
     import { QcloudIotExplorerAppDevSdk } from "sdk";
@@ -253,14 +269,18 @@ declare module "softap" {
         udpPort?: number;
         waitUdpResponseDuration?: number;
         udpCommunicationRetryTime?: number;
-        stepDurationGap?: number;
-        onProgress?: (progressEvent: { code: ConnectDeviceStepCode; msg: string; detail?: any; }) => any;
+        stepGap?: number;
+        onProgress?: (progressEvent: {
+            code: ConnectDeviceStepCode;
+            msg: string;
+            detail?: any;
+        }) => void;
         onError?: (errorEvent: {
             code: ConnectDeviceErrorCode;
             msg: string;
             detail?: any;
-        }) => any;
-        onComplete?: () => any;
+        }) => void;
+        onComplete?: () => void;
         handleAddDevice?: (deviceSignature: {
             Signature: string;
             DeviceTimestamp: number;
@@ -273,7 +293,7 @@ declare module "softap" {
         SSID: string;
         password?: string;
     }
-    export function connectDevice(sdk: QcloudIotExplorerAppDevSdk, { targetWifiInfo, softApInfo, familyId, udpAddress, udpPort, waitUdpResponseDuration, udpCommunicationRetryTime, stepDurationGap, onProgress, onError, onComplete, handleAddDevice, }: ConnectDeviceOptions): Promise<void>;
+    export function connectDevice(sdk: QcloudIotExplorerAppDevSdk, { targetWifiInfo, softApInfo, familyId, udpAddress, udpPort, waitUdpResponseDuration, udpCommunicationRetryTime, stepGap, onProgress, onError, onComplete, handleAddDevice, }: ConnectDeviceOptions): Promise<void>;
 }
 declare module "sdk" {
     import 'miniprogram-api-typings';
@@ -306,12 +326,14 @@ declare module "sdk" {
         get isLogin(): boolean;
         get userId(): string;
         get nickName(): string;
-        init(reload?: boolean): Promise<void>;
-        getDefaultFamilyId(): any;
-        sendWebsocketMessage(action: any, params?: {}): Promise<unknown>;
+        init(options?: {
+            reload?: boolean;
+        }): Promise<void>;
+        getDefaultFamilyId(): Promise<string>;
+        sendWebsocketMessage(action: any, params?: {}): Promise<any>;
         connectWebsocket(): Promise<void>;
         disconnectWebsocket(): void;
-        subscribeDevices(deviceList?: any[]): Promise<void>;
+        subscribeDevices(deviceList: string[] | any[]): Promise<void>;
         requestApi(Action: any, payload?: any, { doNotRetry, needLogin, ...opts }?: {
             doNotRetry?: boolean;
             needLogin?: boolean;
@@ -323,7 +345,6 @@ declare module "sdk" {
     }
 }
 declare module "index" {
-    import { QcloudIotExplorerAppDevSdk } from "sdk";
     export * from "constants";
-    export default QcloudIotExplorerAppDevSdk;
+    export * from "sdk";
 }

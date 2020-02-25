@@ -2,6 +2,7 @@ const pify = require('../../libs/pify');
 const store = require('../../redux/index');
 const actions = require('../../redux/actions');
 const { getErrorMsg } = require('../../libs/utils');
+const { ErrorCode } = require('../../qcloud-iotexplorer-appdev-sdk');
 
 Page({
 	data: {
@@ -26,7 +27,7 @@ Page({
 			this.getData();
 		}).catch((err) => {
 			console.error(err);
-			if (err.code === 'UserNeedAuth') {
+			if (err.code === ErrorCode.GET_USERINFO_NEED_AUTH) {
 				this.setData({ needAuth: true });
 			}
 		})
@@ -34,6 +35,7 @@ Page({
 
 	onGetUserInfo({ detail }) {
 		if (!(detail && detail.errMsg && detail.errMsg.indexOf('auth deny') > -1)) {
+			this.setData({ needAuth: false });
 			this.sdk.init()
 				.then(() => this.getData());
 		}

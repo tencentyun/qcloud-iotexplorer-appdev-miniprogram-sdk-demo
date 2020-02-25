@@ -3,6 +3,10 @@ const pify = require('./libs/pify');
 
 App({
 	onLaunch() {
+		wx.cloud.init({
+			env: 'dev-c712j',
+		});
+
 		this.sdk = new QcloudIotExplorerAppDevSdk({
 			debug: true,
 			appKey: '',
@@ -21,22 +25,18 @@ App({
 	},
 
 	login() {
-		return pify(wx.login)()
-			.then(({ code }) => {
-				return pify(wx.getUserInfo)({ withCredentials: true })
-					.then(userInfo => pify(wx.request)({
-						url: 'http://127.0.0.1:7788/api/login',
-						method: 'POST',
-						data: { code, ...userInfo },
-					}));
-			})
-			.then(({ data: { code, data, msg } }) => {
+		return pify(wx.getUserInfo)({ withCredentials: true })
+			.then(({ cloudID }) => wx.cloud.callFunction({
+				// 云函数名称
+				name: 'login',
+				// 传给云函数的参数
+				data: {
+					userInfo: wx.cloud.CloudID(cloudID),
+				},
+			}))
+			.then(({ result: { code, data, msg } }) => {
 				if (code) {
 					return Promise.reject({ code, msg });
-				}
-
-				if (data.Error) {
-					return Promise.reject({ code: data.Error.Code, msg: data.Error.Message });
 				}
 
 				return data;

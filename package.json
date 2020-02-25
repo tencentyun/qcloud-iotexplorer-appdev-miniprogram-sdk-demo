@@ -5,8 +5,8 @@
 	"main": "dist/release/qcloud-iotexplorer-appdev-sdk.js",
 	"scripts": {
 		"dev": "webpack --env.target=miniprogram --watch",
-		"build": "webpack --env.mode=production --watch",
-		"typing": "tsc typing-tsconfig.json"
+		"build": "webpack --env.mode=production",
+		"typing": "cd @types && tsc"
 	},
 	"repository": {
 		"type": "git",

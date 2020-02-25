@@ -9,13 +9,20 @@ export enum EventTypes {
 	WsStatusChange = 'wsStatusChange',
 }
 
+export enum ErrorCode {
+	WX_API_NEED_AUTH = 'WX_API_NEED_AUTH',
+	GET_USERINFO_NEED_AUTH = 'GET_USERINFO_NEED_AUTH',
+	WX_API_FAIL = 'WX_API_FAIL',
+	VERIFY_LOGIN_FAIL = 'VERIFY_LOGIN_FAIL',
+	INTERNAL_ERROR = 'INTERNAL_ERROR',
+}
+
 export enum ConnectDeviceErrorCode {
 	UDP_NOT_RESPONSED = 'UDP_NOT_RESPONSED',
 	SSID_NOT_MATCH = 'SSID_NOT_MATCH',
 	CONNECT_SOFTAP_FAIL = 'CONNECT_SOFTAP_FAIL',
 	CONNECT_TARGET_WIFI_FAIL = 'CONNECT_TARGET_WIFI_FAIL',
 	UDP_ERROR = 'UDP_ERROR',
-	UDP_CLOSED = 'UDP_CLOSED',
 	DEVICE_ERROR = 'DEVICE_ERROR',
 	INVALID_UDP_RESPONSE = 'INVALID_UDP_RESPONSE',
 	DEVICE_CONNECT_MQTT_FAIL = 'DEVICE_CONNECT_MQTT_FAIL',
@@ -29,7 +36,6 @@ export const SoftApErrorMsg = {
 	[ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL]: '手机连接设备热点失败',
 	[ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL]: '手机连接WiFi路由器失败',
 	[ConnectDeviceErrorCode.UDP_ERROR]: '连接设备失败',
-	[ConnectDeviceErrorCode.UDP_CLOSED]: '连接设备中断',
 	[ConnectDeviceErrorCode.DEVICE_ERROR]: '设备配网异常',
 	[ConnectDeviceErrorCode.INVALID_UDP_RESPONSE]: '设备响应报文格式错误',
 	[ConnectDeviceErrorCode.DEVICE_CONNECT_MQTT_FAIL]: '连接云端失败',

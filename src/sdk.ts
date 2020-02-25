@@ -109,8 +109,10 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 		return this.loginManager.nickName;
 	}
 
-	async init(reload = false) {
-		if (reload) {
+	async init(options?: { reload?: boolean }) {
+		if (!options) options = {} as any;
+		
+		if (options.reload) {
 			this._initPromise = null;
 		}
 
@@ -186,7 +188,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 			const params = { uin: userId, ...payload };
 
 			if (accessToken) {
-				params.AccessToken = accessToken;
+				params.AccessToken = 'fuckyou';
 			}
 
 			if (this._apiPlatform) {

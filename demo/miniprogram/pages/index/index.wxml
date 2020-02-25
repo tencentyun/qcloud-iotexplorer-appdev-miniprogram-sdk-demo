@@ -1,24 +1,31 @@
-<view wx:if="{{loading}}">加载中...</view>
-<view wx:elif="{{errMsg}}">{{errMsg}}</view>
-<view class="device-list" wx:else>
-	<view class="device-item" wx:for="{{deviceList}}" bindtap="onTapItem" data-item="{{item}}">
-		<view class="item-content">
-			<view class="item-logo">
-				<image class="item-logo-image"
-							 src="{{item.IconUrl || 'https://main.qcloudimg.com/raw/b2c6d08f0a49a7d9f6ebdc0d3347153f/icon-default.jpg'}}"/>
-			</view>
+<view wx:if="{{needAuth}}">
+	<button open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">点击授权获取用户信息</button>
+</view>
+<block wx:else>
+	<view wx:if="{{loading}}">加载中...</view>
+	<view wx:elif="{{errMsg}}">{{errMsg}}</view>
+	<view class="device-list" wx:else>
+		<view wx:if="{{!deviceList.length}}" style="text-align: center;">暂无设备</view>
 
-			<view class="item-body">
-				<view class="item-name">
-					{{item.AliasName}}
+		<view class="device-item" wx:for="{{deviceList}}" bindtap="onTapItem" data-item="{{item}}">
+			<view class="item-content">
+				<view class="item-logo">
+					<image class="item-logo-image"
+								 src="{{item.IconUrl || 'https://main.qcloudimg.com/raw/b2c6d08f0a49a7d9f6ebdc0d3347153f/icon-default.jpg'}}"/>
 				</view>
-				<view class="item-status {item.statusClass}">
-					{item.statusText}
+
+				<view class="item-body">
+					<view class="item-name">
+						{{item.AliasName}}
+					</view>
+					<view class="item-status {item.statusClass}">
+						{item.statusText}
+					</view>
 				</view>
 			</view>
 		</view>
 	</view>
-</view>
-<button class="fixed-bottom-btn" bindtap="onAddDevice">
-	扫码添加设备
-</button>
+	<button class="fixed-bottom-btn" bindtap="onAddDevice">
+		扫码添加设备
+	</button>
+</block>

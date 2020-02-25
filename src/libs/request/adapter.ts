@@ -34,14 +34,11 @@ export const requestTokenApi = async (Action: string, { uin, AccessToken, ...pay
 	const { code, msg, data = {} } = response;
 
 	if (code) {
-		if (data) {
-			if (data.Error) {
-				throw { code: data.Error.Code, msg: data.Error.Message, reqId };
-			}
-			throw { code, msg, reqId };
+		if (data && data.Error) {
+			throw { code: data.Error.Code, msg: data.Error.Message, reqId };
 		}
 
-		throw { code, msg };
+		throw { code, msg, reqId };
 	}
 
 	return data;
