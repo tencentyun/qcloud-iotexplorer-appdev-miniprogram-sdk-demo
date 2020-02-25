@@ -52,7 +52,9 @@ Page({
 ## 开发文档
 
 > 名称解释：
+>
 > API：指代本 SDK 提供的 API 方法
+>
 > 接口：指代[物联网开发平台应用开发接口](https://cloud.tencent.com/document/product/1081/40773)
 
 ### QcloudIotExplorerAppDevSdk(sdkOptions)
@@ -259,8 +261,6 @@ Wifi 的 SSID
 ### 配网步骤
 
 sdk.connectDevice() 配网过程中，每执行完一个步骤就会触发一次 onProgress 回调，入参为：`{ code, msg, ...detail }` 形式
-
-
 
 ##### CONNECT_DEVICE_START: ConnectDeviceStepCode.CONNECT_DEVICE_START
 开始配网

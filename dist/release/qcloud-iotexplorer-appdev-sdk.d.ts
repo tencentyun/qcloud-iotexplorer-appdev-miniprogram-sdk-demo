@@ -22,7 +22,6 @@ declare module "constants" {
         CONNECT_SOFTAP_FAIL = "CONNECT_SOFTAP_FAIL",
         CONNECT_TARGET_WIFI_FAIL = "CONNECT_TARGET_WIFI_FAIL",
         UDP_ERROR = "UDP_ERROR",
-        UDP_CLOSED = "UDP_CLOSED",
         DEVICE_ERROR = "DEVICE_ERROR",
         INVALID_UDP_RESPONSE = "INVALID_UDP_RESPONSE",
         DEVICE_CONNECT_MQTT_FAIL = "DEVICE_CONNECT_MQTT_FAIL",
@@ -35,7 +34,6 @@ declare module "constants" {
         [ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL]: string;
         [ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL]: string;
         [ConnectDeviceErrorCode.UDP_ERROR]: string;
-        [ConnectDeviceErrorCode.UDP_CLOSED]: string;
         [ConnectDeviceErrorCode.DEVICE_ERROR]: string;
         [ConnectDeviceErrorCode.INVALID_UDP_RESPONSE]: string;
         [ConnectDeviceErrorCode.DEVICE_CONNECT_MQTT_FAIL]: string;
@@ -287,7 +285,7 @@ declare module "softap" {
             ProductId: string;
             DeviceName: string;
             ConnId: string;
-        }) => Promise<any>;
+        }) => Promise<void>;
     }
     export interface WifiInfo {
         SSID: string;
