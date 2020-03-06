@@ -1,7 +1,12 @@
 import { pify } from './pify';
+import { isMiniProgram } from "./envDetect";
 
 export default {
 	async getItem(key) {
+		if (!isMiniProgram) {
+			return;
+		}
+
 		try {
 			const { data } = await pify(wx.getStorage)({ key });
 			return data;
@@ -10,6 +15,10 @@ export default {
 		}
 	},
 	async setItem(key, data) {
+		if (!isMiniProgram) {
+			return;
+		}
+
 		try {
 			await pify(wx.setStorage)({ key, data });
 		} catch (err) {
@@ -17,6 +26,10 @@ export default {
 		}
 	},
 	async removeItem(key) {
+		if (!isMiniProgram) {
+			return;
+		}
+
 		try {
 			await pify(wx.removeStorage)({ key });
 		} catch (err) {

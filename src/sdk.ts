@@ -9,6 +9,7 @@ import { delay, noop } from './libs/utillib';
 import { requestTokenApi } from './libs/request';
 import { genVerifyLoginFailError, isVerifyLoginError, normalizeError } from './errorHelper';
 import { connectDevice, ConnectDeviceOptions } from './softap';
+import { isMiniProgram } from "./libs/envDetect";
 
 import { IotWebsocketOptions } from "./IotWebsocket";
 
@@ -79,18 +80,20 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 
 		this.ws.on('push', pushEvent => this._handlePushEvent(pushEvent));
 
-		wx.onAppHide(() => {
-			if (disconnectWhenAppHide) {
-				this.isManuallyClose = true;
-				this.ws.disconnect();
-			}
-		});
+		if (isMiniProgram) {
+			wx.onAppHide(() => {
+				if (disconnectWhenAppHide) {
+					this.isManuallyClose = true;
+					this.ws.disconnect();
+				}
+			});
 
-		wx.onAppShow(() => {
-			if (connectWhenAppShow && this.isLogin) {
-				this.ws.connect();
-			}
-		});
+			wx.onAppShow(() => {
+				if (connectWhenAppShow && this.isLogin) {
+					this.ws.connect();
+				}
+			});
+		}
 	}
 
 	get userInfo() {
@@ -111,7 +114,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 
 	async init(options?: { reload?: boolean }) {
 		if (!options) options = {} as any;
-		
+
 		if (options.reload) {
 			this._initPromise = null;
 		}
@@ -188,7 +191,7 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 			const params = { uin: userId, ...payload };
 
 			if (accessToken) {
-				params.AccessToken = 'fuckyou';
+				params.AccessToken = accessToken;
 			}
 
 			if (this._apiPlatform) {
@@ -219,6 +222,11 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 	}
 
 	connectDevice(options: ConnectDeviceOptions) {
+		// 只有小程序支持
+		if (!isMiniProgram) {
+			throw '只有小程序内支持该接口调用';
+		}
+
 		return connectDevice(this, options);
 	}
 

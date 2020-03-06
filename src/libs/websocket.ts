@@ -1,5 +1,7 @@
 import * as envDetect from './envDetect';
 
+declare const window;
+
 export class WebSocket {
 	url: string;
 	ws: any;
@@ -18,7 +20,7 @@ export class WebSocket {
 				url: this.url,
 			});
 		} else {
-			this.ws = new WebSocket(this.url);
+			this.ws = new window.WebSocket(this.url);
 		}
 	}
 

@@ -4,8 +4,9 @@
 	"description": "",
 	"main": "dist/release/qcloud-iotexplorer-appdev-sdk.js",
 	"scripts": {
-		"dev": "webpack --env.target=miniprogram --watch",
-		"build": "webpack --env.mode=production",
+		"dev-miniprogram": "webpack --env.target=miniprogram --watch",
+		"dev": "webpack --watch",
+		"build": "webpack --env.mode=production --watch",
 		"typing": "cd @types && tsc"
 	},
 	"repository": {
