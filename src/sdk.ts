@@ -239,13 +239,17 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 
 		if (!params) params = {};
 
-		logger.debug('actions updateDeviceDataByPush', pushEvent);
-
-		const {
+		let {
 			DeviceId, Type, SubType, Payload, Time,
 		} = params;
 
 		const updateTime = new Date(Time).getTime();
+
+		if (Payload) {
+			Payload = JSON.parse(decodeBase64(Payload));
+		}
+
+		logger.debug('websocket push payload', Payload);
 
 		// 不知道后续还有多少类型，用switch实现
 		// action
@@ -262,14 +266,10 @@ export class QcloudIotExplorerAppDevSdk extends EventEmitter {
 								const deviceData = {};
 
 								try {
-									const payload = JSON.parse(decodeBase64(Payload));
-
-									logger.debug('actions updateDeviceData payload', payload);
-
-									if (payload) {
+									if (Payload) {
 										let {
 											type, state, method, params: deviceDataParams,
-										} = payload;
+										} = Payload;
 
 										// 老协议兼容
 										if (type) {
