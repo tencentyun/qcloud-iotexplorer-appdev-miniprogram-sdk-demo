@@ -4,7 +4,8 @@ const pify = require('./libs/pify');
 App({
 	onLaunch() {
 		wx.cloud.init({
-			env: 'dev-c712j',
+			// 选择您云开发环境的环境id
+			env: '',
 		});
 
 		this.sdk = new QcloudIotExplorerAppDevSdk({

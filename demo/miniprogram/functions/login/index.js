@@ -78,8 +78,9 @@ class AppDevSdk {
 cloud.init();
 
 const sdk = new AppDevSdk({
-	AppKey: 'mLonhBYvoGFzWHnvq',
-	AppSecret: 'yblHUnPLutWmnMLHzsXF',
+	// 物联网开发平台 - 应用开发中申请的AppKey及AppSecret
+	AppKey: '',
+	AppSecret: '',
 });
 
 // 云函数入口函数
