@@ -25,7 +25,10 @@
 			</view>
 		</view>
 	</view>
-	<button class="fixed-bottom-btn" bindtap="onAddDevice">
+	<button class="fixed-bottom-first-btn" bindtap="onAddDevice">
 		扫码添加设备
+	</button>
+	<button class="fixed-bottom-btn" type="primary" bindtap="addDeviceUseSmartConfig">
+		smartconfig添加设备
 	</button>
 </block>

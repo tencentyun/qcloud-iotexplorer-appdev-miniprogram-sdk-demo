@@ -5,7 +5,8 @@ App({
 	onLaunch() {
 		wx.cloud.init({
 			// 选择您云开发环境的环境id
-			env: '',
+			env: 'lianlian-test',
+			traceUser: true,
 		});
 
 		this.sdk = new QcloudIotExplorerAppDevSdk({

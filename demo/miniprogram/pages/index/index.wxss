@@ -48,9 +48,19 @@
 	width: 370rpx;
 }
 
+.fixed-bottom-first-btn{
+	position: fixed;
+	bottom: 70px;
+	left: 0;
+	right: 0;
+	height: 100rpx;
+	line-height: 100rpx;
+}
+
 .fixed-bottom-btn {
 	position: fixed;
-	bottom: 0;
+	margin-top: 30px;
+	bottom: 20px;
 	left: 0;
 	right: 0;
 	height: 100rpx;

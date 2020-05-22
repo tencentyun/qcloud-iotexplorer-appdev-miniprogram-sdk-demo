@@ -16,43 +16,38 @@ Page({
     wx.startWifi();
   },
   async onsubmit({ detail: { value } }) {
-    try {
-      let connectAborted = false;
-      const { pwd1, pwd2 } = value;
-      const { wifiList, ssid1, ssid2 } = this.data;
+    const { pwd1 } = value;
+    const { wifiList, ssid1 } = this.data;
 
-      const wifiInfo = {
-        1: { SSID: (wifiList[ssid1] || {}).SSID, password: pwd1 },
-        2: { SSID: (wifiList[ssid2] || {}).SSID, password: pwd2 },
-      };
+    let wifiInfo = {
+      SSID: (wifiList[ssid1] || {}).SSID,
+      BSSID: (wifiList[ssid1] || {}).BSSID,
+      password: pwd1,
+		};
 
-      console.log("wifiInfo", wifiInfo);
-
-      this.sdk.connectDevice({
-        connectType: "softap",
-        connectOpts: {
-          targetWifiInfo: wifiInfo[1],
-          softApInfo: wifiInfo[2],
-          onProgress(progress) {
-            console.log("onProgress", progress);
-          },
-          onError(error) {
-            console.error("onError", error);
-          },
-          onComplete() {
-            console.log("onComplete");
-          },
+    console.log("wifiInfo", wifiInfo);
+    const { Token } = await this.sdk.requestApi("AppCreateDeviceBindToken");
+    console.log("---TOKEN----", Token);
+    this.sdk.connectDevice({
+      connectType: "smartconfig",
+      connectOpts: {
+        targetWifiInfo: wifiInfo,
+        bindDeviceToken: Token,
+        onProgress(progress) {
+          console.log("onProgress", progress);
         },
-      });
-    } catch (err) {}
+        onError(error) {
+          console.error("onError", error);
+        },
+        onComplete() {
+          console.log("onComplete");
+        },
+      },
+    });
   },
   onSSID1Change({ detail: { value } }) {
     this.setData({ ssid1: value });
   },
-  onSSID2Change({ detail: { value } }) {
-    this.setData({ ssid2: value });
-  },
-
   getWifiList() {
     return Promise.race([
       new Promise((resolve, reject) => {

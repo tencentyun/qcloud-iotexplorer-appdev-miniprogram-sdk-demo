@@ -68,6 +68,13 @@ Page({
 			url: '/pages/softap/softap',
 		});
 	},
+
+	addDeviceUseSmartConfig(){
+		wx.navigateTo({
+			url: '/pages/smartconfig/smartconfig',
+		});
+	},
+
 	onPullDownRefresh() {
 		this.getData();
 		setTimeout(() => {

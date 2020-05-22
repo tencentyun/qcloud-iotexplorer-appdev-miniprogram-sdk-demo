@@ -4,6 +4,7 @@ const CryptoJS = require("crypto-js");
 const axios = require('axios');
 const shortid = require('shortid');
 
+
 class AppDevSdk {
 	constructor({
 		AppKey,
@@ -99,7 +100,7 @@ exports.main = async ({ userInfo }, context) => {
 		const { openId, unionId, nickName, avatarUrl } = data;
 
 		const response = await sdk.requestAppApi('AppGetTokenByWeiXin', {
-			WxOpenID: unionId, // or unionId
+			WxOpenID: unionId || openId, // or unionId, 没有openid用unionid
 			NickName: nickName,
 			Avatar: avatarUrl,
 		});
