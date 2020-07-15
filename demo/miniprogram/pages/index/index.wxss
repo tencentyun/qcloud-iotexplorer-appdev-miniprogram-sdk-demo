@@ -1,0 +1,68 @@
+.device-list {
+	padding-top: 20rpx;
+}
+
+.device-item {
+	position: relative;
+	margin: 0 30rpx 20rpx;
+	background: #FFFFFF;
+	border-radius: 10rpx;
+	border: 1rpx solid #E5E5E5;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.device-item .item-content {
+	position: relative;
+	height: 160rpx;
+	box-sizing: border-box;
+}
+
+.device-item .item-content .item-logo {
+	display: inline-block;
+	width: 160rpx;
+	height: 128rpx;
+	margin-right: 4rpx;
+	margin-top: 16rpx;
+	vertical-align: middle;
+	margin-left: 10rpx;
+}
+
+.device-item .item-content .item-logo .item-logo-image {
+	width: 100%;
+	height: 100%;
+}
+
+.device-item .item-content .item-body {
+	display: inline-block;
+	vertical-align: middle;
+	margin-top: 33rpx;
+	font-size: 0;
+}
+
+.device-item .item-content .item-body .item-name {
+	font-weight: 500;
+	font-size: 32rpx;
+	color: #444444;
+	margin-bottom: 10rpx;
+	width: 370rpx;
+}
+
+.fixed-bottom-first-btn{
+	position: fixed;
+	bottom: 70px;
+	left: 0;
+	right: 0;
+	height: 100rpx;
+	line-height: 100rpx;
+}
+
+.fixed-bottom-btn {
+	position: fixed;
+	margin-top: 30px;
+	bottom: 20px;
+	left: 0;
+	right: 0;
+	height: 100rpx;
+	line-height: 100rpx;
+}

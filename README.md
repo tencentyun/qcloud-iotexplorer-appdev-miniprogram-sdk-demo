@@ -11,3 +11,328 @@
 ```
 npm i qcloud-iotexplorer-appdev-sdk
 ```
+<<<<<<< HEAD
+=======
+
+#### sdk.requestApi(Action: string, payload?: Object, options?: object) => Promise< response >
+##### Action: string;
+请求的接口 Action 名
+##### payload?: Object
+（可选）请求接口的数据，API 会自动带上公共参数： `AccessToken`与`RequestId`。
+##### options?: Object
+（可选）请求的选项，将透传给 [wx.request()](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html)。
+
+API说明：
+在完成 sdk.init() 后，请求 [TOKEN Api](https://cloud.tencent.com/document/product/1081/40773)，返回一个 Promise。
+若请求成功（code=0），则返回的是一个 resolved 的 Promise，内包含 Token Api 响应中的 `Response` 部分数据。
+若请求失败，则返回的是一个 rejected 的 Promise，内包含数据结构如：`{ code, msg, ...detail }`。
+
+>注意：
+>腾讯云物联网开发平台的设备体系是基于`家庭`的，所有设备都是归属于一个家庭的。
+>开发者也可以选择不关注`家庭`这个概念，但是在所有需要传 `FamilyId` 的接口中需要传 `FamilyId='default'`（如：[查询设备列表](https://cloud.tencent.com/document/product/1081/40803)），sdk 会自动完成内部家庭相关的逻辑（sdk默认会帮所有用户创建一个默认家庭，当收到 FamilyId='default' 的入参，会自动用用户默认家庭 ID 填充）
+
+#### sdk.getDefaultFamilyId: () => Promise< string >
+如 sdk.requestApi 中说明的家庭相关的内容，该 API 获取用户默认的家庭ID（如果还没有则会用用户昵称新创建一个家庭），一般不需要调用该 API。
+
+#### sdk.connectWebsocket() => Promise< void >
+手动连接 websocket
+>一般不需要调用，除非关闭了 `sdkOptions.disconnectWhenAppHide` 选项
+
+#### sdk.disconnectWebsocket() => Promise< void >
+手动断开 websocket
+>一般不需要调用，除非关闭了 `sdkOptions.autoReconnect` 与 `sdkOptions.connectWhenAppShow` 选项
+
+#### sdk.subscribeDevices(deviceList: string[] | deviceInfo[]): Promise< void >
+
+##### deviceList: string[] | deviceInfo[]
+设备 ID 列表，或设备信息列表（deviceInfo需包含 DeviceId 字段）
+
+API 说明：
+订阅设备信息，订阅了设备后，才能够通过 websocket 接收到该设备的信息推送
+
+#### sdk.connectDevice({connectType: 'softap|smartconfig' , connectOpts: (softApOpts | smartConfigOpts)}) => Promise< void >
+设备配网，目前支持 `SoftAp`和 `SmartConfig` 方式配网，以下详细说明这两种配网方式
+
+### 一.SoftAP 配网参数及步骤说明
+
+##### softApOpts.targetWifiInfo: WifiInfo
+目标 Wifi 信息，需要设备去连接的Wifi的信息
+##### softApOpts.softApInfo?: WifiInfo
+（可选）设备热点信息，如果传该配置，则首先会调用 wx.connectWifi 去连接设备热点；如果不传，则需要自行引导用户去连接设备热点。
+
+###### WifiInfo: Object
+###### WifiInfo.SSID: string 
+Wifi 的 SSID
+###### WifiInfo.password?: string 
+（可选）Wifi 的 密码
+##### softApOpts.familyId?: 'default' | string;
+（可选）家庭ID，默认为: 'default'，即用户默认家庭 ID
+##### softApOpts.onProgress?: ({ code: ConnectDeviceStepCode, msg: string, detail?: object }) => void;
+###### code: ConnectDeviceStepCode;
+步骤代码，详见 `配网步骤` 章节。
+###### msg: string;
+步骤描述。
+###### detail?: object;
+步骤详情，根据每个步骤不同而不同。
+
+配网过程执行到每个步骤时触发的回调，回调中入参为当前步骤的详情。
+
+##### softApOpts.onError: ({ code: ConnectDeviceErrorCode, msg: string, detail }) => void;
+###### code: ConnectDeviceErrorCode;
+错误代码，详见 `常量` 章节。
+###### msg: string;
+错误描述。
+###### detail?: object;
+错误详情。
+当配网失败时触发。
+
+##### softApOpts.onComplete: () => void;
+配网完成后触发。
+##### softApOpts.handleAddDevice?: (deviceSignature) => Promise< void >;
+###### deviceSignature.Signature: string;
+###### deviceSignature.DeviceTimestamp: number;
+###### deviceSignature.ProductId: string;
+###### deviceSignature.DeviceName: string;
+###### deviceSignature.ConnId: string;
+（可选）默认配网流程与设备通信，拿到设备签名后，会依次执行以下步骤：
+1. 尝试将手机连接目标 WiFi（为了恢复网络，设备热点一般是无网状态）
+2. 调用[添加设备接口](https://cloud.tencent.com/document/product/1081/40801)
+
+如果开发者需要自行控制这一步骤，则需要传入该回调。若设置了 `handleAddDevice` ，那么在拿到设备签名后会执行该方法并传入设备签名，并在该方法返回的 Promise 执行完成后触发 onComplete 回调。
+
+##### softApOpts.udpAddress?: string;
+（可选）连接上设备热点后，小程序发起 udp 通信的地址，默认为：'192.168.4.1'，一般无需更改。
+##### softApOpts.udpPort?: number;
+（可选）连接上设备热点后，小程序发起 udp 通信的端口，默认为：8266，一般无需更改。
+
+##### softApOpts.udpCommunicationRetryTime?: number;
+> 与设备进行 udp 通信时，默认每条消息会重发 5 次，每次间隔 2000 毫秒。
+
+（可选）udp 消息发送重试次数，默认为：5。
+##### softApOpts.waitUdpResponseDuration?: number;
+（可选）udp 消息发送重试间隔，单位毫秒，默认为：2000，一般无需更改。
+##### softApOpts.stepGap?: number;
+（可选）配网过程中，每一步中间等待的间隔，单位毫秒，默认为：3000，一般无需更改。
+
+#### SoftAP配网步骤
+
+sdk.connectDevice() 配网过程中，每执行完一个步骤就会触发一次 onProgress 回调，入参为：`{ code, msg, ...detail }` 形式
+
+##### CONNECT_DEVICE_START: ConnectDeviceStepCode.CONNECT_DEVICE_START
+开始配网
+
+##### CONNECT_SOFTAP_START: ConnectDeviceStepCode.CONNECT_SOFTAP_START
+开始连接设备热点
+    
+##### CONNECT_SOFTAP_SUCCESS: ConnectDeviceStepCode.CONNECT_SOFTAP_SUCCESS
+连接设备热点成功
+
+##### CREATE_UDP_CONNECTION_START: ConnectDeviceStepCode.CREATE_UDP_CONNECTION_START
+开始与设备建立 UDP 连接
+
+##### CREATE_UDP_CONNECTION_SUCCESS: ConnectDeviceStepCode.CREATE_UDP_CONNECTION_SUCCESS
+与设备建立 UDP 连接成功
+
+##### SEND_TARGET_WIFIINFO_START: ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_START
+开始发送目标 WiFi 信息
+
+##### SEND_TARGET_WIFIINFO_SUCCESS: ConnectDeviceStepCode.SEND_TARGET_WIFIINFO_SUCCESS
+> detail: { response }，收到设备的具体响应
+
+发送目标 WiFi 信息成功
+
+##### GET_DEVICE_SIGNATURE_START: ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_START
+开发获取设备签名
+
+##### GET_DEVICE_SIGNATURE_SUCCESS: ConnectDeviceStepCode.GET_DEVICE_SIGNATURE_SUCCESS
+> detail: { signature }
+
+获取设备签名成功
+
+##### CONNECT_TARGET_WIFI_START: ConnectDeviceStepCode.CONNECT_TARGET_WIFI_START
+开始手机连接目标 WiFi
+
+##### CONNECT_TARGET_WIFI_SUCCESS: ConnectDeviceStepCode.CONNECT_TARGET_WIFI_SUCCESS
+手机连接目标 WiFi 成功
+
+##### ADD_DEVICE_START: ConnectDeviceStepCode.ADD_DEVICE_START
+> detail: { params }，请求参数
+
+开始添加设备
+
+##### ADD_DEVICE_SUCCESS: ConnectDeviceStepCode.ADD_DEVICE_SUCCESS
+> detail: { response }，接口具体响应
+
+添加设备成功
+
+##### CONNECT_DEVICE_SUCCESS: ConnectDeviceStepCode.CONNECT_DEVICE_SUCCESS
+配网成功
+
+
+### 二.SmartConfig 配网参数及步骤说明
+
+
+##### smartConfigOpts.targetWifiInfo: WifiInfo
+目标 Wifi 信息，需要设备去连接的Wifi的信息
+
+###### WifiInfo: Object
+###### WifiInfo.SSID: string 
+Wifi 的 SSID
+###### WifiInfo.BSSID: string 
+Wifi 的 BSSID
+###### WifiInfo.password: string 
+Wifi 的 密码
+
+##### smartConfigOpts.bindDeviceToken: string;
+用于绑定的设备token,从后台接口[AppCreateDeviceBindToken](https://cloud.tencent.com/document/product/1081/44044)获取
+
+##### smartConfigOpts.familyId?: 'default' | string;
+（可选）家庭ID，默认为: 'default'，即用户默认家庭 ID
+##### smartConfigOpts.onProgress?: ({ code: ConnectDeviceStepCode, msg: string, detail?: object }) => void;
+###### code: ConnectDeviceStepCode;
+步骤代码，详见 `配网步骤` 章节。
+###### msg: string;
+步骤描述。
+###### detail?: object;
+步骤详情，根据每个步骤不同而不同。
+
+
+##### smartConfigOpts.onError: ({ code: ConnectDeviceErrorCode, msg: string, detail }) => void;
+###### code: ConnectDeviceErrorCode;
+错误代码，详见 `常量` 章节。
+###### msg: string;
+错误描述。
+###### detail?: object;
+错误详情。
+当配网失败时触发。
+
+##### smartConfigOpts.onComplete: () => void;
+配网完成后触发。
+
+##### smartConfigOpts.udpPort?: number;
+（可选）小程序和设备连上同一个局域网之后，小程序发起 udp 通信的端口，默认为：8266，一般无需更改。
+
+##### smartConfigOpts.queryTokenRetryTime?: number;
+> 2.0协议里面，小程序会去云端查询设备的连接状态，默认发 20 次，每次间隔 2000 毫秒。
+
+（可选）轮询云端，设备绑定云端的状态的次数，默认为：20。
+##### smartConfigOpts.waitUdpResponseDuration?: number;
+（可选））轮询云端，设备绑定云端的状态重试间隔，单位毫秒，默认为：2000，一般无需更改。
+##### smartConfigOpts.stepGap?: number;
+（可选）配网过程中，每一步中间等待的间隔，单位毫秒，默认为：3000，一般无需更改。
+
+
+#### SmartConfig配网步骤
+
+sdk.connectDevice() 配网过程中，每执行完一个步骤就会触发一次 onProgress 回调，入参为：`{ code, msg, ...detail }` 形式
+
+##### CONNECT_DEVICE_START: ConnectDeviceStepCode.CONNECT_DEVICE_START
+开始配网
+
+##### CONNECT_SOFTAP_START: ConnectDeviceStepCode.CONNECT_SMARTCONFIG_START
+开始给设备发送WI-FI信息
+    
+##### CONNECT_SOFTAP_SUCCESS: ConnectDeviceStepCode.CONNECT_SMARTCONFIG_SUCCESS
+> detail: { targetUdpAddress }，收到设备局域网地址，用与给设备发送信息
+手机和设备连接成功
+
+##### CREATE_UDP_CONNECTION_START: ConnectDeviceStepCode.CREATE_UDP_CONNECTION_START
+开始与设备建立 UDP 连接
+
+##### CREATE_UDP_CONNECTION_SUCCESS: ConnectDeviceStepCode.CREATE_UDP_CONNECTION_SUCCESS
+与设备建立 UDP 连接成功
+
+##### SEND_TARGET_WIFIINFO_START: ConnectDeviceStepCode.SMARTCONFIG_SEND_TOKEN_START
+开始发送设备token
+
+##### SEND_TARGET_WIFIINFO_SUCCESS: ConnectDeviceStepCode.SMARTCONFIG_SEND_TOKEN_SUCCESS
+发送设备token成功
+
+##### GET_DEVICE_SIGNATURE_START: ConnectDeviceStepCode.QUERY_TOKEN_STATE_START
+开始查询设备与云端的连接状态
+
+##### GET_DEVICE_SIGNATURE_SUCCESS: ConnectDeviceStepCode.QUERY_TOKEN_STATE_SUCCESS
+设备与云端连接成功
+
+##### ADD_DEVICE_START: ConnectDeviceStepCode.ADD_DEVICE_START
+开始添加设备
+
+##### ADD_DEVICE_SUCCESS: ConnectDeviceStepCode.ADD_DEVICE_SUCCESS
+添加设备成功
+
+##### CONNECT_DEVICE_SUCCESS: ConnectDeviceStepCode.CONNECT_DEVICE_SUCCESS
+一键配网成功
+
+
+### 错误处理
+SDK 所有 API 的错误都经过标准化处理为如：`{ code, msg, ...detail }` 的形式，具体 code 和 detail 根据 API 不同而不同。
+
+> 下文的 detail 描述为一个对象，实际上是解构到错误对象当中的
+> 如 `INTERNAL_ERROR` 的具体 Error 为: `{ code: 'INTERNAL_ERROR', msg: Error.message, stack: Error.stack, error: Error }`
+
+#### 全局错误码
+##### VERIFY_LOGIN_FAIL: ErrorCode.VERIFY_LOGIN_FAIL
+未登录或登录态已失效
+
+##### INTERNAL_ERROR: ErrorCode.INTERNAL_ERROR
+> detail: { stack, error }，分别为错误堆栈和原始错误对象
+
+JS Error
+
+##### GET_USERINFO_NEED_AUTH: ErrorCode.GET_USERINFO_NEED_AUTH
+> detail: { errMsg }，小程序接口的原始错误信息
+> 
+调用 [wx.getUserInfo](https://developers.weixin.qq.com/miniprogram/dev/api/open-api/user-info/wx.getUserInfo.html) 时无用户授权，碰到该错误时需要引导用户授权，详见微信文档。
+
+##### WX_API_FAIL: ErrorCode.WX_API_FAIL
+> detail: { errMsg }
+
+调用小程序 API 报错，detail.errMsg 为 小程序 API 的原始错误信息
+
+#### sdk.requestApi 接口错误码
+除了以上全局错误码，其余错误码为接口错误码，具体错误码请查看各自接口文档，同时接口的错误中会包含标识该次请求的 `detail.reqId`，可用来查询该次请求的详细日志。
+
+#### 配网错误码
+
+##### UDP_NOT_RESPONSED: ConnectDeviceErrorCode.UDP_NOT_RESPONSED
+超时未收到设备响应
+
+##### CONNECT_SOFTAP_FAIL: ConnectDeviceErrorCode.CONNECT_SOFTAP_FAIL
+> detail: { errMsg }
+
+手机连接设备热点失败
+
+##### CONNECT_TARGET_WIFI_FAIL: ConnectDeviceErrorCode.CONNECT_TARGET_WIFI_FAIL
+> detail: { errMsg }
+
+手机连接 WiFi 路由器失败
+
+##### UDP_ERROR: ConnectDeviceErrorCode.UDP_ERROR
+> detail: { errMsg }
+
+配网过程中发生触发 udp.onError 事件
+
+##### DEVICE_ERROR: ConnectDeviceErrorCode.DEVICE_ERROR
+> detail: { errMsg } 
+
+收到设备响应的错误，具体的错误信息见 detail.errMsg
+
+##### INVALID_UDP_RESPONSE: ConnectDeviceErrorCode.INVALID_UDP_RESPONSE
+> detail: { response }
+
+收到非法的设备响应，detail.response 为具体的设备端响应
+
+##### DEVICE_CONNECT_MQTT_FAIL: ConnectDeviceErrorCode.DEVICE_CONNECT_MQTT_FAIL
+设备连接 MQTT 服务失败
+
+##### DEVICE_CONNECT_WIFI_FAIL: ConnectDeviceErrorCode.DEVICE_CONNECT_WIFI_FAIL
+设备连接目标 WiFi 失败
+
+##### ADD_DEVICE_FAIL: ConnectDeviceErrorCode.ADD_DEVICE_FAIL
+> detail: { errMsg } 
+
+添加设备失败
+
+##### SEND_UDP_MSG_FAIL: ConnectDeviceErrorCode.SEND_UDP_MSG_FAIL
+与设备 UDP 通信时，发送消息失败
+>>>>>>> feature/smartconfig
