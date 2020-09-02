@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/add-device/smart-config/smart-config",
+    "pages/add-device/soft-ap/soft-ap",
+    "pages/panel/panel",
+    "pages/firmware-upgrade/firmware-upgrade",
+    "pages/share/share-list/share-list",
+    "pages/share/receive-share/receive-share"
+  ],
+  "window": {
+    "backgroundColor": "#FFF",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFF",
+    "navigationBarTitleText": "物联网开发平台 SDK Demo",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "查询附近WiFi需要授权使用您的位置信息"
+    }
+  }
+}

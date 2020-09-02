@@ -1,0 +1,16 @@
+.wifi-form {
+  width: 750rpx;
+}
+
+.wifi-form .weui-cell {
+  padding-left: 50rpx;
+  padding-right: 50rpx;
+}
+
+.wifi-form .weui-select {
+  padding-left: 0;
+}
+
+.form-placeholder {
+  color: #D8D8D8;
+}

@@ -1,0 +1,72 @@
+
+.ios-get-wifi-list-guide-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background-color: #fff;
+}
+.ios-get-wifi-list-guide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  padding: 30rpx 40rpx 40rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.ios-get-wifi-list-guide .guide-footer {
+  width: 650rpx;
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center;
+}
+.ios-get-wifi-list-guide .guide-body {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  overflow-y: scroll;
+  margin: 20rpx 0;
+}
+.ios-get-wifi-list-guide .title {
+  margin-bottom: 0;
+  font-size: 34rpx;
+  font-weight: 500;
+}
+.ios-get-wifi-list-guide .subtitle {
+  color: #888;
+  font-size: 28rpx;
+}
+.ios-get-wifi-list-guide .step-list .step-item {
+  position: relative;
+  min-height: 170rpx;
+  background: #F2F2F2;
+}
+.ios-get-wifi-list-guide .step-list .step-item:not(:last-of-type) {
+  margin-bottom: 20rpx;
+}
+.ios-get-wifi-list-guide .step-list .step-item .step-desc {
+  padding: 20rpx;
+  margin-right: 302rpx;
+  font-size: 32rpx;
+  color: #888888;
+  line-height: 42rpx;
+}
+.ios-get-wifi-list-guide .step-list .step-item .step-img {
+  position: absolute;
+  right: 20rpx;
+  bottom: 0;
+  width: 282rpx;
+}

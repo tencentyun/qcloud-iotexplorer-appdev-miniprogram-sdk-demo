@@ -1,84 +1,63 @@
-const pify = require('../../libs/pify');
-const store = require('../../redux/index');
 const actions = require('../../redux/actions');
-const { getErrorMsg } = require('../../libs/utils');
-const { ErrorCode } = require('../../qcloud-iotexplorer-appdev-sdk');
+const { subscribeStore, mapStateToData } = require('../../libs/store-subscribe');
+const showSelectTypeMenu = require('../add-device/selectTypeMenu');
 
 Page({
-	data: {
-		needAuth: false,
-		deviceList: [],
-		loading: true,
-		errMsg: '',
-	},
+  data: {
+    deviceList: [],
+    shareDeviceList: [],
+    deviceStatusMap: {},
+    inited: false,
+  },
 
-	onLoad() {
-		this.sdk = getApp().sdk;
+  onLoad() {
+    this.unsubscribeAll = subscribeStore([
+      ...mapStateToData(['deviceList', 'shareDeviceList', 'deviceStatusMap'], this),
+    ]);
+  },
 
-		store.subscribe(() => {
-			console.log('store change', store.getState());
+  onUnload() {
+    this.unsubscribeAll && this.unsubscribeAll();
+  },
 
-			this.setData(store.getState());
-		});
+  onLoginReady() {
+    this.getData();
+  },
 
-		this.sdk.init().then(() => {
-			console.log('ready');
+  onTapItem({ currentTarget: { dataset: { item } } }) {
+    if (item.isShareDevice) {
+      wx.navigateTo({
+        url: `/pages/panel/panel?deviceId=${item.DeviceId}&isShareDevice=1`,
+      });
+    } else {
+      wx.navigateTo({
+        url: `/pages/panel/panel?deviceId=${item.DeviceId}`,
+      });
+    }
+  },
 
-			this.getData();
-		}).catch((err) => {
-			console.error(err);
-			if (err.code === ErrorCode.GET_USERINFO_NEED_AUTH) {
-				this.setData({ needAuth: true });
-			}
-		})
-	},
+  onPullDownRefresh() {
+    this.getData();
+  },
 
-	onGetUserInfo({ detail }) {
-		if (!(detail && detail.errMsg && detail.errMsg.indexOf('auth deny') > -1)) {
-			this.setData({ needAuth: false });
-			this.sdk.init()
-				.then(() => this.getData());
-		}
-	},
+  getData() {
+    actions.getDevicesData()
+      .then(() => {
+        if (!this.data.inited) {
+          this.setData({ inited: true });
+        }
+        wx.stopPullDownRefresh();
+      })
+      .catch((err) => {
+        if (!this.data.inited) {
+          this.setData({ inited: true });
+        }
+        console.error('getDevicesData fail', err);
+        wx.stopPullDownRefresh();
+      });
+  },
 
-	getData() {
-		actions.getDevicesData()
-			.then(() => {
-				this.setData({
-					loading: false,
-					errMsg: '',
-				});
-			})
-			.catch((error) => {
-				this.setData({
-					loading: false,
-					errMsg: getErrorMsg(error),
-				});
-			});
-	},
-
-	onTapItem({ currentTarget: { dataset: { item } } }) {
-		wx.navigateTo({
-			url: `/pages/panel/panel?deviceId=${item.DeviceId}`,
-		});
-	},
-
-	onAddDevice() {
-		wx.navigateTo({
-			url: '/pages/softap/softap',
-		});
-	},
-
-	addDeviceUseSmartConfig(){
-		wx.navigateTo({
-			url: '/pages/smartconfig/smartconfig',
-		});
-	},
-
-	onPullDownRefresh() {
-		this.getData();
-		setTimeout(() => {
-			wx.stopPullDownRefresh();
-		}, 1000);
-	},
+  showAddDeviceMenu() {
+    showSelectTypeMenu();
+  },
 });

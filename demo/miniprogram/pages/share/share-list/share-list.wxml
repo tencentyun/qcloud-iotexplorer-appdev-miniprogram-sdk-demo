@@ -1,0 +1,51 @@
+<page-wrapper bind:loginready="onLoginReady">
+  <block wx:if="{{!isLoading}}">
+    <view class="section-title" wx:if="{{userList.length}}">
+      设备已单独分享给以下用户
+    </view>
+
+    <view class="user-list" wx:if="{{userList.length}}">
+      <view class="user-item" wx:for="{{userList}}">
+        <image
+          class="user-avatar"
+          src="{{item.Avatar || '/assets/user/avatar-default.svg'}}"
+        />
+
+        <view class="user-item-body">
+          <view class="user-nick">{{item.NickName}}</view>
+
+          <view class="user-info">
+            <view class="user-phone">{{item.CountryCode}}-{{item.PhoneNumber}}</view>
+            <view class="bind-time">{{item.BindTime}}</view>
+          </view>
+
+          <view
+            class="more-btn need-hover"
+            hoverStartTime="20"
+            hoverStayTime="70"
+            hoverClass="hover"
+            data-item="{{item}}"
+            bindtap="onClickMoreBtn"
+          >
+            <image class="more-btn-icon" src="/assets/common/more.svg" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:else class="empty-user-list">暂未分享给其他用户</view>
+
+    <button
+      class="btn btn-primary fixed-bottom-btn {{ipx ? 'ipx' : ''}}"
+      openType="share"
+      disabled="{{!isShareTokenAvailable}}"
+    >
+      <image
+        class="share-icon"
+        src="/assets/common/plus-white.svg"
+      />
+      <text style="vertical-align: middle;">添加分享</text>
+    </button>
+  </block>
+  <mp-loading type="dot-gray" wx:else></mp-loading>
+</page-wrapper>

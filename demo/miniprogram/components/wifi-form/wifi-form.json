@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "ios-wifi-guide": "/components/ios-wifi-guide/ios-wifi-guide"
+  }
+}

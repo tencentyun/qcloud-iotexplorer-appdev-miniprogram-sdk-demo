@@ -1,0 +1,50 @@
+<page-wrapper bind:loginready="onLoginReady">
+  <view class="share-page" wx:if="{{!isLoading}}">
+    <view class="page-title" wx:if="{{!expired}}">
+      “{{fromUserNick}}”共享的设备
+    </view>
+
+    <view class="share-body">
+      <image
+        class="share-image"
+        src="{{expired ? 'https://main.qcloudimg.com/raw/404f14d3c6f1412b9d3738bc7f73d14c/share-device-placeholder.jpg' : shareImage}}"
+      />
+     
+      <block wx:if="{{expired}}">
+        <view class="share-title">
+          此邀请已失效
+        </view>
+
+        <view class="share-content">
+          原因1：此邀请的有效时间为24小时，若超过时间后，此邀请失效。
+        </view>
+
+        <view class="share-content">
+          原因2：此链接仅第一个点击的用户可用。
+        </view>
+      </block>
+
+      <view class="share-info" wx:else>
+        {{fromUserNick}}分享了{{deviceAliasName}}给您
+      </view>
+
+      <btn-group
+        wx:if="{{!expired}}"
+        no-padding="{{true}}"
+        fixed-botton="{{true}}"
+        bind:click="onBtnClick"
+        buttons="{{[{ btnText: '同意', type: 'primary', id: 'accept' }, { btnText: '返回', id: 'back' }]}}"
+      />
+
+      <btn-group
+        wx:if="{{expired}}"
+        no-padding="{{true}}"
+        fixed-botton="{{true}}"
+        bind:click="onBtnClick"
+        buttons="{{[{ btnText: '返回', id: 'back' }]}}"
+      />
+    </view>
+  </view>
+  <mp-loading type="dot-gray" wx:else></mp-loading>
+</page-wrapper>
+

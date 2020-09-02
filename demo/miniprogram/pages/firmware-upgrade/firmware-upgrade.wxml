@@ -1,0 +1,41 @@
+<template name="progress-view">
+  <view class="msg__icon">
+    <image wx:if="{{ type === 'loading' }}" class="msg__loading-icon" src="/assets/common/loading.svg" mode="widthFix" />
+    <icon wx:else size="128rpx" type="{{type}}" class="msg__wx-icon" />
+  </view>
+  <view class="msg__title">{{text}}</view>
+  <view class="msg__desc">{{desc}}</view>
+</template>
+
+<page-wrapper bind:loginready="onLoginReady">
+  <view class="msg">
+    <template
+      wx:if="{{pageState === 0}}"
+      is="progress-view"
+      data="{{ type: 'loading', text: '正在更新…', desc: '请在更新固件期间保持设备通电并在线' }}"
+    />
+    <template
+      wx:if="{{pageState === 1}}"
+      is="progress-view"
+      data="{{ type: 'loading', text: '正在更新…' + percent + '%', desc: '请在更新固件期间保持设备通电并在线' }}"
+    />
+    <template
+      wx:if="{{pageState === 2}}"
+      is="progress-view"
+      data="{{ type: 'loading', text: '设备正在重启…', desc: '请在更新固件期间保持设备通电并在线' }}"
+    />
+    <template
+      wx:if="{{pageState === 3}}"
+      is="progress-view"
+      data="{{ type: 'success', text: '更新成功', desc: '当前固件版本' + currentVersion }}"
+    />
+    <template
+      wx:if="{{pageState === -1}}"
+      is="progress-view"
+      data="{{ type: 'warn', text: '更新失败' }}"
+    />
+    <view class="msg__action" wx:if="{{pageState === 3 || pageState === -1}}">
+      <single-button text="确定" type="primary" bind:click="onBack" no-padding="{{true}}" />
+    </view>
+  </view>
+</page-wrapper>

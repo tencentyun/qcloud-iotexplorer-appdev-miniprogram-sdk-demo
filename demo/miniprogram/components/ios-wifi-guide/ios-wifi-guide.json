@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "single-button": "/components/single-button/single-button"
+  }
+}

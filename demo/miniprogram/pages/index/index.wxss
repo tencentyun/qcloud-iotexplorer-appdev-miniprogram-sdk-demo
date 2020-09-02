@@ -1,13 +1,45 @@
-.device-list {
-	padding-top: 20rpx;
+.container {
+  padding: 60rpx 50rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.page-title {
+  color: #000;
+  font-size: 54rpx;
+  font-weight: 500;
+	align-self: flex-start;
+	width: 100%;
+	position: relative;
+}
+
+.page-main {
+  width: 100%;
+  margin-top: 32px;
+}
+
+.empty-device-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 120px 0;
+}
+
+.empty-device-list-desc {
+  font-size: 40rpx;
+  line-height: 2;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .device-item {
 	position: relative;
-	margin: 0 30rpx 20rpx;
+	margin-bottom: 20rpx;
 	background: #FFFFFF;
 	border-radius: 10rpx;
-	border: 1rpx solid #E5E5E5;
+	border: 1rpx solid #DDD;
 	box-sizing: border-box;
 	overflow: hidden;
 }
@@ -37,32 +69,64 @@
 	display: inline-block;
 	vertical-align: middle;
 	margin-top: 33rpx;
-	font-size: 0;
 }
 
 .device-item .item-content .item-body .item-name {
 	font-weight: 500;
 	font-size: 32rpx;
 	color: #444444;
-	margin-bottom: 10rpx;
 	width: 370rpx;
 }
 
-.fixed-bottom-first-btn{
-	position: fixed;
-	bottom: 70px;
-	left: 0;
-	right: 0;
-	height: 100rpx;
-	line-height: 100rpx;
+.item-status.status-offline {
+	background-color: #666;
 }
 
-.fixed-bottom-btn {
-	position: fixed;
-	margin-top: 30px;
-	bottom: 20px;
-	left: 0;
-	right: 0;
+.item-status.status-online {
+	background-color: #29cc85;
+}
+
+.item-status {
+	display: inline-block;
+	box-sizing: border-box;
+	color: #fff;
+	padding: 6rpx 14rpx;
+	font-size: 20rpx;
+	font-weight: normal;
+	vertical-align: middle;
+	border-radius: 20rpx;
+	text-align: center;
+	line-height: initial;
+}
+
+view.float-add-device-btn {
+	position: absolute;
+	width: 100rpx;
 	height: 100rpx;
-	line-height: 100rpx;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #fff;
+	box-shadow: 0 4rpx 10rpx 0 rgba(0, 0, 0, 0.30);
+	top: -14rpx;
+	right: 0;
+	border-radius: 100rpx;
+	overflow: hidden;
+	z-index: 20;
+}
+
+.float-add-device-btn-icon {
+	width: 37rpx;
+	height: 37rpx;
+}
+
+.device-list {
+	margin-bottom: 24px;
+}
+
+.share-device-list-title {
+	line-height: 1.5;
+	font-size: 28rpx;
+	color: #444444;
+	margin-bottom: 8px;
 }

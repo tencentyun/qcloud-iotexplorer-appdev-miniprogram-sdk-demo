@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "page-wrapper": "/components/page-wrapper/page-wrapper",
+    "single-button": "/components/single-button/single-button",
+    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading"
+  },
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": true
+}

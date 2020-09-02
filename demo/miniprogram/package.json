@@ -1,0 +1,20 @@
+{
+  "name": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",
+  "version": "0.1.0",
+  "description": "腾讯云物联网开发平台应用开发小程序端 SDK Demo",
+  "main": "app.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo.git"
+  },
+  "dependencies": {
+    "qcloud-iotexplorer-appdev-sdk": "^0.1.7",
+    "query-string": "^6.13.1",
+    "url-parse": "^1.4.7",
+    "weui-miniprogram": "^1.0.4"
+  }
+}

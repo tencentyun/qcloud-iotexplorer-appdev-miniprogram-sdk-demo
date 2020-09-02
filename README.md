@@ -1,17 +1,18 @@
 # qcloud-iotexplorer-appdev-sdk-demo
 
-腾讯云物联网开发平台应用开发小程序端SDK的使用示例
+腾讯云物联网开发平台小程序 SDK 的使用示例。
 
-## SDK项目已迁移（DEPRECATED）
+## 小程序 SDK
 
-本仓库已不再提供开源版本的SDK，使用文档请前往 [npm上的文档](https://www.npmjs.com/package/qcloud-iotexplorer-appdev-sdk) 查看。
+npm 链接：[qcloud-iotexplorer-appdev-sdk](https://www.npmjs.com/package/qcloud-iotexplorer-appdev-sdk)
 
-使用方式不变，仍为：
+安装 SDK：`npm i qcloud-iotexplorer-appdev-sdk`
 
-```
-npm i qcloud-iotexplorer-appdev-sdk
-```
+SDK 文档：请参见 [自主品牌小程序开发指南](https://cloud.tencent.com/document/product/1081/47686) 以及 [小程序 SDK](https://cloud.tencent.com/document/product/1081/47687)。
 
-## DEMO使用方法
 
-详情见[DEMO说明](https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/tree/master/demo/miniprogram)
+## 小程序 SDK Demo
+
+Demo 小程序代码位于 `demo` 目录。
+
+使用方法：请参见 [自主品牌小程序快速入门](https://cloud.tencent.com/document/product/1081/47685)。

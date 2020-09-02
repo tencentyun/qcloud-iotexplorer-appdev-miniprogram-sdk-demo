@@ -1,0 +1,95 @@
+<page-wrapper>
+  <view class="container">
+    <view class="page-title" wx:if="{{step !== 4 && step !== 5}}">SoftAP 配网</view>
+    <block wx:if="{{step === 0}}">
+      <view class="page-subtitle">配置设备</view>
+      <view class="page-main">
+        <image 
+          src="https://main.qcloudimg.com/raw/31a4f30e9ab5af7e22ee5c96d795712b.jpg"
+          class="config-device-img"
+        />
+        <view class="config-device-guide">
+          <view class="config-device-guide-line">1. 接通设备电源。</view>
+          <view class="config-device-guide-line">2. 长按复位键（开关）5 秒，指示灯快闪时，再次长按复位键 3 秒。</view>
+          <view class="config-device-guide-line">3. 指示灯进入慢闪状态即可。</view>
+        </view>
+      </view>
+      <btn-group
+        buttons="{{[{ btnText: '切换配网方式', id: 'select-type' }, { btnText: '下一步', type: 'primary', id: 'input-target-wifi'}]}}"
+        bind:click="onBottomButtonClick"
+        fixed-bottom="{{true}}"
+      />
+    </block>
+
+    <block wx:elif="{{step === 1}}">
+      <view class="page-subtitle">填写目标WiFi</view>
+      <view class="page-main">
+        <wifi-form id="target-wifi-form" auto-select-current-wifi="{{true}}" />
+      </view>
+      <btn-group
+        buttons="{{[{ btnText: '刷新 WiFi 列表', id: 'refresh-target-wifi-list' }, { btnText: '下一步', type: 'primary', id: 'input-device-wifi'}]}}"
+        bind:click="onBottomButtonClick"
+        fixed-bottom="{{true}}"
+      />
+    </block>
+
+    <block wx:elif="{{step === 2}}">
+      <view class="page-subtitle">填写设备WiFi</view>
+      <view class="page-main">
+        <wifi-form id="device-wifi-form" default-ssid="ESP8266-SAP" />
+      </view>
+      <btn-group
+        buttons="{{[{ btnText: '刷新 WiFi 列表', id: 'refresh-device-wifi-list' }, { btnText: '下一步', type: 'primary', id: 'connect-device'}]}}"
+        bind:click="onBottomButtonClick"
+        fixed-bottom="{{true}}"
+      />
+    </block>
+
+    <block wx:elif="{{step === 3}}">
+      <view class="page-subtitle">开始配网</view>
+      <view class="page-main">
+        <view class="progress-list">
+          <view wx:for="{{connectDeviceSteps}}" wx:key="index" class="progress-item {{curConnStep > index ? 'done' : ''}}">
+            <image class="item-icon icon-check" src="/assets/common/check-blue.svg" wx:if="{{curConnStep > index}}" />
+            <image class="item-icon icon-loading" src="/assets/device/connecting-loading.svg" wx:else />
+            {{item}}
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <block wx:elif="{{step === 4}}">
+      <view class="result-view">
+        <icon type="success" size="108rpx" class="result-icon" />
+        <view class="result-title">配网完成，设备添加成功</view>
+      </view>
+      <btn-group
+        buttons="{{[{ btnText: '继续添加其他设备', id: 'restart' }, { btnText: '完成', type: 'primary', id: 'finish'}]}}"
+        bind:click="onBottomButtonClick"
+        fixed-bottom="{{true}}"
+      />
+    </block>
+
+    <block wx:elif="{{step === 5}}">
+      <view class="result-view">
+        <icon type="warn" size="108rpx" class="result-icon" />
+        <view class="result-title">配网失败</view>
+        <view class="result-subtitle">请检查以下信息</view>
+
+        <view class="result-info-container">
+          <view class="result-info-list">
+            <view>1. 确认设备处于SoftAP配网模式</view>
+            <view>2. 核对家庭WiFi密码是否正确</view>
+            <view>3. 确认路由设备是否为2.4G WiFi频段</view>
+          </view>
+        </view>
+      </view>
+
+      <btn-group
+        buttons="{{[{ btnText: '重试', type: 'primary', id: 'restart' }, { btnText: '切换到 SmartConfig 配网', id: 'smartconfig'}]}}"
+        bind:click="onBottomButtonClick"
+        fixed-bottom="{{true}}"
+      />
+    </block>
+  </view>
+</page-wrapper>

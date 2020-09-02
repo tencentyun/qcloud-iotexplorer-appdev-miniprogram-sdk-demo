@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "page-wrapper": "/components/page-wrapper/page-wrapper",
+    "single-button": "/components/single-button/single-button",
+    "btn-group": "/components/btn-group/btn-group"
+  },
+  "navigationBarTitleText": ""
+}

@@ -1,0 +1,19 @@
+<view
+  class="btn-group {{noPadding ? 'no-padding' : ''}} {{flex ? 'flex' : ''}} {{fixedBottom ? 'fixed-bottom' : ''}} {{ipx ? 'ipx' : ''}}"
+>
+  <view
+    wx:for="{{buttons}}"
+    wx:key="index"
+    disabled="{{item.disabled}}"
+    class="btn need-hover {{item.type ? 'btn-' + item.type : ''}} {{item.disabled ? 'disabled' : ''}}"
+    hover-start-time="20"
+    hover-stay-time="70"
+    hover-class="hover"
+    bindtap="onClickBtn"
+    data-index="{{index}}"
+    data-btn="{{item}}"
+  >
+    <image wx:if="{{item.icon}}" src="{{item.icon}}" class="btn-icon"/>
+    <block wx:else>{{item.btnText}}</block>
+  </view>
+</view>

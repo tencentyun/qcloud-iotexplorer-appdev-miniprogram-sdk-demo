@@ -1,0 +1,138 @@
+.container {
+  padding: 60rpx 50rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.page-title {
+  color: #333 ;
+  font-size: 54rpx;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.page-subtitle {
+  color: #333;
+  font-size: 40rpx;
+  align-self: flex-start;
+}
+
+.page-main {
+  margin-top: 16px;
+}
+
+.config-device-img {
+  width: 650rpx;
+  height: 374.5rpx;
+  border-radius: 8rpx;
+}
+
+.config-device-guide {
+  margin-top: 16px;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.config-device-guide-line {
+  margin-bottom: 7px;
+}
+
+.result-view {
+  text-align: center;
+}
+.result-view .result-icon {
+  margin-top: 210rpx;
+  height: 108rpx;
+}
+.result-view .result-title {
+  font-size: 34rpx;
+  color: #000000;
+  margin-top: 10Px;
+  line-height: 1.4;
+}
+.result-view .result-subtitle {
+  font-size: 28rpx;
+  color: #888;
+  margin-top: 8Px;
+  line-height: 1.4;
+}
+.result-view .result-info-container {
+  margin: 20Px auto 0;
+  font-size: 28rpx;
+  color: #888;
+  line-height: 1.7;
+  max-width: 590rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.result-view .result-info-list {
+  text-align: left;
+}
+
+.progress-list {
+  margin-top: 100rpx;
+}
+.progress-list .progress-item {
+  position: relative;
+  font-size: 30rpx;
+  color: #333333;
+  margin-bottom: 20rpx;
+}
+.progress-list .progress-item.done {
+  color: #888888;
+}
+.progress-list .progress-item .item-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.progress-list .progress-item .icon-check {
+  left: -59rpx;
+  width: 48rpx;
+  height: 48rpx;
+}
+.progress-list .progress-item .icon-loading {
+  left: -62rpx;
+  width: 48rpx;
+  height: 48rpx;
+  -webkit-animation: rotate 1s linear infinite;
+          animation: rotate 1s linear infinite;
+}
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: translateY(-50%) rotate(0);
+            transform: translateY(-50%) rotate(0);
+  }
+  to {
+    -webkit-transform: translateY(-50%) rotate(360deg);
+            transform: translateY(-50%) rotate(360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: translateY(-50%) rotate(0);
+            transform: translateY(-50%) rotate(0);
+  }
+  to {
+    -webkit-transform: translateY(-50%) rotate(360deg);
+            transform: translateY(-50%) rotate(360deg);
+  }
+}

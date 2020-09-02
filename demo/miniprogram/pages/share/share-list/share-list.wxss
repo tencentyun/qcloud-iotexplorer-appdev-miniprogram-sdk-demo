@@ -1,0 +1,99 @@
+page {
+  background-color: #f2f2f2;
+}
+.user-list {
+  background-color: #fff;
+}
+.user-item {
+  position: relative;
+  height: 188rpx;
+  margin-left: 30rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.user-item:last-of-type {
+  border-bottom: none;
+}
+.user-item .user-avatar {
+  width: 130rpx;
+  height: 130rpx;
+  background: #FFFFFF;
+  border: 1rpx solid #E5E5E5;
+  border-radius: 16rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.user-item .user-item-body {
+  width: 590rpx;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 0 30rpx;
+}
+.user-item .user-item-body .user-nick {
+  font-size: 30rpx;
+  color: #444444;
+  margin-bottom: 10rpx;
+}
+.user-item .user-item-body .user-info {
+  font-size: 24rpx;
+  color: #888888;
+  line-height: 36rpx;
+}
+.user-item .user-item-body .user-info .user-phone {
+  display: inline-block;
+}
+.user-item .user-item-body .user-info .bind-time {
+  float: right;
+}
+.user-item .user-item-body .more-btn {
+  position: absolute;
+  right: 10rpx;
+  top: 10rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80rpx;
+  height: 80rpx;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.user-item .user-item-body .more-btn .more-btn-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+.share-icon {
+  width: 30rpx;
+  height: 30rpx;
+  vertical-align: middle;
+  margin-right: 10rpx;
+}
+.section-title {
+  padding: 34rpx 30rpx 0;
+  height: 90rpx;
+  line-height: 1.5;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  color: #444;
+}
+.empty-user-list {
+  font-size: 28rpx;
+  padding: 60rpx 0;
+  color: #444;
+  text-align: center;
+}

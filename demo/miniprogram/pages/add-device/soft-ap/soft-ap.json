@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "page-wrapper": "/components/page-wrapper/page-wrapper",
+    "btn-group": "/components/btn-group/btn-group",
+    "single-button": "/components/single-button/single-button",
+    "wifi-form": "/components/wifi-form/wifi-form"
+  },
+  "navigationBarTitleText": ""
+}

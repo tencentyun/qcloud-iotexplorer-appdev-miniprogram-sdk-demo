@@ -1,0 +1,31 @@
+<block>
+  <block wx:if="{{!isLogin}}">
+    <view class="container" wx:if="{{needAuth}}">
+      <view class="page-title">
+        <view>腾讯云物联网开发平台</view>
+        <view>SDK Demo</view>
+      </view>
+      <image 
+        src="https://main.qcloudimg.com/raw/5c1b129f7e134621e6ae981c9b00243e/home-loading-bg.png"
+        class="login-auth-bg"
+      />
+
+      <view class="login-auth-notice">
+        使用前需要您授权登录
+      </view>
+
+      <button
+        class="btn btn-primary login-auth-btn"
+        openType="getUserInfo"
+        bindgetuserinfo="onGetUserInfo"
+      >
+        授权登录
+      </button>
+    </view>
+    <mp-loading type="dot-gray" wx:else></mp-loading>
+  </block>
+  
+  <block wx:else>
+    <slot></slot>
+  </block>
+</block>

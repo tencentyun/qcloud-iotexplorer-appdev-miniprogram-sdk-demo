@@ -1,0 +1,37 @@
+<view class="ios-get-wifi-list-guide-container">
+  <view class="ios-get-wifi-list-guide">
+    <view class="guide-header">
+      <view class="title">
+        iOS WiFi刷新教程
+      </view>
+      <view class="subtitle">
+        完成以下4个步骤，就可以刷新WiFi了
+      </view>
+    </view>
+
+    <view class="guide-body">
+      <view class="step-list">
+        <view class="step-item" wx:for="{{iosGuideStepConf}}">
+          <view class="step-desc">
+            {{item.desc}}
+          </view>
+
+          <image
+            class="step-img"
+            src="{{item.img}}"
+            mode="widthFix"
+          />
+        </view>
+      </view>
+    </view>
+
+    <view class="guide-footer">
+      <single-button
+        text="看懂了，去刷新"
+        type="primary"
+        bind:click="onConfirm"
+        no-padding="{{true}}"
+      />
+    </view>
+  </view>
+</view>

@@ -1,0 +1,31 @@
+.container {
+  padding: 60rpx 50rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.page-title {
+  color: #000;
+  font-size: 54rpx;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.login-auth-bg {
+  margin-top: 120rpx;
+  width: 639rpx;
+  height: 357rpx;
+}
+
+.login-auth-notice {
+  text-align: center;
+  margin-top: 142rpx;
+  font-size: 28rpx;
+  color: #444;
+}
+
+.login-auth-btn {
+  margin-top: 32rpx;
+}

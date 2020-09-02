@@ -1,0 +1,56 @@
+<block>
+  <view class="wifi-form">
+    <view class="weui-cells">
+      <view class="weui-cell weui-cell_select">
+        <view class="weui-cell__hd weui-cell__hd_in-select-after">
+          <view class="weui-label">WiFi</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view 
+            class="weui-select weui-select_in-select-after {{selectedWifiSSID ? '' : 'form-placeholder'}}"
+            wx:if="{{wifiSSIDList.length === 0}}"
+            bindtap="triggerWifiListRefresh"
+          >{{selectedWifiSSID ? selectedWifiSSID : '点击获取WiFi列表'}}</view>
+          <picker 
+            wx:else 
+            bindchange="onWifiPickerSelect" 
+            value="{{selectedWifiIndex}}" 
+            range="{{wifiSSIDList}}"
+          >
+            <view 
+              class="weui-select weui-select_in-select-after {{selectedWifiSSID ? '' : 'form-placeholder'}}"
+            >
+              {{selectedWifiSSID ? selectedWifiSSID : '点击选择WiFi'}}
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">密码</view>
+        </view>
+        <view class="weui-cell__bd">
+          <input 
+            wx:if="{{wifiNeedPassword}}"
+            class="weui-input" 
+            password="{{true}}" 
+            placeholder="请输入WiFi密码" 
+            bindinput="onWifiPasswordChange"
+            placeholder-class="form-placeholder"
+          />
+          <input 
+            wx:else
+            class="weui-input" 
+            password="{{true}}"
+            disabled="{{true}}"
+            placeholder="当前WiFi热点无需输入密码"
+            placeholder-class="form-placeholder"
+            value=""
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <ios-wifi-guide wx:if="{{iosWifiGuideVisible}}" bind:confirm="onIOSWifiGuideConfirm" />
+</block>

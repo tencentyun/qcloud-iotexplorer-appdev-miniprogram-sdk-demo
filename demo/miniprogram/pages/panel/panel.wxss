@@ -1,0 +1,147 @@
+.container {
+  padding: 60rpx 50rpx 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.page-title {
+  color: #000;
+  font-size: 54rpx;
+  font-weight: 500;
+	align-self: flex-start;
+	width: 100%;
+	position: relative;
+}
+
+.page-main {
+  width: 100%;
+  margin-top: 32px;
+}
+
+.panel-item {
+	display: flex;
+	width: 100%;
+	height: 108rpx;
+	color: #333;
+	position: relative;
+	overflow: hidden;
+	vertical-align: middle;
+	padding: 30rpx 0 30rpx 30rpx;
+	box-sizing: border-box;
+	align-items: center;
+
+	border-bottom: 1rpx solid #DDD;
+}
+
+.panel-item .item-name {
+	display: inline-block;
+	font-weight: 500;
+}
+
+.panel-item .expander {
+	flex-grow: 1;
+}
+
+.panel-item .item-value {
+	position: relative;
+}
+
+.panel-item .item-value .switch-cover {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: transparent;
+	z-index: 2;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.modal-mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .4);
+}
+
+.modal-dialog {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: #fff;
+}
+
+.modal-dialog-title {
+	font-size: 32rpx;
+	height: 90rpx;
+	line-height: 90rpx;
+	padding: 0 30rpx;
+}
+
+.modal-dialog .modal-dialog-submit-btn {
+	width: 100%;
+	border-radius: 0;
+	margin-top: 32rpx;
+	height: 100rpx;
+	line-height: 100rpx;
+	padding: 0;
+}
+
+.modal-dialog.ipx .modal-dialog-submit-btn {
+	height: 134rpx;
+}
+
+.modal-dialog slider {
+	margin: 10px 18px 10px 36px;
+}
+
+.panel-item.append-arrow {
+	padding-right: 45rpx;
+}
+
+.panel-item.disabled {
+	pointer-events: none;
+	opacity: 0.5;
+}
+
+.item-status.status-offline {
+	background-color: #666;
+}
+
+.item-status.status-online {
+	background-color: #29cc85;
+}
+
+.item-status {
+	display: inline-block;
+	box-sizing: border-box;
+	color: #fff;
+	padding: 6rpx 14rpx;
+	font-size: 20rpx;
+	font-weight: normal;
+	border-radius: 20rpx;
+	text-align: center;
+	line-height: initial;
+	margin-left: 16rpx;
+}
+
+.empty-property-tip {
+	font-size: 32rpx;
+	text-align: center;
+}
+
+.operation-btn-group {
+	margin-top: 64rpx;
+}

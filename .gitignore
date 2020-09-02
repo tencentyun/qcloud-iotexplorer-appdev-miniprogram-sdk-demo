@@ -1,9 +1,0 @@
-dist/debug
-node_modules/
-.DS_Store
-.idea
-.npmrc
-/demo/miniprogram/project.config.json
-/demo/server/.npmrc
-/demo/server/node_modules
-/demo/miniprogram/qcloud-iotexplorer-appdev-sdk.js.map

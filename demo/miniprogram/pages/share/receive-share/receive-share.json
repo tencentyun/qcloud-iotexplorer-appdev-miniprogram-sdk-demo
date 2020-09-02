@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading",
+    "btn-group": "/components/btn-group/btn-group",
+    "page-wrapper": "/components/page-wrapper/page-wrapper"
+  },
+  "navigationBarTitleText": "设备分享"
+}

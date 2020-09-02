@@ -1,0 +1,70 @@
+<template name="property-item">
+  <view class="panel-item need-hover {{item.define.type !== 'bool' ? 'append-arrow' : ''}} {{disabled ? 'disabled' : ''}}" bindtap="onTapItem" data-item="{{item}}" hover-start-time="20" hover-stay-time="70" hover-class="hover">
+    <view class="item-name">{{item.name}}</view>
+    <view class="expander" />
+    <view class="item-value">
+      <block wx:if="{{item.define.type === 'bool'}}">
+        <view class="switch-cover" />
+        <switch checked="{{rawValue}}" />
+      </block>
+      <block wx:elif="{{item.define.type === 'enum'}}">
+        <view>{{item.define.mapping[rawValue] ? item.define.mapping[rawValue] : '-'}}</view>
+      </block>
+      <block wx:else>{{item.value}}{{item.define.unit ? item.define.unit : ''}}</block>
+    </view>
+  </view>
+</template>
+<page-wrapper>
+  <view class="container">
+    <view class="page-title">{{deviceInfo.AliasName || '设备控制'}}<view class="item-status status-{{deviceStatus === 1 ? 'online' : 'offline'}}">{{deviceStatus === 1 ? '在线' : '离线'}}</view></view>
+    <view class="page-main">
+      <view class="panel-list">
+        <block wx:if="{{dataTemplate.properties.length > 0}}">
+          <block wx:for="{{dataTemplate.properties}}" wx:key="id">
+            <picker wx:if="{{item.define.type === 'enum'}}"
+              bindchange="onPickerChange" 
+              value="{{item.value}}"
+              range="{{item.mappingList}}"
+              range-key="label"
+              data-item="{{item}}"
+              disabled="{{item.mode !== 'rw' || deviceStatus === 0}}"
+            >
+              <template
+                is="property-item"
+                data="{{item, rawValue: deviceData[item.id], disabled: (item.mode !== 'rw' || deviceStatus === 0)}}"
+              />
+            </picker>
+            <template wx:else
+              is="property-item"
+              data="{{item, rawValue: deviceData[item.id], disabled: (item.mode !== 'rw' || deviceStatus === 0)}}"
+            />
+          </block>
+        </block>
+        <view wx:else class="empty-property-tip">尚未定义产品的数据模板，完成数据模板定义后即可使用设备控制功能</view>
+      </view>
+
+      <view class="operation-btn-group">
+        <btn-group
+          wx:if="{{deviceInfo.isShareDevice}}"
+          buttons="{{[{ btnText: '移除分享设备', type: 'danger', id: 'remove-share-device' }]}}"
+          bind:click="onOperationButtonClick"
+          no-padding="{{true}}"
+        />
+        <btn-group
+          wx:else
+          buttons="{{[{ btnText: '检查固件更新', id: 'check-firmware-upgrade'}, { btnText: '分享设备', id: 'share-device'}, { btnText: '删除设备', type: 'danger', id: 'delete-device' }]}}"
+          bind:click="onOperationButtonClick"
+          no-padding="{{true}}"
+        />
+      </view>
+    </view>
+  </view>
+</page-wrapper>
+<view class="modal" wx:if="{{numberDialog.visible && numberDialog.panelConfig}}">
+  <view class="modal-mask" bindtap="onHideNumberDialog" />
+  <view class="modal-dialog {{ ipx ? 'ipx' : '' }}">
+    <view class="modal-dialog-title">{{numberDialog.panelConfig.name}}设置</view>
+    <slider max="{{numberDialog.panelConfig.define.max}}" min="{{numberDialog.panelConfig.define.min}}" step="{{numberDialog.panelConfig.define.step}}" value="{{numberDialog.panelConfig.value}}" show-value bindchange="onNumberDialogChange" />
+    <button bindtap="onNumberDialogSubmit" class="modal-dialog-submit-btn">确定</button>
+  </view>
+</view>
