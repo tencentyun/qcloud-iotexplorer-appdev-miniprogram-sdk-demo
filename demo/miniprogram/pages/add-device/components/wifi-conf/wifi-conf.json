@@ -1,0 +1,12 @@
+{
+  "component": true,
+  "usingComponents": {
+    "page-wrapper": "/components/page-wrapper/page-wrapper",
+    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading",
+    "guide": "../guide/guide",
+    "input-wifi-info": "../input-wifi-info/input-wifi-info",
+    "do-config": "../do-config/do-config",
+    "success-view": "../success-view/success-view",
+    "error-view": "../error-view/error-view"
+  }
+}

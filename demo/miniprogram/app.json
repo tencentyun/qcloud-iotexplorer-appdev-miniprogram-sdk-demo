@@ -1,9 +1,11 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/panel/panel",
+    "pages/add-device/simple-config/simple-config",
+    "pages/add-device/air-kiss/air-kiss",
     "pages/add-device/smart-config/smart-config",
     "pages/add-device/soft-ap/soft-ap",
-    "pages/panel/panel",
     "pages/firmware-upgrade/firmware-upgrade",
     "pages/share/share-list/share-list",
     "pages/share/receive-share/receive-share"

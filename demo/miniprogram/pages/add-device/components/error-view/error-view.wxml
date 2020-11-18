@@ -1,0 +1,34 @@
+<block wx:if="{{!showLog}}">
+  <view class="result-view">
+    <icon type="warn" size="108rpx" class="result-icon" />
+    <view class="result-title">配网失败</view>
+    <view class="result-subtitle">请检查以下信息</view>
+
+    <view class="result-info-container">
+      <view class="result-info-list">
+        <view
+          wx:for="{{errorTips}}"
+          wx:key="index"
+        >
+          {{index + 1}}. {{item}}
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <btn-group
+    buttons="{{[{ btnText: '重试', type: 'primary', id: 'restart' }, { btnText: '切换配网方式', id: 'select-type' }, { btnText: '查看日志', id: 'show-log'}]}}"
+    bind:click="onBottomButtonClick"
+    fixed-bottom="{{true}}"
+  />
+</block>
+<block wx:else>
+  <view class="log-container">{{logs}}</view>
+  <btn-group
+    buttons="{{[{ btnText: '复制日志内容', id: 'copy-log'}, { btnText: '返回', id: 'hide-log'}]}}"
+    bind:click="onBottomButtonClick"
+    fixed-bottom="{{true}}"
+  />
+</block>
+
+

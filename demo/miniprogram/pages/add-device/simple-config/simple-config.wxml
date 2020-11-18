@@ -1,0 +1,5 @@
+<wifi-conf
+  title="SimpleConfig 配网"
+  pluginName="wifiConfSimpleConfig"
+  errorTips="{{errorTips}}"
+/>

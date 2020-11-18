@@ -1,0 +1,17 @@
+<view class="page-subtitle">配置设备</view>
+<view class="page-main">
+  <image 
+    src="https://main.qcloudimg.com/raw/31a4f30e9ab5af7e22ee5c96d795712b.jpg"
+    class="config-device-img"
+  />
+  <view class="config-device-guide">
+    <view class="config-device-guide-line">1. 接通设备电源。</view>
+    <view class="config-device-guide-line">2. 长按复位键（开关）5 秒，指示灯快闪时，再次长按复位键 3 秒。</view>
+    <view class="config-device-guide-line">3. 指示灯进入慢闪状态即可。</view>
+  </view>
+</view>
+<btn-group
+  buttons="{{[{ btnText: '切换配网方式', id: 'select-type' }, { btnText: '下一步', type: 'primary', id: 'complete'}]}}"
+  bind:click="onBottomButtonClick"
+  fixed-bottom="{{true}}"
+/>

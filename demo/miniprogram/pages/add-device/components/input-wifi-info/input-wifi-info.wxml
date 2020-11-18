@@ -1,0 +1,9 @@
+<view class="page-subtitle">{{title}}</view>
+<view class="page-main">
+  <wifi-form id="wifi-form" auto-select-current-wifi="{{true}}" />
+</view>
+<btn-group
+  buttons="{{[{ btnText: '刷新 WiFi 列表', id: 'refresh-wifi-list' }, { btnText: '下一步', type: 'primary', id: 'complete'}]}}"
+  bind:click="onBottomButtonClick"
+  fixed-bottom="{{true}}"
+/>

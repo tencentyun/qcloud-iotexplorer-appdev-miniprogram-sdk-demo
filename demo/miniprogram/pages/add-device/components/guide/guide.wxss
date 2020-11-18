@@ -1,0 +1,23 @@
+@import '../../common.wxss';
+
+:host {
+  width: 100%;
+}
+
+.config-device-img {
+  width: 650rpx;
+  height: 374.5rpx;
+  border-radius: 8rpx;
+}
+
+.config-device-guide {
+  margin-top: 16px;
+  color: #333333;
+  font-size: 28rpx;
+  line-height: 1.5;
+  word-break: break-all;
+}
+
+.config-device-guide-line {
+  margin-bottom: 7px;
+}

@@ -64,7 +64,7 @@ Component({
     this.unsubscribeAll = subscribeStore([
       {
         selector: (state) => state.wifiList,
-        onInitOrChange: (wifiList) => this.updateWifiList(wifiList),
+        onChange: (wifiList) => this.updateWifiList(wifiList),
       },
     ]);
 

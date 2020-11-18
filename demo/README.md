@@ -8,7 +8,7 @@
 > 本 Demo 的具体使用步骤请参见 [自主品牌小程序快速入门](https://cloud.tencent.com/document/product/1081/47685)。
 
 ## 使用步骤
-1. 前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发 > 小程序开发，获取 AppKey 与 AppSecret。
+1. 前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发，获取小程序 AppKey 与 AppSecret。
 
 2. 前往 [微信公众平台](https://mp.weixin.qq.com/) 的小程序后台，配置小程序服务器域名。
    - request 合法域名：`https://iot.cloud.tencent.com`
@@ -42,4 +42,4 @@
 
 2. 本 Demo 使用小程序云开发部署登录接口。您也可以将登录接口部署到自己的后台服务器，并且修改 `demo/miniprogram/app.js` 中的 `getAccessToken` 函数，以使用自行部署的登录接口。
 
-3. 小程序只能对已关联的产品下的设备进行绑定、控制等操作。要将小程序与产品关联，请前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发 > 小程序开发 > 关联产品。
+3. 小程序只能对已关联的产品下的设备进行绑定、控制等操作。要将小程序与产品关联，请前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发 > 关联产品。

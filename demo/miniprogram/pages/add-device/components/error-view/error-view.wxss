@@ -1,0 +1,52 @@
+@import '../../common.wxss';
+
+:host {
+  width: 100%;
+}
+
+.result-view {
+  text-align: center;
+}
+
+.result-view .result-icon {
+  margin-top: 210rpx;
+  height: 108rpx;
+}
+
+.result-view .result-title {
+  font-size: 34rpx;
+  color: #000000;
+  margin-top: 10Px;
+  line-height: 1.4;
+}
+
+.result-view .result-subtitle {
+  font-size: 28rpx;
+  color: #888;
+  margin-top: 8Px;
+  line-height: 1.4;
+}
+
+.result-view .result-info-container {
+  margin: 20px auto 0;
+  font-size: 28rpx;
+  color: #888;
+  line-height: 1.7;
+  max-width: 590rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result-view .result-info-list {
+  text-align: left;
+}
+
+.log-container {
+  font-size: 12px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+  height: 70vh;
+  overflow: scroll;
+}

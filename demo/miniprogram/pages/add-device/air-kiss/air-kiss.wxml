@@ -1,0 +1,5 @@
+<wifi-conf
+  title="AirKiss 配网"
+  pluginName="wifiConfAirKiss"
+  errorTips="{{errorTips}}"
+/>

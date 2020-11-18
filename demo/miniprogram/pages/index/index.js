@@ -1,6 +1,6 @@
 const actions = require('../../redux/actions');
-const { subscribeStore, mapStateToData } = require('../../libs/store-subscribe');
-const showSelectTypeMenu = require('../add-device/selectTypeMenu');
+const { subscribeStore } = require('../../libs/store-subscribe');
+const showWifiConfTypeMenu = require('../add-device/wifiConfTypeMenu');
 
 Page({
   data: {
@@ -11,9 +11,18 @@ Page({
   },
 
   onLoad() {
-    this.unsubscribeAll = subscribeStore([
-      ...mapStateToData(['deviceList', 'shareDeviceList', 'deviceStatusMap'], this),
-    ]);
+    this.unsubscribeAll = subscribeStore(
+      [
+        'deviceList',
+        'shareDeviceList',
+        'deviceStatusMap',
+      ].map(key => {
+        return {
+          selector: (state) => state[key],
+          onChange: (value) => this.setData({ [key]: value }),
+        };
+      })
+    );
   },
 
   onUnload() {
@@ -58,6 +67,6 @@ Page({
   },
 
   showAddDeviceMenu() {
-    showSelectTypeMenu();
+    showWifiConfTypeMenu();
   },
 });

@@ -1,0 +1,10 @@
+@import '../../common.wxss';
+
+:host {
+  width: 100%;
+}
+
+.page-main {
+  margin-left: -50rpx;
+  margin-right: -50rpx;
+}

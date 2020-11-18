@@ -1,7 +1,13 @@
-// 请填写 物联网开发平台 > 应用开发 > 小程序开发 中申请的 AppKey
+// 请填写 物联网开发平台 > 应用开发 中申请的小程序 AppKey
 const APP_KEY = 'YOUR_APP_KEY_HERE';
 
-const { QcloudIotExplorerAppDevSdk, EventTypes } = require('qcloud-iotexplorer-appdev-sdk/qcloud-iotexplorer-appdev-sdk');
+const { AppDevSdk } = require('qcloud-iotexplorer-appdev-sdk');
+const { EventTypes } = AppDevSdk.constants;
+const SimpleConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-simpleconfig').default;
+const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss').default;
+const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
+const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
+
 const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');
@@ -30,13 +36,19 @@ App({
     }
 
     // 初始化 SDK
-    this.sdk = new QcloudIotExplorerAppDevSdk({
+    this.sdk = new AppDevSdk({
       debug: true,
       appKey: APP_KEY,
       getAccessToken: this.getAccessToken,
       wsConfig: {},
     });
 
+    // 安装配网插件
+    SimpleConfigPlug.install(this.sdk);
+    AirKissPlug.install(this.sdk);
+    SmartConfigPlug.install(this.sdk);
+    SoftApPlug.install(this.sdk);
+    
     // 调用 SDK 登录
     this.sdk.init()
       .catch((err) => {
@@ -59,7 +71,7 @@ App({
     subscribeStore([
       {
         selector: (state) => state.deviceList.concat(state.shareDeviceList),
-        onInitOrChange: (deviceList, oldDeviceList) => {
+        onChange: (deviceList, oldDeviceList) => {
           if (oldDeviceList && deviceList.every((v, index) => v === oldDeviceList[index])) {
             return;
           }

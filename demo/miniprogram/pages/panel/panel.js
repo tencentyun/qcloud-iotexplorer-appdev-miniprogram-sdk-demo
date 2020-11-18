@@ -64,7 +64,7 @@ Page({
           deviceInfo: (isShareDevice ? state.shareDeviceList : state.deviceList).find((item) => item.DeviceId === deviceId),
           deviceStatus: state.deviceStatusMap[deviceId],
         }),
-        onInitOrChange: this.prepareData.bind(this),
+        onChange: this.prepareData.bind(this),
       },
     ]);
   },

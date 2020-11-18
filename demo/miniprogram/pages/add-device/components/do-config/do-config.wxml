@@ -1,0 +1,10 @@
+<view class="page-subtitle">开始配网</view>
+<view class="page-main">
+  <view class="progress-list">
+    <view wx:for="{{connectDeviceSteps}}" wx:key="index" class="progress-item {{curStep > index ? 'done' : ''}}">
+      <image class="item-icon icon-check" src="/assets/common/check-blue.svg" wx:if="{{curStep > index}}" />
+      <image class="item-icon icon-loading" src="/assets/device/connecting-loading.svg" wx:else />
+      {{item}}
+    </view>
+  </view>
+</view>

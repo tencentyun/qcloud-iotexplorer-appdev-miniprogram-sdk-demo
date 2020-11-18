@@ -1,0 +1,22 @@
+.container {
+  padding: 60rpx 50rpx 0;
+}
+
+.page-title {
+  color: #333 ;
+  font-size: 54rpx;
+  font-weight: 500;
+  align-self: flex-start;
+}
+
+.page-subtitle {
+  color: #333;
+  font-size: 40rpx;
+}
+
+.page-main {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

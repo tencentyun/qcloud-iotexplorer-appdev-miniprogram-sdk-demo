@@ -1,0 +1,66 @@
+@import '../../common.wxss';
+
+:host {
+  width: 100%;
+}
+
+.page-subtitle {
+  color: #333;
+  font-size: 40rpx;
+}
+
+.progress-list {
+  margin-top: 100rpx;
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.progress-list .progress-item {
+  position: relative;
+  font-size: 30rpx;
+  color: #333333;
+  margin-bottom: 20rpx;
+}
+.progress-list .progress-item.done {
+  color: #888888;
+}
+.progress-list .progress-item .item-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.progress-list .progress-item .icon-check {
+  left: -59rpx;
+  width: 48rpx;
+  height: 48rpx;
+}
+.progress-list .progress-item .icon-loading {
+  left: -62rpx;
+  width: 48rpx;
+  height: 48rpx;
+  -webkit-animation: rotate 1s linear infinite;
+          animation: rotate 1s linear infinite;
+}
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: translateY(-50%) rotate(0);
+            transform: translateY(-50%) rotate(0);
+  }
+  to {
+    -webkit-transform: translateY(-50%) rotate(360deg);
+            transform: translateY(-50%) rotate(360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: translateY(-50%) rotate(0);
+            transform: translateY(-50%) rotate(0);
+  }
+  to {
+    -webkit-transform: translateY(-50%) rotate(360deg);
+            transform: translateY(-50%) rotate(360deg);
+  }
+}

@@ -1,0 +1,9 @@
+<view class="result-view">
+  <icon type="success" size="108rpx" class="result-icon" />
+  <view class="result-title">配网完成，设备添加成功</view>
+</view>
+<btn-group
+  buttons="{{[{ btnText: '继续添加其他设备', id: 'restart' }, { btnText: '完成', type: 'primary', id: 'complete'}]}}"
+  bind:click="onBottomButtonClick"
+  fixed-bottom="{{true}}"
+/>

@@ -1,0 +1,39 @@
+<page-wrapper>
+  <view class="container" wx:if="{{isReady}}">
+    <view class="page-title" wx:if="{{step !== -1 && step !== -2}}">
+      {{title}}
+    </view>
+
+    <block wx:if="{{step === 0}}">
+      <guide bind:complete="onGuideComplete" />
+    </block>
+
+    <block wx:elif="{{step === 1}}">
+      <input-wifi-info
+        title="{{needDeviceAp ? '选择目标WiFi' : '连接目标WiFi'}}"
+        bind:complete="onTargetWifiInputComplete"
+        autoConnect="{{!needDeviceAp}}"
+      />
+    </block>
+
+    <block wx:elif="{{step === 2}}">
+      <input-wifi-info
+        title="连接设备WiFi"
+        bind:complete="onDeviceWifiInputComplete"
+      />
+    </block>
+
+    <block wx:elif="{{step === 3}}">
+      <do-config curStep="{{curConnStep}}" />
+    </block>
+
+    <block wx:elif="{{step === -1}}">
+      <success-view bind:complete="onBack" />
+    </block>
+
+    <block wx:elif="{{step === -2}}">
+      <error-view bind:complete="onBack" errorTips="{{errorTips}}" logs="{{logs}}"/>
+    </block>
+  </view>
+  <mp-loading type="dot-gray" wx:else></mp-loading>
+</page-wrapper>
