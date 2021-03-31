@@ -15,7 +15,9 @@
       </view>
       <view class="item-body">
         <view class="item-name">{{item.AliasName}}</view>
-        <view class="item-status status-offline" wx:if="{{item.DeviceName === '~virtualDev'}}">虚拟设备</view>
+        <view class="item-status status-online" wx:if="{{item.DeviceName === '~virtualDev'}}">虚拟设备</view>
+        <view class="item-status status-online" wx:elif="{{item.NetType === 'ble'}}">蓝牙设备</view>
+        <view class="item-status status-online" wx:elif="{{item.NetType === 'lorawan'}}">LoRa 设备</view>
         <view class="item-status status-{{deviceStatusMap[item.DeviceId] === 1 ? 'online' : 'offline'}}" wx:else>{{deviceStatusMap[item.DeviceId] === 1 ? '在线' : '离线'}}</view>
       </view>
     </view>
@@ -55,6 +57,8 @@
           <template is="device-list" data="{{deviceList: shareDeviceList, deviceStatusMap}}"/>
         </view>
       </block>
+      
+      <view class="debug-userid">用户 ID: <text user-select>{{userId}}</text></view>
     </view>
   </view>
 </page-wrapper>

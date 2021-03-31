@@ -10,7 +10,7 @@ const PageState = {
   FAIL: -1,
 };
 
-const isFinalStatus = (status) => status === UpgradeStatus.FAIL
+const isFinalStatus = status => status === UpgradeStatus.FAIL
   || status === UpgradeStatus.SUCCESS;
 
 const POLLING_INTERVAL = 2000; // ms

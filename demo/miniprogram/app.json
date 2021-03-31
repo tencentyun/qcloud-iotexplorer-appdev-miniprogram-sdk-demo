@@ -14,7 +14,7 @@
     "backgroundColor": "#FFF",
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#FFF",
-    "navigationBarTitleText": "物联网开发平台 SDK Demo",
+    "navigationBarTitleText": "物联网开发平台小程序 Demo",
     "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",

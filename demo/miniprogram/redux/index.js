@@ -2,9 +2,6 @@ const { createStore } = require('../libs/redux');
 const reducer = require('./reducer');
 
 const initState = {
-  user: {
-    logined: false,
-  },
   productInfoMap: {},
   deviceDataMap: {},
   deviceStatusMap: {},

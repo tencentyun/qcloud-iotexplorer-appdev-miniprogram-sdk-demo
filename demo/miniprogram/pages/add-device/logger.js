@@ -10,14 +10,12 @@ const dataToString = (data) => {
   return JSON.stringify(data, null, 2);
 };
 
-const formatLog = (type, tag, data) => {
-  return `[${(new Date()).toISOString()}] [${type}]\n[${tag}] ${dataToString(data)}`;
-};
+const formatLog = (type, tag, data) => `[${(new Date()).toISOString()}] [${type}]\n[${tag}] ${dataToString(data)}`;
 
 class Logger {
   constructor() {
     this.logs = [];
-    const sdk = app.sdk;
+    const { sdk } = app;
     const systemInfo = wx.getSystemInfoSync();
     this.info('Brand', systemInfo.brand);
     this.info('Model', systemInfo.model);
@@ -43,5 +41,5 @@ class Logger {
 }
 
 module.exports = {
-  Logger
+  Logger,
 };

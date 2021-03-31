@@ -1,5 +1,3 @@
-const { __esModule } = require("../../libs/redux");
-
 module.exports.connectDeviceSteps = [
   '手机与设备连接成功',
   '向设备发送信息成功',
