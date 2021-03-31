@@ -23,7 +23,7 @@ Page({
     this.setData({ ipx: app.globalData.isIpx });
 
     this.deviceId = deviceId;
-    this.deviceInfo = store.getState().deviceList.find((item) => item.DeviceId === deviceId) || {
+    this.deviceInfo = store.getState().deviceList.find(item => item.DeviceId === deviceId) || {
       AliasName: '未知设备',
       IconUrl: 'https://main.qcloudimg.com/raw/b2c6d08f0a49a7d9f6ebdc0d3347153f/icon-default.jpg',
     };
@@ -67,6 +67,7 @@ Page({
       ]);
 
       userList.forEach((item) => {
+        // eslint-disable-next-line no-param-reassign
         item.BindTime = formatDate(item.BindTime * 1000);
       });
       this.setData({ userList, isLoading: false });
@@ -83,7 +84,7 @@ Page({
   },
 
   async onClickMoreBtn(e) {
-    const item = e.currentTarget.dataset.item;
+    const { item } = e.currentTarget.dataset;
 
     try {
       await promisify(wx.showActionSheet)({

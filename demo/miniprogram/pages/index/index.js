@@ -1,6 +1,7 @@
 const actions = require('../../redux/actions');
 const { subscribeStore } = require('../../libs/store-subscribe');
 const showWifiConfTypeMenu = require('../add-device/wifiConfTypeMenu');
+const app = getApp();
 
 Page({
   data: {
@@ -8,21 +9,18 @@ Page({
     shareDeviceList: [],
     deviceStatusMap: {},
     inited: false,
+    userId: '',
   },
 
   onLoad() {
-    this.unsubscribeAll = subscribeStore(
-      [
-        'deviceList',
-        'shareDeviceList',
-        'deviceStatusMap',
-      ].map(key => {
-        return {
-          selector: (state) => state[key],
-          onChange: (value) => this.setData({ [key]: value }),
-        };
-      })
-    );
+    this.unsubscribeAll = subscribeStore([
+      'deviceList',
+      'shareDeviceList',
+      'deviceStatusMap',
+    ].map(key => ({
+      selector: state => state[key],
+      onChange: value => this.setData({ [key]: value }),
+    })));
   },
 
   onUnload() {
@@ -30,7 +28,10 @@ Page({
   },
 
   onLoginReady() {
-    this.getData();
+    this.setData({
+      userId: app.sdk.uin,
+    });
+    this.fetchData();
   },
 
   onTapItem({ currentTarget: { dataset: { item } } }) {
@@ -46,10 +47,10 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.getData();
+    this.fetchData();
   },
 
-  getData() {
+  fetchData() {
     actions.getDevicesData()
       .then(() => {
         if (!this.data.inited) {

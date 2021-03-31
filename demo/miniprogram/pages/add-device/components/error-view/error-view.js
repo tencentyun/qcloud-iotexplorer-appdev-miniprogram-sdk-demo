@@ -20,7 +20,7 @@ Component({
         case 'restart': {
           const pages = getCurrentPages();
           wx.redirectTo({
-            url: '/' + pages[pages.length - 1].route,
+            url: `/${pages[pages.length - 1].route}`,
           });
           break;
         }
@@ -37,7 +37,7 @@ Component({
           wx.setClipboardData({
             data: this.data.logs,
           });
-          break
+          break;
       }
     },
   },

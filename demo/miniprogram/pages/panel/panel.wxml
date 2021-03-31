@@ -16,7 +16,13 @@
 </template>
 <page-wrapper>
   <view class="container">
-    <view class="page-title">{{deviceInfo.AliasName || '设备控制'}}<view class="item-status status-{{deviceStatus === 1 ? 'online' : 'offline'}}">{{deviceStatus === 1 ? '在线' : '离线'}}</view></view>
+    <view class="page-title">
+      {{deviceInfo.AliasName || '设备控制'}}
+      <view class="item-status status-online" wx:if="{{deviceInfo.DeviceName === '~virtualDev'}}">虚拟设备</view>
+      <view class="item-status status-online" wx:elif="{{deviceInfo.NetType === 'ble'}}">蓝牙设备</view>
+      <view class="item-status status-online" wx:elif="{{deviceInfo.NetType === 'lorawan'}}">LoRa 设备</view>
+      <view class="item-status status-{{deviceStatus === 1 ? 'online' : 'offline'}}" wx:else>{{deviceStatus === 1 ? '在线' : '离线'}}</view>
+    </view>
     <view class="page-main">
       <view class="panel-list">
         <block wx:if="{{dataTemplate.properties.length > 0}}">

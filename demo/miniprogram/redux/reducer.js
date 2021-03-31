@@ -56,7 +56,7 @@ module.exports = function reducer(state, action) {
     case actionTypes.UPDATE_SHARE_DEVICE_LIST:
       return {
         ...state,
-        shareDeviceList: payload.shareDeviceList.map((item) => ({
+        shareDeviceList: payload.shareDeviceList.map(item => ({
           ...item,
           isShareDevice: true,
         })),
@@ -71,20 +71,18 @@ module.exports = function reducer(state, action) {
         shareDeviceList: [],
       };
     case actionTypes.CONTROL_DEVICE_DATA: {
-      let { deviceId, deviceData } = payload;
-
-      let prevDeviceData = state.deviceDataMap[deviceId];
-
-      if (!prevDeviceData) {
-        prevDeviceData = {};
-      }
-
-      deviceData = { ...prevDeviceData, ...deviceData };
-
-      state.deviceDataMap[deviceId] = deviceData;
+      const { deviceId, deviceData } = payload;
+      const prevDeviceData = state.deviceDataMap[deviceId] || {};
 
       return {
         ...state,
+        deviceDataMap: {
+          ...state.deviceDataMap,
+          [deviceId]: {
+            ...prevDeviceData,
+            ...deviceData,
+          },
+        },
       };
     }
     case actionTypes.UPDATE_WIFI_LIST: {

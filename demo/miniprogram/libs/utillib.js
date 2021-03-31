@@ -1,7 +1,7 @@
 const urlParse = require('url-parse');
 const querystring = require('query-string');
 
-module.exports.delay = (timeout) => new Promise((resolve) => setTimeout(() => resolve(), timeout));
+module.exports.delay = timeout => new Promise(resolve => setTimeout(() => resolve(), timeout));
 
 module.exports.fetchAllList = async (fetchFn) => {
   const limit = 100;
@@ -37,12 +37,12 @@ module.exports.getErrorMsg = (err) => {
   return message;
 };
 
-const pad = (val, len) => {
-  val = String(val);
-  while (val.length < len) {
-    val = `0${val}`;
+const pad = (str, len) => {
+  let paddedString = String(str);
+  while (paddedString.length < len) {
+    paddedString = `0${paddedString}`;
   }
-  return val;
+  return paddedString;
 };
 
 /**
@@ -54,15 +54,16 @@ const pad = (val, len) => {
  * @return {String}
  */
 module.exports.formatDate = (date) => {
-  if (!(date instanceof Date)) {
-    if (typeof date === 'number') {
-      date = new Date(date);
-    } else {
-      date = null;
-    }
+  let dateObj;
+  if (date instanceof Date) {
+    dateObj = date;
+  } else if (typeof date === 'number') {
+    dateObj = new Date(date);
+  } else {
+    dateObj = null;
   }
 
-  if (!date) return '-';
+  if (!dateObj) return '-';
 
   const d = date.getDate();
   const m = date.getMonth() + 1;
