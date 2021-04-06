@@ -9,7 +9,7 @@ Component({
     autoConnect: {
       type: Boolean,
       value: true,
-    }
+    },
   },
 
   attached() {
@@ -40,12 +40,14 @@ Component({
       }
 
       if (this.data.autoConnect) {
-        connectWifi(targetWifi).then(() => {
-          app.wifiConfLogger.error('connectWifiSuccess', targetWifi);
-          this.triggerEvent('complete', { wifi: targetWifi }, {});
-        }).catch((err) => {
-          app.wifiConfLogger.error('connectWifiFail', err);
-        });
+        connectWifi(targetWifi)
+          .then(() => {
+            app.wifiConfLogger.error('connectWifiSuccess', targetWifi);
+            this.triggerEvent('complete', { wifi: targetWifi }, {});
+          })
+          .catch((err) => {
+            app.wifiConfLogger.error('connectWifiFail', err);
+          });
       } else {
         this.triggerEvent('complete', { wifi: targetWifi }, {});
       }

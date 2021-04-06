@@ -43,3 +43,24 @@
 2. 本 Demo 使用小程序云开发部署登录接口。您也可以将登录接口部署到自己的后台服务器，并且修改 `demo/miniprogram/app.js` 中的 `getAccessToken` 函数，以使用自行部署的登录接口。
 
 3. 小程序只能对已关联的产品下的设备进行绑定、控制等操作。要将小程序与产品关联，请前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发 > 关联产品。
+
+## Changelog
+
+### v1.1 (2021/4/6)
+- 调整：登录获取用户信息接口调整为 wx.getUserProfile
+
+  **注意**：由于 [小程序登录、用户信息相关接口调整](https://developers.weixin.qq.com/community/develop/doc/000cacfa20ce88df04cb468bc52801)，存量应用建议参考 [这个 commit](https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/commit/5647f4e88c4476c1f1e784b751a86b3f51d7fb9a) 对登录流程的相关代码进行调整
+- 修复：一些情况下设备列表变更时不触发 subscribeDevices 订阅设备信息的问题
+- 优化：LoRa 设备、BLE 设备不展示为离线状态
+
+## Demo 结构说明
+### 页面
+- 首页：pages/index
+- 设备面板：pages/panel
+- Wi-Fi 配网：pages/add-device 目录下各个页面（配网交互共用 wifi-conf 组件）
+- 固件升级：pages/firmware-upgrade
+
+### 组件
+- 小程序用户授权、登录：components/page-wrapper 
+- 配网交互步骤: pages/add-device/components/wifi-conf
+- iOS 系统获取 Wi-Fi 列表步骤引导: components/ios-wifi-guide

@@ -24,13 +24,15 @@ class AppDevSdk {
       ...options,
     };
 
-    if (!reqData.RequestId) {
-      reqData.RequestId = shortid();
+    const finalReqData = { ...reqData };
+
+    if (!finalReqData.RequestId) {
+      finalReqData.RequestId = shortid();
     }
 
     requestOpts.data = this.assignSignature({
       Action,
-      ...reqData,
+      ...finalReqData,
     });
 
     const { status, statusText, data: response = {} } = await axios(requestOpts);
@@ -56,22 +58,24 @@ class AppDevSdk {
     const Timestamp = Math.floor(Date.now() / 1000);
     const Nonce = Math.floor((10000 * Math.random())) + 1; // 随机正整数
 
-    data = {
+    const tempData = {
       ...data,
       Timestamp,
       Nonce,
       AppKey: this.AppKey,
     };
 
-    const keys = Object.keys(data).sort();
-    const arr = keys.filter((key) => !!String(data[key])).map((key) => `${key}=${data[key]}`);
+    const keys = Object.keys(tempData).sort();
+    const arr = keys
+      .filter(key => tempData[key] !== undefined && !!String(tempData[key]))
+      .map(key => `${key}=${tempData[key]}`);
     const paramString = arr.join('&');
 
     const hash = CryptoJS.HmacSHA1(paramString, this.AppSecret);
     const signature = CryptoJS.enc.Base64.stringify(hash);
 
     return {
-      ...data,
+      ...tempData,
       Signature: signature,
     };
   }
@@ -85,7 +89,9 @@ const sdk = new AppDevSdk({
 });
 
 // 云函数入口函数
-exports.main = async ({ userInfo }, context) => {
+exports.main = async (event) => {
+  const { Avatar, NickName } = event;
+
   // Demo 配置指引
   if (APP_KEY === 'YOUR_APP_KEY_HERE' || APP_SECRET === 'YOUR_APP_SECRET_HERE') {
     return {
@@ -95,25 +101,10 @@ exports.main = async ({ userInfo }, context) => {
   }
 
   try {
-    const {
-      errCode, errMsg, data,
-    } = userInfo;
-
-    if (errCode) {
-      return {
-        code: errCode,
-        msg: errMsg,
-      };
-    }
-
-    const {
-      openId, unionId, nickName, avatarUrl,
-    } = data;
-
     const response = await sdk.requestAppApi('AppGetTokenByWeiXin', {
-      WxOpenID: openId, // or unionId
-      NickName: nickName,
-      Avatar: avatarUrl,
+      WxOpenID: cloud.getWXContext().OPENID, // or cloud.getWXContext().UNIONID
+      NickName,
+      Avatar,
     });
 
     return { code: 0, msg: 'ok', data: response };
@@ -121,10 +112,9 @@ exports.main = async ({ userInfo }, context) => {
     if (err instanceof Error) {
       return {
         code: 'InternalError',
-        msg: err.message,
+        msg: String(err),
       };
-    } else {
-      return err;
     }
+    return err;
   }
 };
