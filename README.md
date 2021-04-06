@@ -16,3 +16,6 @@ SDK 文档：请参见 [自主品牌小程序开发指南](https://cloud.tencent
 Demo 小程序代码位于 `demo` 目录。
 
 使用方法：请参见 [自主品牌小程序快速入门](https://cloud.tencent.com/document/product/1081/47685)。
+
+[Changelog](https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/blob/master/demo/README.md#changelog)
+
