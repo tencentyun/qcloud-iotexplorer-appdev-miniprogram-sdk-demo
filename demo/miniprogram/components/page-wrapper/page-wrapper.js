@@ -1,6 +1,6 @@
 const app = getApp();
-const promisify = require('../../libs/wx-promisify');
 const { getErrorMsg } = require('../../libs/utillib');
+const promisify = require('../../libs/wx-promisify');
 
 Component({
   options: {
@@ -8,72 +8,92 @@ Component({
   },
 
   data: {
-    needAuth: false,
-    isLogin: false,
+    show: 'auth', // page（正常显示页面）, loading, auth（授权页面）
   },
 
   attached() {
-    const isLogin = app.sdk.isLogin;
-    this.setData({ isLogin });
-    if (!isLogin) {
-      this.loginWithAuthCheck();
-    } else {
-      this.onLogined();
+    const { isLogin } = app.sdk;
+
+    if (isLogin) {
+      // 已登录
+      this.onLoginSuccess();
+    } else if (app.getIsRegisteredSync()) {
+      // 已注册但未登录，尝试登录
+
+      // 显示 loading dots
+      this.setData({
+        show: 'loading',
+      });
+
+      app.sdk.init()
+        .then(() => {
+          // 登录成功
+          this.onLoginSuccess();
+        })
+        .catch((err) => {
+          // 登录失败
+          console.error('sdk.init fail', err.msg, err);
+
+          // 显示授权页面
+          this.setData({
+            show: 'auth',
+          });
+        });
     }
   },
 
   methods: {
-    async loginWithAuthCheck() {
-      const { authSetting } = await promisify(wx.getSetting)();
-      if (!authSetting['scope.userInfo']) {
-        // 用户未曾授权用户信息权限，展示授权页面
-        this.setData({ needAuth: true });
+    async onLoginButtonTap() {
+      // 未注册用户，获取用户信息后注册登录
+
+      if (!wx.getUserProfile) {
+        wx.showModal({
+          title: '提示',
+          content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。',
+          showCancel: false,
+        });
+
         return;
       }
-      return this.login();
-    },
 
-    async login() {
       wx.showLoading({
         title: '登录中…',
-        mask: true,
+        mask: true, // 遮罩，避免重复点击
       });
 
       try {
-        // 调用 SDK 登录
+        // 请求获取用户信息
+        const result = await promisify(wx.getUserProfile)({
+          desc: '注册自主品牌小程序账号',
+        });
+
+        const { nickName, avatarUrl } = result.userInfo;
+
+        // 获取到的用户信息写入到 globalData，SDK 登录时使用
+        app.globalData.userInfo = { nickName, avatarUrl };
+
+        // SDK 初始化并登录
         await app.sdk.init();
 
-        this.setData({ isLogin: true });
-        this.onLogined();
+        this.onLoginSuccess();
       } catch (err) {
-        console.error('sdk.init fail', err.msg, err);
-        wx.showModal({
-          title: '登录失败',
-          content: getErrorMsg(err),
-          confirmText: '重试',
-          success: ({ confirm }) => {
-            if (confirm) {
-              this.login();
-            } else {
-              this.setData({ needAuth: true });
-            }
-          },
-          fail: () => {
-            this.setData({ needAuth: true });
-          },
-        });
+        if (err.errMsg !== 'getUserProfile:fail auth deny') {
+          console.error('login fail', err);
+          wx.showModal({
+            title: '登录失败',
+            content: getErrorMsg(err),
+            showCancel: false,
+          });
+        } else {
+          console.log('getUserProfile: 用户拒绝授权');
+        }
       } finally {
         wx.hideLoading();
       }
     },
 
-    onGetUserInfo({ detail }) {
-      if (!(detail && detail.errMsg && detail.errMsg.indexOf('auth deny') > -1)) {
-        this.login();
-      }
-    },
-
-    onLogined() {
+    onLoginSuccess() {
+      this.setData({ show: 'page' });
       this.triggerEvent('loginready', null, {});
     },
   },

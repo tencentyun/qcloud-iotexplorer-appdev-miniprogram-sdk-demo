@@ -56,18 +56,6 @@ App({
     AirKissPlug.install(this.sdk);
     SmartConfigPlug.install(this.sdk);
     SoftApPlug.install(this.sdk);
-    
-    // 调用 SDK 登录
-    this.sdk.init()
-      .catch((err) => {
-        if (err.code === 'GET_USERINFO_NEED_AUTH') {
-          // 需要引导用户授权获取用户信息 (scope.userInfo)，请参见
-          // https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html
-          console.error('sdk.init fail 用户尚未授权获取用户信息');
-        } else {
-          console.error('sdk.init fail', err.msg, err);
-        }
-      });
 
     // WebSocket 订阅设备信息
     this.wsSubscribe();
@@ -104,35 +92,36 @@ App({
     });
   },
 
-  // 获取应用端 API 登录态 AccessToken
+  // sdk.init() 会调用该函数获取物联网开发平台 AccessToken
   async getAccessToken() {
     // 小程序配置指引
     if (APP_KEY === 'YOUR_APP_KEY_HERE') {
       throw { msg: '请在 miniprogram/app.js 文件中填写 APP_KEY', code: 'INVALID_APP_KEY' };
     }
 
-    // 检查用户信息授权
-    const { authSetting } = await promisify(wx.getSetting)();
-    if (!authSetting['scope.userInfo']) {
-      throw { code: 'GET_USERINFO_NEED_AUTH' };
-    }
+    // 小程序用户信息
+    // 在 page-wrapper 组件中请求获取，写入到 app.globalData.userInfo
+    const { userInfo } = this.globalData;
 
-    // 获取小程序用户信息
-    const userInfo = await promisify(wx.getUserInfo)({ withCredentials: true });
+    // 是否需要注册
+    const needRegister = !this.getIsRegisteredSync() && !!userInfo;
 
-    // 通过云函数调用 微信号注册登录 应用端 API 获取 AccessToken
-    // 请参见 https://cloud.tencent.com/document/product/1081/40781
+    // 注册/登录参数，注册时需要传入用户昵称和头像，下次登录时可以不传入
+    const loginParams = needRegister ? {
+      Avatar: userInfo.avatarUrl,
+      NickName: userInfo.nickName,
+    } : {};
 
-    // 注：也可以通过自行部署的后台服务器调用应用端 API 获取 AccessToken
-    // 请参见 https://cloud.tencent.com/document/product/1081/47686#.E9.83.A8.E7.BD.B2.E7.99.BB.E5.BD.95.E6.8E.A5.E5.8F.A3
     try {
+      // 云函数 (cloudfunctions/login/index.js) 中调用 微信号注册登录 应用端 API
+      // 获取物联网开发平台的 AccessToken
+      // 请参见 https://cloud.tencent.com/document/product/1081/40781
+
       const res = await wx.cloud.callFunction({
         // 云函数名称
         name: 'login',
         // 传给云函数的参数
-        data: {
-          userInfo: wx.cloud.CloudID(userInfo.cloudID),
-        },
+        data: loginParams,
       });
 
       const { code, msg, data } = res.result;
@@ -142,9 +131,12 @@ App({
         throw { code, msg };
       }
 
-      // 取得 AppGetTokenByWeiXin 应用端 API 的响应
+      // 取得 AccessToken
       const { Token, ExpireAt } = data.Data;
-      
+
+      // 标记为已注册状态，下次登录时不需要请求获取用户昵称和头像
+      await this.setIsRegistered();
+
       return { Token, ExpireAt };
     } catch (err) {
       // 云函数部署指引
@@ -155,5 +147,24 @@ App({
     }
   },
 
-  globalData: {},
+  getIsRegisteredSync() {
+    return !!wx.getStorageSync('iot-explorer-user-registered');
+  },
+
+  async setIsRegistered(isRegistered = true) {
+    if (!isRegistered) {
+      return promisify(wx.removeStorage)({
+        key: 'iot-explorer-user-registered',
+      });
+    }
+
+    return promisify(wx.setStorage)({
+      key: 'iot-explorer-user-registered',
+      data: isRegistered,
+    });
+  },
+
+  globalData: {
+    userInfo: null,
+  },
 });
