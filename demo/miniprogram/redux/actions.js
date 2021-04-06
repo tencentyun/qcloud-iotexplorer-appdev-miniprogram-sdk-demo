@@ -19,6 +19,7 @@ module.exports.getDevicesData = async () => {
 
   // 区分家庭设备与分享设备
   shareDeviceList.forEach((item) => {
+    // eslint-disable-next-line no-param-reassign
     item.isShareDevice = true;
   });
 
@@ -27,7 +28,7 @@ module.exports.getDevicesData = async () => {
 
   // 拉取设备状态
   const { DeviceStatuses: deviceStatuses } = await models.getDeviceStatuses({
-    DeviceIds: mergedDeviceList.map((item) => item.DeviceId),
+    DeviceIds: mergedDeviceList.map(item => item.DeviceId),
   });
 
   // Online < 0 代表该设备可能异常，可直接忽略
@@ -44,9 +45,9 @@ module.exports.getDevicesData = async () => {
   });
 
   // 过滤异常状态的设备
-  mergedDeviceList = mergedDeviceList.filter((item) => item.DeviceId in validDeviceStatusMap);
-  familyDeviceList = familyDeviceList.filter((item) => item.DeviceId in validDeviceStatusMap);
-  shareDeviceList = shareDeviceList.filter((item) => item.DeviceId in validDeviceStatusMap);
+  mergedDeviceList = mergedDeviceList.filter(item => item.DeviceId in validDeviceStatusMap);
+  familyDeviceList = familyDeviceList.filter(item => item.DeviceId in validDeviceStatusMap);
+  shareDeviceList = shareDeviceList.filter(item => item.DeviceId in validDeviceStatusMap);
 
   const productIdMap = {};
   mergedDeviceList.forEach((item) => {
@@ -58,7 +59,7 @@ module.exports.getDevicesData = async () => {
     models.getProducts({
       ProductIds: Object.keys(productIdMap),
     }),
-    models.getDeviceDataMap(mergedDeviceList.map((deviceInfo) => deviceInfo.DeviceId)).catch((err) => {
+    models.getDeviceDataMap(mergedDeviceList.map(deviceInfo => deviceInfo.DeviceId)).catch((err) => {
       console.warn('拉取deviceData失败', err);
       return {};
     }),
@@ -81,25 +82,30 @@ module.exports.getDevicesData = async () => {
     payload: { deviceDataMap },
   });
 
-  const genAliasName = (deviceInfo) => {
-    if (!deviceInfo.AliasName) {
-      deviceInfo.AliasName = productInfoMap[deviceInfo.ProductId] ? productInfoMap[deviceInfo.ProductId].Name : '未知设备';
-    }
+  const injectDeviceInfo = (deviceInfo) => {
+    const productInfo = productInfoMap[deviceInfo.ProductId] || {
+      NetType: 'wifi',
+      Name: '未知设备',
+    };
 
-    return deviceInfo;
+    return {
+      ...deviceInfo,
+      NetType: productInfo.NetType,
+      AliasName: deviceInfo.AliasName || productInfo.Name,
+    };
   };
 
   store.dispatch({
     type: actionTypes.UPDATE_DEVICE_LIST,
     payload: {
-      deviceList: familyDeviceList.map(genAliasName),
+      deviceList: familyDeviceList.map(injectDeviceInfo),
     },
   });
 
   store.dispatch({
     type: actionTypes.UPDATE_SHARE_DEVICE_LIST,
     payload: {
-      shareDeviceList: shareDeviceList.map(genAliasName),
+      shareDeviceList: shareDeviceList.map(injectDeviceInfo),
     },
   });
 };
@@ -122,21 +128,15 @@ module.exports.resetWifiList = () => {
 };
 
 module.exports.controlDeviceData = async (device, data) => {
-  let { id, value } = data;
+  const { id } = data;
+  let { value } = data;
 
   if (typeof value === 'boolean') {
     value = Number(value);
   }
 
-  const deviceData = {};
-
-  deviceData[id] = value;
-
-  const dataObj = {};
-
-  dataObj[id] = {
-    Value: value,
-    lastUpdate: parseInt(new Date().getTime()),
+  const deviceData = {
+    [id]: value,
   };
 
   await models.controlDeviceData(device, deviceData);
@@ -145,7 +145,12 @@ module.exports.controlDeviceData = async (device, data) => {
     type: actionTypes.CONTROL_DEVICE_DATA,
     payload: {
       deviceId: device.DeviceId,
-      deviceData: dataObj,
+      deviceData: {
+        [id]: {
+          Value: value,
+          LastUpdate: Date.now(),
+        },
+      },
     },
   }));
 };

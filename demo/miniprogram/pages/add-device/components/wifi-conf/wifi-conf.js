@@ -41,7 +41,8 @@ Component({
   },
 
   attached() {
-    app.wifiConfLogger = this.logger = new Logger();
+    this.logger = new Logger();
+    app.wifiConfLogger = this.logger;
 
     wx.startWifi();
     requestBindDeviceToken().then((token) => {
@@ -94,7 +95,7 @@ Component({
 
     onConfigProgress(data) {
       console.log(this.data.pluginName, 'progress', data);
-      this.logger.info(this.data.pluginName + ':progress', data);
+      this.logger.info(`${this.data.pluginName}:progress`, data);
 
       switch (data.code) {
         case WifiConfStepCode.PROTOCOL_SUCCESS:
@@ -115,7 +116,7 @@ Component({
     // SoftAP 配网的 StepCode 与其他配网方式的不同
     onSoftApConfigProgress(data) {
       console.log(this.data.pluginName, 'progress', data);
-      this.logger.info(this.data.pluginName + ':progress', data);
+      this.logger.info(`${this.data.pluginName}:progress`, data);
 
       switch (data.code) {
         case WifiConfStepCode.CREATE_UDP_CONNECTION_SUCCESS:
@@ -136,10 +137,10 @@ Component({
 
     onConfigError(error) {
       console.error(this.data.pluginName, 'error', error);
-      this.logger.error(this.data.pluginName + ':error', error);
+      this.logger.error(`${this.data.pluginName}:error`, error);
 
       const { code, detail } = error;
-      let msg = error.msg;
+      let { msg } = error;
       if (!msg && detail && detail.error && detail.error.uiMsg) {
         msg = detail.error.uiMsg;
       }
@@ -160,7 +161,7 @@ Component({
 
     onConfigComplete(data) {
       console.log(this.data.pluginName, 'complete', data.productId, data.deviceName);
-      this.logger.error(this.data.pluginName + ':complete', data);
+      this.logger.error(`${this.data.pluginName}:complete`, data);
 
       this.setData({ step: Steps.Success });
 
@@ -186,7 +187,7 @@ Component({
           : this.onConfigProgress.bind(this),
         onError: this.onConfigError.bind(this),
         onComplete: this.onConfigComplete.bind(this),
-        ...options
+        ...options,
       };
 
       app.sdk.plugins[this.data.pluginName].start(params);

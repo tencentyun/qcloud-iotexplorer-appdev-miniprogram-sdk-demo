@@ -63,8 +63,8 @@ Component({
 
     this.unsubscribeAll = subscribeStore([
       {
-        selector: (state) => state.wifiList,
-        onChange: (wifiList) => this.updateWifiList(wifiList),
+        selector: state => state.wifiList,
+        onChange: wifiList => this.updateWifiList(wifiList),
       },
     ]);
 
@@ -113,23 +113,18 @@ Component({
         });
       }
 
-      // SSID 去重复
+      // SSID 去重复、按信号强度降序排序
       const uniqSSIDMap = {};
-      wifiList = wifiList.filter((wifi) => {
+      const filteredWifiList = wifiList.filter((wifi) => {
         if (!wifi.SSID) return false;
         if (!(wifi.SSID in uniqSSIDMap)) {
           uniqSSIDMap[wifi.SSID] = true;
           return true;
         }
         return false;
-      });
+      }).sort((a, b) =>  b.signalStrength - a.signalStrength);
 
-      // 按信号强度降序
-      wifiList = wifiList.sort((a, b) => {
-        return b.signalStrength - a.signalStrength;
-      });
-
-      actions.updateWifiList(wifiList);
+      actions.updateWifiList(filteredWifiList);
     },
 
     updateWifiList(wifiList) {
@@ -140,7 +135,7 @@ Component({
         this.selectWifi(this.selectedWifi);
       }
       this.setData({
-        wifiSSIDList: this.wifiList.map((wifi) => wifi.SSID),
+        wifiSSIDList: this.wifiList.map(wifi => wifi.SSID),
       });
     },
 
@@ -159,7 +154,7 @@ Component({
             mask: true,
           });
         }
-        
+
         await promisify(wx.getWifiList)();
       } catch (err) {
         console.error('getWifiList fail', err);
@@ -181,11 +176,15 @@ Component({
       if (app.globalData.isIOS) {
         let callback = null;
         const iosRefreshPromise = new Promise((resolve, reject) => {
-          callback = this.iosRefreshWifiCallback = {
+          callback = {
             success: resolve,
             abort: resolve,
-            fail: () => { reject(); wx.hideLoading(); },
+            fail: () => {
+              reject();
+              wx.hideLoading();
+            },
           };
+          this.iosRefreshWifiCallback = callback;
         });
         this.iosRefreshWifiCallback.promise = iosRefreshPromise;
 

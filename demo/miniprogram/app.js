@@ -1,6 +1,13 @@
 // 请填写 物联网开发平台 > 应用开发 中申请的小程序 AppKey
 const APP_KEY = 'YOUR_APP_KEY_HERE';
 
+// 如果在开发过程中需要更换 AppKey，请按照以下步骤操作：
+// 1. 修改 app.js 以及 cloudfunctions/login/index.js 代码中配置的 AppKey 和 AppSecret。
+// 2. 在微信开发者工具的文件列表中，对 cloudfunctions/login 右键，选择【上传并部署：云端安装依赖】。
+// 3. 在微信开发者工具的工具栏中，选择【清缓存】>【清除数据缓存】。
+// 4. 在手机微信的小程序列表中，删除当前小程序。
+// 5. 重新编译运行小程序。
+
 const { AppDevSdk } = require('qcloud-iotexplorer-appdev-sdk');
 const { EventTypes } = AppDevSdk.constants;
 const SimpleConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-simpleconfig').default;
@@ -15,11 +22,13 @@ const actions = require('./redux/actions');
 App({
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync();
+    const platform = (systemInfo.platform || '').toLowerCase();
 
     this.globalData = {
+      ...this.globalData,
       isIpx: (systemInfo.screenHeight / systemInfo.screenWidth) > 1.86,
-      isAndroid: systemInfo.platform.toLowerCase().indexOf('android') > -1,
-      isIOS: systemInfo.platform.toLowerCase().indexOf('ios') > -1,
+      isAndroid: platform.indexOf('android') > -1,
+      isIOS: platform.indexOf('ios') > -1,
     };
 
     // 初始化云开发
@@ -28,10 +37,9 @@ App({
     } else {
       wx.cloud.init({
         // env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
-        // 此处请填入云开发环境 ID, 如不填则使用默认环境（第一个创建的环境）
-        // env: 'iot',
+        // 此处填入云开发环境 ID, 如不填则使用默认环境（第一个创建的环境）
 
-        traceUser: true,
+        // env: '',
       });
     }
 
@@ -67,26 +75,30 @@ App({
 
   // 订阅设备信息
   wsSubscribe() {
-    // 订阅所有设备的信息（当设备列表更新时，重新订阅最新的设备列表）
     subscribeStore([
       {
-        selector: (state) => state.deviceList.concat(state.shareDeviceList),
+        selector: state => state.deviceList.concat(state.shareDeviceList),
         onChange: (deviceList, oldDeviceList) => {
-          if (oldDeviceList && deviceList.every((v, index) => v === oldDeviceList[index])) {
+          // 设备列表无变化时不重新订阅
+          if (oldDeviceList
+            && oldDeviceList.length === deviceList.length
+            && deviceList.every((dev, index) => dev === oldDeviceList[index])
+          ) {
             return;
           }
 
-          // 订阅设备信息
+          // 当设备列表更新时，重新进行订阅
           this.sdk.subscribeDevices(deviceList);
         },
       },
     ]);
 
-    // 处理设备信息推送
+    // 接收设备属性变化推送
     this.sdk.on(EventTypes.WsReport, ({ deviceId, deviceData }) => {
       actions.updateDeviceDataByPush({ deviceId, deviceData });
     });
 
+    // 接收设备在线状态变化推送
     this.sdk.on(EventTypes.WsStatusChange, ({ deviceId, deviceStatus }) => {
       actions.updateDeviceStatusByPush({ deviceId, deviceStatus });
     });
@@ -142,4 +154,6 @@ App({
       throw err;
     }
   },
+
+  globalData: {},
 });

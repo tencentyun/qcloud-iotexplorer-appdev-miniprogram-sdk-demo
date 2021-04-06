@@ -3,13 +3,12 @@ const {
   deleteDeviceFromFamily,
   removeUserShareDevice,
   checkDeviceFirmwareUpdate,
-  describeDeviceFirmwareUpdateStatus,
 } = require('../../models');
 const { controlDeviceData, getDevicesData } = require('../../redux/actions');
 const { getErrorMsg } = require('../../libs/utillib');
 const promisify = require('../../libs/wx-promisify');
 const { subscribeStore } = require('../../libs/store-subscribe');
-const { UpgradeStatus, dangerColor } = require('../../constants');
+const { dangerColor } = require('../../constants');
 
 const getTemplateShownValue = (templateInfo, value) => {
   let shownValue;
@@ -19,7 +18,7 @@ const getTemplateShownValue = (templateInfo, value) => {
       shownValue = templateInfo.define.mapping[value];
       break;
     case 'enum':
-      shownValue = templateInfo.mappingList.findIndex((item) => item.value === value);
+      shownValue = templateInfo.mappingList.findIndex(item => item.value === value);
       break;
     case 'int':
     case 'float':
@@ -58,10 +57,11 @@ Page({
 
     this.unsubscribeAll = subscribeStore([
       {
-        selector: (state) => ({
+        selector: state => ({
           productInfo: state.productInfoMap[productId],
           deviceData: state.deviceDataMap[deviceId],
-          deviceInfo: (isShareDevice ? state.shareDeviceList : state.deviceList).find((item) => item.DeviceId === deviceId),
+          deviceInfo: (isShareDevice ? state.shareDeviceList : state.deviceList)
+            .find(item => item.DeviceId === deviceId),
           deviceStatus: state.deviceStatusMap[deviceId],
         }),
         onChange: this.prepareData.bind(this),
@@ -73,12 +73,12 @@ Page({
     const dataKeys = ['productInfo', 'deviceData', 'deviceInfo', 'deviceStatus'];
 
     // 数据没有变化时，不重新 setData
-    if (oldState && dataKeys.every((key) => state[key] === oldState[key])) {
+    if (oldState && dataKeys.every(key => state[key] === oldState[key])) {
       return;
     }
 
     // 数据缺失检查
-    if (!dataKeys.every((key) => state[key] !== undefined)) {
+    if (!dataKeys.every(key => state[key] !== undefined)) {
       return;
     }
 
@@ -97,12 +97,14 @@ Page({
 
     dataTemplate.properties.forEach((item) => {
       if (item.define.type === 'enum') {
+        // eslint-disable-next-line no-param-reassign
         item.mappingList = [];
         Object.keys(item.define.mapping).forEach((key) => {
           item.mappingList.push({ label: item.define.mapping[key], value: Number(key) });
         });
       }
 
+      // eslint-disable-next-line no-param-reassign
       item.value = getTemplateShownValue(item, deviceData[item.id]);
     });
 

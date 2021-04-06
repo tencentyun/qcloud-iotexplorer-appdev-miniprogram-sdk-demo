@@ -34,6 +34,7 @@ module.exports.subscribeStore = (definitions) => {
       const { selector, onChange, value: oldValue } = listener;
       const newValue = selector(state);
       if (oldValue !== newValue) { // 浅比较
+        // eslint-disable-next-line no-param-reassign
         listener.value = newValue;
         onChange(newValue, oldValue);
       }

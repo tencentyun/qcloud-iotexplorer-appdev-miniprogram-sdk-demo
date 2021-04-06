@@ -16,29 +16,30 @@
     "scopeDataCheck": false,
     "uglifyFileName": false,
     "checkInvalidKey": true,
-    "checkSiteMap": true,
+    "checkSiteMap": false,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": false,
+    "useMultiFrameRuntime": true,
     "useApiHook": true,
+    "useApiHostProcess": false,
     "babelSetting": {
-      "ignore": [
-        "miniprogram_npm/*"
-      ],
+      "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
     },
     "enableEngineNative": false,
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true
   },
   "appid": "",
   "projectname": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",
-  "libVersion": "2.12.0",
+  "libVersion": "2.12.3",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {

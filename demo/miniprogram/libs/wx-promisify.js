@@ -1,4 +1,4 @@
-module.exports = (api) => (object, ...params) => new Promise((resolve, reject) => {
+module.exports = api => (object, ...params) => new Promise((resolve, reject) => {
   if (api) {
     api.call(wx, { ...object, success: resolve, fail: reject }, ...params);
   } else {

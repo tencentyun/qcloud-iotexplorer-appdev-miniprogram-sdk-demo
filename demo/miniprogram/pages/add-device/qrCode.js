@@ -9,7 +9,7 @@ const addDevice = async ({
     mask: true,
   });
   try {
-    const { Data: { AppDeviceInfo } } = await secureAddDeviceInFamily({
+    await secureAddDeviceInFamily({
       DeviceSignature: Signature,
       RoomId: '',
       FamilyId: 'default',

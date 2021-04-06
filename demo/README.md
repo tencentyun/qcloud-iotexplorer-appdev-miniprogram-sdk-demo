@@ -43,3 +43,15 @@
 2. 本 Demo 使用小程序云开发部署登录接口。您也可以将登录接口部署到自己的后台服务器，并且修改 `demo/miniprogram/app.js` 中的 `getAccessToken` 函数，以使用自行部署的登录接口。
 
 3. 小程序只能对已关联的产品下的设备进行绑定、控制等操作。要将小程序与产品关联，请前往 [腾讯云物联网开发平台控制台](https://console.cloud.tencent.com/iotexplorer) > 应用开发 > 关联产品。
+
+## Demo 结构说明
+### 页面
+- 首页：pages/index
+- 设备面板：pages/panel
+- Wi-Fi 配网：pages/add-device 目录下各个页面（配网交互共用 wifi-conf 组件）
+- 固件升级：pages/firmware-upgrade
+
+### 组件
+- 小程序用户授权、登录：components/page-wrapper 
+- 配网交互步骤: pages/add-device/components/wifi-conf
+- iOS 系统获取 Wi-Fi 列表步骤引导: components/ios-wifi-guide
