@@ -65,12 +65,12 @@ module.exports.formatDate = (date) => {
 
   if (!dateObj) return '-';
 
-  const d = date.getDate();
-  const m = date.getMonth() + 1;
-  const y = date.getFullYear();
-  const H = date.getHours();
-  const M = date.getMinutes();
-  const s = date.getSeconds();
+  const d = dateObj.getDate();
+  const m = dateObj.getMonth() + 1;
+  const y = dateObj.getFullYear();
+  const H = dateObj.getHours();
+  const M = dateObj.getMinutes();
+  const s = dateObj.getSeconds();
 
   const yyyy = y;
   const mm = pad(m, 2);

@@ -46,7 +46,10 @@
 
 ## Changelog
 
-### v1.1 (2021/4/6)
+### v1.1.1 (2021/5/11)
+- 修复：`formatDate` 工具函数报错的问题
+
+### v1.1.0 (2021/4/6)
 - 调整：登录获取用户信息接口调整为 wx.getUserProfile
 
   **注意**：由于 [小程序登录、用户信息相关接口调整](https://developers.weixin.qq.com/community/develop/doc/000cacfa20ce88df04cb468bc52801)，存量应用建议参考 [这个 commit](https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/commit/5647f4e88c4476c1f1e784b751a86b3f51d7fb9a) 对登录流程的相关代码进行调整
