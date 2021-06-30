@@ -5,14 +5,19 @@ const { Logger } = require('../../logger');
 const { constants: WifiConfConstants } = require('qcloud-iotexplorer-appdev-plugin-wificonf-core');
 const { WifiConfStepCode } = WifiConfConstants;
 
+import { BleComboProtocols } from 'qcloud-iotexplorer-appdev-plugin-wificonf-blecombo';
+
 const Steps = {
   Guide: 0,
   InputTargetWiFi: 1,
+  ConnectBlueTooth: 2,
   InputDeviceWiFi: 2,
   DoConfig: 3,
   Success: -1,
   Fail: -2,
 };
+
+let deviceAdapter = null;
 
 Component({
   properties: {
@@ -71,6 +76,9 @@ Component({
       if (this.data.needDeviceAp) {
         // SoftAP配网：需要先连接到设备热点
         this.setData({ step: Steps.InputDeviceWiFi });
+      } else if (this.data.pluginName === 'wifiConfBleCombo') {
+        // Ble-Combo配网 需要先连接蓝牙
+        this.connectDevice();
       } else {
         // 其他配网方式：已连接到目标WiFi，开始配网
         this.startConfig();
@@ -113,6 +121,15 @@ Component({
       }
     },
 
+    onBluetoothConnected(e) {
+      console.log('deviceAdapter:',  e.detail);
+      deviceAdapter = e.detail;
+    },
+
+    onNextStep() {
+      this.startConfig();
+    },
+
     // SoftAP 配网的 StepCode 与其他配网方式的不同
     onSoftApConfigProgress(data) {
       console.log(this.data.pluginName, 'progress', data);
@@ -129,6 +146,28 @@ Component({
         case WifiConfStepCode.BUSINESS_QUERY_TOKEN_STATE_SUCCESS:
           this.setData({ curConnStep: 3 });
           break;
+        case WifiConfStepCode.WIFI_CONF_SUCCESS:
+          this.setData({ curConnStep: 4 });
+          break;
+      }
+    },
+
+    // ble-combo 事件处理函数
+    onBleComboProgress({ code, detail }) {
+      console.log(code, detail);
+      switch (code) {
+        case WifiConfStepCode.PROTOCOL_START:
+          this.setData({ curConnStep: 1 });
+          break;
+        case WifiConfStepCode.PROTOCOL_SUCCESS:
+          this.setData({ curConnStep: 2 });
+          break;
+        case WifiConfStepCode.BLE_SEND_TOKEN_SUCCESS: {
+          const { productId, deviceName } = detail.response;
+          console.log({ productId, deviceName });
+          this.setData({ curConnStep: 3 });
+          break;
+        }
         case WifiConfStepCode.WIFI_CONF_SUCCESS:
           this.setData({ curConnStep: 4 });
           break;
@@ -169,22 +208,35 @@ Component({
       actions.getDevicesData();
     },
 
+    connectDevice() {
+      // 切换到蓝牙连接页面
+      this.setData({
+        step: Steps.ConnectBlueTooth,
+      });
+    },
+
     startConfig(options = {}) {
       // 切换到开始配网页面
       this.setData({
         step: Steps.DoConfig,
       });
 
+      const progresshandlerMap = {
+        wifiConfSoftAp: this.onSoftApConfigProgress.bind(this),
+        wifiConfBleCombo: this.onBleComboProgress.bind(this),
+      }
+
       // 调用SDK开始配网
       const params = {
+        bleComboProto: BleComboProtocols.BLE_COMBO_LLSYNC, // 这里需要选ble-combo择配网协议
+        deviceAdapter, // ble-combo进行配网时需要
+
         wifiConfToken: this.bindDeviceToken,
         targetWifiInfo: this.targetWifi,
         autoRetry: true, // 自动处理故障流程
         familyId: 'default',
         roomId: '0',
-        onProgress: this.data.pluginName === 'wifiConfSoftAp'
-          ? this.onSoftApConfigProgress.bind(this)
-          : this.onConfigProgress.bind(this),
+        onProgress: progresshandlerMap[this.data.pluginName] || this.onConfigProgress.bind(this),
         onError: this.onConfigError.bind(this),
         onComplete: this.onConfigComplete.bind(this),
         ...options,
