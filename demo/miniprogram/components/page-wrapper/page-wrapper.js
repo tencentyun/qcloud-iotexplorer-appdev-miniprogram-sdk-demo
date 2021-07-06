@@ -72,14 +72,7 @@ Component({
         // 获取到的用户信息写入到 globalData，SDK 登录时使用
         app.globalData.userInfo = { nickName, avatarUrl };
         // SDK 初始化并登录
-        const timeout = (delay) => new Promise((resolve, reject) => {
-          setTimeout(() => {
-            console.log('timeout');
-            reject(new Error('timeout'));
-          }, delay);
-        });
-        await Promise.race([app.sdk.init(), timeout(3000)]);
-        console.log('sdk init success');
+        await app.sdk.init();
         this.onLoginSuccess();
       } catch (err) {
         if (err.errMsg !== 'getUserProfile:fail auth deny') {
