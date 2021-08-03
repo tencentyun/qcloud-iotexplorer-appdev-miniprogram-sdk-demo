@@ -5,8 +5,6 @@ const { Logger } = require('../../logger');
 const { constants: WifiConfConstants } = require('qcloud-iotexplorer-appdev-plugin-wificonf-core');
 const { WifiConfStepCode } = WifiConfConstants;
 
-import { BleComboProtocols } from 'qcloud-iotexplorer-appdev-plugin-wificonf-blecombo';
-
 const Steps = {
   Guide: 0,
   InputTargetWiFi: 1,
@@ -228,11 +226,10 @@ Component({
 
       // 调用SDK开始配网
       const params = {
-        bleComboProto: BleComboProtocols.BLE_COMBO_LLSYNC, // 这里需要选ble-combo择配网协议
         deviceAdapter, // ble-combo进行配网时需要
-
         wifiConfToken: this.bindDeviceToken,
         targetWifiInfo: this.targetWifi,
+        wifiConfType: 'llsyncble', // ble or llsyncble
         autoRetry: true, // 自动处理故障流程
         familyId: 'default',
         roomId: '0',
