@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/file-manage/file-manage",
+    "pages/error/error"
+  ],
+  "subPackages":[
+    {
+      "root": "pages/add-file",
+      "pages": [
+        "add-file"
+      ] 
+    }
+  ],
+  "window": {
+    "backgroundColor": "#FFF",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFF",
+    "navigationBarTitleText": "物联网开发平台小程序 Demo",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "permission": {
+    "scope.userLocation": {
+      "desc": "查询附近WiFi需要授权使用您的位置信息"
+    }
+  }
+}

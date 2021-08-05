@@ -1,0 +1,14 @@
+<!-- 判断是否初始化,是否登录成功 -->
+<page-wrapper bind:loginready="onLoginReady"> 
+  <view class="container">
+    <view wx:if="{{!hasSelectFile}}" class="add-file" hover-class="add-file-active" bindtap="onSelectFile">
+      选择文件
+    </view>
+    <view wx:else class="add-file-active" bind:tap="onSelectFile">已选择文件</view>
+    <btn-group 
+      class="btn-group-style"
+      fixed-bottom="{{false}}"
+      bind:click="onBottomButtonClick"
+      buttons="{{[{btnText: '上传', type: 'primary', id: 'upload'},{btnText: '下发到设备端', type: 'default', id: 'distribute'}]}}"/>
+  </view>
+</page-wrapper>

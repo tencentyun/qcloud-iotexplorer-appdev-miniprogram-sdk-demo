@@ -1,0 +1,7 @@
+<btn-group 
+  buttons="{{[{ btnText: text, type: type, disabled: disabled, icon: icon }]}}" 
+  bind:click="onClick"
+  noPadding="{{noPadding}}"
+  flex="{{flex}}"
+  fixedBottom="{{fixedBottom}}"
+/>

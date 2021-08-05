@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@tencent/file-sdk": "^1.1.0"
+  }
+}

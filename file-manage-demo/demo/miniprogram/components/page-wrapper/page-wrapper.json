@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "btn-group": "/components/btn-group/btn-group",
+    "mp-loading": "/miniprogram_npm/weui-miniprogram/loading/loading"
+  }
+}
