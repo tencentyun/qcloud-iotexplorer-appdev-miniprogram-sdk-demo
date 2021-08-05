@@ -1,0 +1,30 @@
+<!--pages/add-device/components/bluetooth-finder.wxml-->
+<view class="page-subtitle">设备蓝牙</view>
+<view>
+  <view wx:if="{{isSearching}}"> 正在搜索蓝牙设备...</view>
+  <view wx:else>
+    <view>设备列表</view>
+    <view wx:for="{{devices}}" wx:key="{{index}}">
+      <view class="device-item">
+        {{item.name}}
+        <button
+          style="color:#0052D9"
+          size="mini"
+          loading="{{item.loading}}"
+          disabled="{{item.isConnected}}"
+          data-device="{{item}}"
+          data-index="{{index}}"
+          bindtap="connectDevice"
+        >
+          {{ item.isConnected ? '已连接' : '连接' }}
+        </button>
+      </view>
+    </view>
+    <btn-group
+      wx:if="{{!nextStepDisabled}}"
+      buttons="{{[{ btnText: '下一步', type: 'primary', id: 'complete'}]}}"
+      bind:click="onBottomButtonClick"
+      fixed-bottom="{{true}}"
+    />
+  </view>
+</view>

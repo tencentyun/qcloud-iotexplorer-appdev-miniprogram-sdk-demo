@@ -14,6 +14,8 @@ const SimpleConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-simp
 const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss').default;
 const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
 const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
+const BleComboPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo').default;
+
 
 const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
@@ -56,6 +58,7 @@ App({
     AirKissPlug.install(this.sdk);
     SmartConfigPlug.install(this.sdk);
     SoftApPlug.install(this.sdk);
+    BleComboPlug.install(this.sdk);
 
     // WebSocket 订阅设备信息
     this.wsSubscribe();
@@ -125,7 +128,7 @@ App({
       });
 
       const { code, msg, data } = res.result;
-
+      console.log(code, msg, data );
       // 异常处理
       if (code) {
         throw { code, msg };
