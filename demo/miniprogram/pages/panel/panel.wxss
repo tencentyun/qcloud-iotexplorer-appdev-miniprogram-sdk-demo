@@ -145,3 +145,6 @@
 .operation-btn-group {
 	margin-top: 64rpx;
 }
+.file-manage-btn{
+	margin-bottom: 10px;
+}

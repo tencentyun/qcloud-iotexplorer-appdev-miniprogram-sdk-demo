@@ -343,7 +343,11 @@ Page({
       wx.hideLoading();
     }
   },
-
+  onFileManage() {
+    wx.navigateTo({
+      url: '/pages/file-manage/add-file/add-file'
+    })
+  },
   onGoShareList() {
     wx.navigateTo({
       url: `/pages/share/share-list/share-list?deviceId=${this.deviceId}`,

@@ -1,5 +1,5 @@
 // 请填写 物联网开发平台 > 应用开发 中申请的小程序 AppKey
-const APP_KEY = 'YOUR_APP_KEY_HERE';
+const APP_KEY = 'mgZoSYyBZTHGiwIJi';
 
 // 如果在开发过程中需要更换 AppKey，请按照以下步骤操作：
 // 1. 修改 app.js 以及 cloudfunctions/login/index.js 代码中配置的 AppKey 和 AppSecret。
@@ -10,15 +10,10 @@ const APP_KEY = 'YOUR_APP_KEY_HERE';
 
 const { AppDevSdk } = require('qcloud-iotexplorer-appdev-sdk');
 const { EventTypes } = AppDevSdk.constants;
-const SimpleConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-simpleconfig').default;
-const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss').default;
-const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
-const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
 
 const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');
-
 App({
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync();
@@ -46,16 +41,11 @@ App({
     // 初始化 SDK
     this.sdk = new AppDevSdk({
       debug: true,
-      appKey: APP_KEY,
+      // appKey: APP_KEY,
+      appKey: 'mgZoSYyBZTHGiwIJi',
       getAccessToken: this.getAccessToken,
       wsConfig: {},
     });
-
-    // 安装配网插件
-    SimpleConfigPlug.install(this.sdk);
-    AirKissPlug.install(this.sdk);
-    SmartConfigPlug.install(this.sdk);
-    SoftApPlug.install(this.sdk);
 
     // WebSocket 订阅设备信息
     this.wsSubscribe();
