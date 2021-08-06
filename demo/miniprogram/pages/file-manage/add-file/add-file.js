@@ -89,7 +89,7 @@ Page({
           let spark = new sparkMd5.ArrayBuffer();
           spark.append(res.data);
           let hash = spark.end(false);
-          const { UploadUrl } = await fileSdk.GetResourceUploadURL(file, hash, this.data.deviceInfo.ProductId);
+          const { UploadUrl } = await fileSdk.appGetResourceUploadURL(file, hash, this.data.deviceInfo.ProductId);
           wx.request({
             url: UploadUrl,
             method: 'PUT',
