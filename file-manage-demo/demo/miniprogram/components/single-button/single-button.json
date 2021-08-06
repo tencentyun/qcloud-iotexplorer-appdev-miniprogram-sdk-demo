@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "btn-group": "/components/btn-group/btn-group"
-  }
-}

@@ -1,3 +1,0 @@
-<page-wrapper bind:tap="{{onLoad}}">
-    <view class="error-message">{{ErrorMessage}}</view>
-</page-wrapper>
