@@ -1,0 +1,2 @@
+<!--pages/add-device/llsync.wxml-->
+<bluetooth-finder adapterType="LLSync" />

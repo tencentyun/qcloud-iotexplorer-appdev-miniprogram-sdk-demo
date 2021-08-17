@@ -5,7 +5,7 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    adapterType: String
   },
 
   /**
@@ -66,9 +66,9 @@ Component({
   },
 
   attached() {
-    console.log('start search', bluetoothAdapter);
+    console.log('start search', bluetoothAdapter, this.data.adapterType);
     bluetoothAdapter.startSearch({
-      serviceIds: [serviceIdMap.BLE_COMBO_LLSYNC], // 这里需要根据不同的协议选择不同的serviceId
+      serviceIds: [serviceIdMap[this.data.adapterType]], // 这里需要根据不同的协议选择不同的serviceId
       onError: (err) => {
         this.setData({
           isSearching: false,
