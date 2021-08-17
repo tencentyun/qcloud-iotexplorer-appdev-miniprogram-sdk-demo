@@ -47,6 +47,16 @@ Component({
           },
           nextStepDisabled: false,
         });
+        deviceAdapter.on('disconnect', () => {
+          this.setData({
+            [`devices[${index}]`]: {
+              ...device,
+              isConnected: false,
+              loading: false,
+            },
+          });
+        });
+
         this.triggerEvent('connected', deviceAdapter);
       } catch (err) {
         this.setData({
@@ -61,7 +71,7 @@ Component({
     },
     onBottomButtonClick(e) {
       console.log(e);
-      this.triggerEvent('nextStep');
+      this.triggerEvent('nextStep', );
     }
   },
 

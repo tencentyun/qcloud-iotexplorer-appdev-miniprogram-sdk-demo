@@ -1,4 +1,7 @@
 // pages/add-device/llsync.js
+import wxPromisify from '../../../libs/wx-promisify';
+import bluetoothAdapter from '../components/bluetooth-finder/blueToothAdapter';
+let deviceAdapter = null;
 Page({
 
   /**
@@ -14,53 +17,31 @@ Page({
   onLoad: function (options) {
 
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  onBluetoothConnected(e) {
+    console.log('deviceAdapter:',  e.detail);
+    deviceAdapter = e.detail;
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+  async onNextStep(data) {
+    console.log('开始绑定', data);
+    try {
+      wx.showLoading({
+        title:'正在绑定..'
+      })
+      const deviceId = await deviceAdapter.bindDevice({familyId: 'default'});
+      console.log(deviceId);
+      wx.showModal({
+        title: '绑定成功',
+        content: '请到首页查看设备',
+        success(res) {
+          if (res.confirm) {
+            wx.switchTab({
+              url: '/pages/index/index'
+            })
+          }
+        }
+      });
+    } catch (err) {
+      console.error('绑定失败', err);
+    }
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

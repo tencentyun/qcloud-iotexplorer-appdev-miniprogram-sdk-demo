@@ -1,2 +1,6 @@
 <!--pages/add-device/llsync.wxml-->
-<bluetooth-finder adapterType="LLSync" />
+<bluetooth-finder
+  adapterType="LLSync"
+  bind:connected="onBluetoothConnected" 
+  bind:nextStep="onNextStep" 
+/>
