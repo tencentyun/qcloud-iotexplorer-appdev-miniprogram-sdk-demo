@@ -2,7 +2,7 @@ const addDeviceByQrCode = require('./qrCode');
 
 module.exports = (redirect = false) => {
   wx.showActionSheet({
-    itemList: ['SoftAP 配网', 'SmartConfig 配网', 'SimpleConfig 配网', 'AirKiss 配网', 'BleCombo配网', '扫码绑定设备'],
+    itemList: ['SoftAP 配网', 'SmartConfig 配网', 'SimpleConfig 配网', 'AirKiss 配网', 'BleCombo 配网', '扫码绑定设备'],
     success: ({ tapIndex }) => {
       const navigate = redirect ? wx.redirectTo : wx.navigateTo;
       switch (tapIndex) {
@@ -31,10 +31,13 @@ module.exports = (redirect = false) => {
             url: '/pages/add-device/ble-combo/ble-combo',
           });
           break;
-        case 4:
+        case 5:
           addDeviceByQrCode();
           break;
       }
     },
+    fail(err) {
+      console.log('fail', err);
+    }
   });
 };
