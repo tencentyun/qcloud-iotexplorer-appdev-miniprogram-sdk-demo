@@ -50,6 +50,14 @@
       </view>
 
       <view class="operation-btn-group">
+        <view class="file-manage-btn">
+          <btn-group
+            buttons="{{[{ btnText: '文件资源管理', type: 'default'}]}}"
+            bind:click="onFileManage"
+            no-padding="{{true}}"
+          />
+        </view>
+     
         <btn-group
           wx:if="{{deviceInfo.isShareDevice}}"
           buttons="{{[{ btnText: '移除分享设备', type: 'danger', id: 'remove-share-device' }]}}"
@@ -62,6 +70,7 @@
           bind:click="onOperationButtonClick"
           no-padding="{{true}}"
         />
+
       </view>
     </view>
   </view>

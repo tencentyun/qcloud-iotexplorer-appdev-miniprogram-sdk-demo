@@ -1,0 +1,19 @@
+<page-wrapper bind:tap="onLoad">
+    <view class="container">
+      <view wx:if= "{{Resource}}">
+        <view class="file-list" wx:for="{{Resource}}" wx:for-index="key" wx:for-item="value">
+        <view class="file-item">
+            <view class="item-name">{{key}}</view>
+            <view class="file-item-config">{{value}}</view>
+        </view>
+      </view>
+      </view>
+      <view wx:else>未上传文件,请先上传文件</view>
+      <single-button
+        text="上传文件"
+        type="primary"
+        class="btn-style"
+        bind:tap="onAddFile"
+      />
+    </view>
+</page-wrapper>

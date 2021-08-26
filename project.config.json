@@ -1,6 +1,8 @@
 {
-  "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "cloudfunctions/",
+  "description": "项目配置文件",
+  "packOptions": {
+    "ignore": []
+  },
   "setting": {
     "urlCheck": true,
     "es6": true,
@@ -8,20 +10,21 @@
     "postcss": true,
     "preloadBackgroundData": false,
     "minified": true,
-    "newFeature": true,
+    "newFeature": false,
     "coverView": true,
-    "nodeModules": true,
+    "nodeModules": false,
     "autoAudits": false,
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
     "uglifyFileName": false,
     "checkInvalidKey": true,
-    "checkSiteMap": false,
+    "checkSiteMap": true,
     "uploadWithSourceMap": true,
-    "compileHotReLoad": true,
+    "compileHotReLoad": false,
+    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
-    "useApiHostProcess": true,
+    "useApiHostProcess": false,
     "babelSetting": {
       "ignore": [],
       "disablePlugins": [],
@@ -35,11 +38,19 @@
     "minifyWXSS": true,
     "showES6CompileOption": false
   },
+  "compileType": "miniprogram",
+  "libVersion": "2.19.0",
   "appid": "wx1a7718af637f6c96",
   "projectname": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",
-  "libVersion": "2.12.3",
-  "simulatorType": "wechat",
-  "simulatorPluginLibVersion": {},
+  "debugOptions": {
+    "hidedInDevtools": []
+  },
+  "scripts": {},
+  "staticServerOptions": {
+    "baseURL": "",
+    "servePath": ""
+  },
+  "isGameTourist": false,
   "condition": {
     "search": {
       "list": []
@@ -47,10 +58,10 @@
     "conversation": {
       "list": []
     },
-    "plugin": {
+    "game": {
       "list": []
     },
-    "game": {
+    "plugin": {
       "list": []
     },
     "gamePlugin": {

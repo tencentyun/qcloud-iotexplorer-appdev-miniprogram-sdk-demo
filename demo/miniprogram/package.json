@@ -9,9 +9,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo.git"
+    "url": "git+https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo.git"
   },
   "dependencies": {
+    "moment": "^2.29.1",
     "qcloud-iotexplorer-appdev-plugin-wificonf-airkiss": "^1.0.16",
     "qcloud-iotexplorer-appdev-plugin-wificonf-blecombo": "^1.1.4",
     "qcloud-iotexplorer-appdev-plugin-wificonf-core": "^1.0.23",
@@ -23,7 +24,12 @@
     "qcloud-iotexplorer-bluetooth-adapter-llsync": "^1.1.1",
     "query-string": "^6.13.1",
     "spark-md5": "^3.0.1",
+    "tencentcloud-file-resource-sdk": "^1.1.6",
     "url-parse": "^1.4.7",
     "weui-miniprogram": "^1.0.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/issues"
+  },
+  "homepage": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo#readme"
 }
