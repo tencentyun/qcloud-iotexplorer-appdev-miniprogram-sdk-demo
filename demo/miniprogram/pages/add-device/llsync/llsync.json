@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "bluetooth-finder": "../components/bluetooth-finder/bluetooth-finder"
+  }
+}

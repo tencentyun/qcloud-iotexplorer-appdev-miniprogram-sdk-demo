@@ -70,4 +70,10 @@ Page({
   showAddDeviceMenu() {
     showWifiConfTypeMenu();
   },
+
+  addBleDevice() {
+    wx.navigateTo({
+      url: '/pages/add-device/llsync/llsync'
+    })
+  }
 });

@@ -17,7 +17,14 @@
     </block>
 
     <block wx:elif="{{step === 2}}">
+      <bluetooth-finder
+        wx:if="{{pluginName === 'wifiConfBleCombo'}}"
+        adapterType="BLE_COMBO_LLSYNC"
+        bind:connected="onBluetoothConnected"
+        bind:nextStep="onNextStep"
+      />
       <input-wifi-info
+        wx:else
         title="连接设备WiFi"
         bind:complete="onDeviceWifiInputComplete"
       />

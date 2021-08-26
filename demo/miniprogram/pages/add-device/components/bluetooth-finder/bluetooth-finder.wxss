@@ -1,0 +1,11 @@
+/* pages/add-device/components/bluetooth-finder.wxss */
+.device-item{
+  display: flex;
+  justify-content: space-between;
+  padding: 4rpx 10rpx;
+}
+.device-item button{
+  color: #0052D9;
+  background-color: none;
+  border: none;
+}

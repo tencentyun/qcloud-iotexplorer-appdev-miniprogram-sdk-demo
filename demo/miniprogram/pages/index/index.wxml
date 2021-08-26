@@ -46,6 +46,7 @@
       <view class="empty-device-list" wx:elif="{{deviceList.length === 0 && shareDeviceList.length === 0}}">
         <view class="empty-device-list-desc">暂无设备</view>
         <single-button text="添加设备" type="primary" bind:click="showAddDeviceMenu" />
+        <single-button text="添加标准蓝牙设备" type="primary" bind:click="addBleDevice" style="margin-top: 10px;"/>
       </view>
       <block wx:else>
         <view class="device-list" wx:if="{{deviceList.length}}">
