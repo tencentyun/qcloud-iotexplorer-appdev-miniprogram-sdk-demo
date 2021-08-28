@@ -26,7 +26,7 @@
     "spark-md5": "^3.0.1",
     "tencentcloud-file-resource-sdk": "^1.1.6",
     "url-parse": "^1.4.7",
-    "weui-miniprogram": "^1.0.4"
+    "weui-miniprogram": "~1.0.4"
   },
   "bugs": {
     "url": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/issues"
