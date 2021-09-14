@@ -15,8 +15,6 @@ const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss')
 const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
 const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
 const BleComboPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo').default;
-
-
 const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');

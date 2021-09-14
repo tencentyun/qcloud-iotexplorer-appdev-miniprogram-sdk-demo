@@ -8,7 +8,8 @@
     "pages/add-device/soft-ap/soft-ap",
     "pages/firmware-upgrade/firmware-upgrade",
     "pages/share/share-list/share-list",
-    "pages/share/receive-share/receive-share"
+    "pages/share/receive-share/receive-share",
+    "pages/add-device/llsync/llsync"
   ],
   "subPackages":[
     {

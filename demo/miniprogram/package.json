@@ -21,11 +21,12 @@
     "qcloud-iotexplorer-appdev-plugin-wificonf-softap": "^1.0.10",
     "qcloud-iotexplorer-appdev-sdk": "^1.0.29",
     "qcloud-iotexplorer-bluetooth-adapter": "^0.3.1",
+    "qcloud-iotexplorer-bluetooth-adapter-llsync": "^1.1.1",
     "query-string": "^6.13.1",
     "spark-md5": "^3.0.1",
     "qcloud-iotexplorer-fileresource-sdk": "^1.1.9",
     "url-parse": "^1.4.7",
-    "weui-miniprogram": "^1.0.4"
+    "weui-miniprogram": "~1.0.4"
   },
   "bugs": {
     "url": "https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo/issues"
