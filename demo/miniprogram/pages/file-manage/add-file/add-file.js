@@ -2,7 +2,7 @@ const app = getApp();
 const actions = require('../../../redux/actions');
 const { subscribeStore } = require('../../../libs/store-subscribe');
 const sparkMd5 = require('spark-md5');
-const { FileSdkForMiniProgram } = require('tencentcloud-file-resource-sdk');
+const { FileSdkForMiniProgram } = require('qcloud-iotexplorer-fileresource-sdk');
 const fileSdk = new FileSdkForMiniProgram(app.sdk);
 // 方法都绑定在this 上, 类似于class类
 Page({
