@@ -47,6 +47,7 @@ Component({
           },
           nextStepDisabled: false,
         });
+
         deviceAdapter.on('disconnect', () => {
           this.setData({
             [`devices[${index}]`]: {
@@ -56,7 +57,6 @@ Component({
             },
           });
         });
-
         this.triggerEvent('connected', deviceAdapter);
       } catch (err) {
         this.setData({
@@ -76,6 +76,7 @@ Component({
   },
 
   attached() {
+
     console.log('start search', bluetoothAdapter, this.data.adapterType);
     bluetoothAdapter.startSearch({
       serviceIds: [serviceIdMap[this.data.adapterType]], // 这里需要根据不同的协议选择不同的serviceId
