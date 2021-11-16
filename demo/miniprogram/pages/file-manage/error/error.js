@@ -8,8 +8,6 @@ Page({
     // 不能在请求的回调里用this
     eventChannel.on('acceptDataFromOpenerPage', function(data) {
       const error = data.data;
-      console.log(data.data)
-      debugger
       that.setData({
         ErrorMessage: error.msg,
       })
