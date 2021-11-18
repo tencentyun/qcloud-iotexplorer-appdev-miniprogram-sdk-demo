@@ -71,7 +71,7 @@ Page({
       }
     })
   },
-  AppGetResourceUploadURL() {
+  async AppGetResourceUploadURL() {
     const file = this.data.file;
     if (!file) {
       wx.showToast({
@@ -81,15 +81,17 @@ Page({
       })
       return;
     }
-    const promise =  fileSdk.handleUpload(file, this.data.deviceInfo.ProductId);
-    promise.then((ResourceName) => {
+    try {
+      const ResourceName = await fileSdk.handleUpload(file, this.data.deviceInfo.ProductId);
       if(ResourceName) {
         this.setData({
           hasUpLoad: true,
           ResourceName: ResourceName
         })
       }
-    })
+    } catch (e) {
+      console.log('文件上传失败');
+    }
   },
 
   onBottomButtonClick(e) { // 监听底部按钮栏的点击事件，根据id值上传文件或下发
