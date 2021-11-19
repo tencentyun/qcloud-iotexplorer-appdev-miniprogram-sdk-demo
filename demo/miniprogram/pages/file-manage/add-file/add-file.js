@@ -15,7 +15,7 @@ Page({
     deviceInfo: {}
   },
   onLoad() {
-    // 以便之后清除监听器.
+    // 以便之后清除监听器
     this.unsubscribeAll = subscribeStore([ // 当传入的这三个值改变时,重新获取
       'deviceList',
     ].map(key => ({
@@ -71,7 +71,7 @@ Page({
       }
     })
   },
-  AppGetResourceUploadURL() {
+  async AppGetResourceUploadURL() {
     const file = this.data.file;
     if (!file) {
       wx.showToast({
@@ -81,54 +81,17 @@ Page({
       })
       return;
     }
-    const fs = wx.getFileSystemManager();
-    fs.readFile({
-      filePath: file.path, //选择图片返回的相对路径
-      success: async res => {
-          //成功的回调
-          let spark = new sparkMd5.ArrayBuffer();
-          spark.append(res.data);
-          let hash = spark.end(false);
-          const { UploadUrl } = await fileSdk.getResourceUploadURL(file, hash, this.data.deviceInfo.ProductId);
-          wx.request({
-            url: UploadUrl,
-            method: 'PUT',
-            data: fs.readFileSync(file.path),
-            success: (res) => {
-              this.createProductResource(file, hash);
-            },
-            error: () => {
-              console.log('上传失败');
-            }
-          })
-      }
-    })
-  },
-
-  // 创建资源
-  async createProductResource(file, hash){
     try {
-      const { ResourceName } = await fileSdk.createResource(file, hash, this.data.deviceInfo.ProductId);
+      const ResourceName = await fileSdk.handleUpload(file, this.data.deviceInfo.ProductId);
       if(ResourceName) {
-        wx.showToast({
-          title: '文件上传成功',
-          icon: 'success',
-          duration: 5000,
-        })
         this.setData({
           hasUpLoad: true,
           ResourceName: ResourceName
         })
       }
-    } catch(e) {
-      wx.showToast({
-        title: `${e.msg}`,
-        icon: 'error',
-        duration: 5000,
-      })
+    } catch (e) {
+      console.log('文件上传失败');
     }
-      
-
   },
 
   onBottomButtonClick(e) { // 监听底部按钮栏的点击事件，根据id值上传文件或下发
