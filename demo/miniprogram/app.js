@@ -18,6 +18,7 @@ const BleComboPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo
 const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');
+
 App({
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync();
@@ -35,10 +36,7 @@ App({
       console.error('小程序基础库版本过低，请使用 2.2.3 或以上版本的支持库以使用云开发能力');
     } else {
       wx.cloud.init({
-        // env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
-        // 此处填入云开发环境 ID, 如不填则使用默认环境（第一个创建的环境）
-
-        // env: '',
+        env: '此处填写您的云开发环境 ID',
       });
     }
 
