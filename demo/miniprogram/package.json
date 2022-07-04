@@ -1,6 +1,6 @@
 {
   "name": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "腾讯云物联网开发平台应用开发小程序端 SDK Demo",
   "main": "app.js",
   "scripts": {},
@@ -12,7 +12,6 @@
     "url": "git+https://github.com/tencentyun/qcloud-iotexplorer-appdev-miniprogram-sdk-demo.git"
   },
   "dependencies": {
-    "moment": "^2.29.1",
     "qcloud-iotexplorer-appdev-plugin-wificonf-airkiss": "^2.3.0",
     "qcloud-iotexplorer-appdev-plugin-wificonf-blecombo": "^2.3.2",
     "qcloud-iotexplorer-appdev-plugin-wificonf-core": "^2.3.0",

@@ -1,4 +1,5 @@
-const moment = require('moment');
+const { formatDate } = require('../../../libs/utillib');
+
 Page({
   data: {
     Resource: '',
@@ -19,8 +20,8 @@ Page({
       eventChannel.on('acceptDataFromOpenerPage', function(data) {
         let Resource = data.data;
         const ResourceKeys = Object.keys(Resource);
-        Resource.CreateTime = moment(Resource.CreateTime * 1000).format('YYYY-MM-DD HH:mm:ss');
-        Resource.UpdateTime = moment(Resource.UpdateTime * 1000).format('YYYY-MM-DD HH:mm:ss');
+        Resource.CreateTime = formatDate(Resource.CreateTime * 1000);
+        Resource.UpdateTime = formatDate(Resource.UpdateTime * 1000);
         const result = {};
         ResourceKeys.forEach((element) => {
           if(defaultKeys.hasOwnProperty(element)) {

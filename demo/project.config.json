@@ -35,9 +35,9 @@
     "minifyWXSS": true,
     "showES6CompileOption": false
   },
-  "appid": "wx1a7718af637f6c96",
+  "appid": "",
   "projectname": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",
-  "libVersion": "2.12.3",
+  "libVersion": "2.20.0",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "condition": {
