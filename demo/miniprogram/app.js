@@ -1,4 +1,4 @@
-// 请填写 物联网开发平台 > 应用开发 中申请的小程序 AppKey
+// Todo 请填写 物联网开发平台 > 应用开发 中申请的小程序 AppKey
 const APP_KEY = 'YOUR_APP_KEY_HERE';
 
 // 如果在开发过程中需要更换 AppKey，请按照以下步骤操作：
@@ -44,7 +44,7 @@ App({
 
     // 初始化 SDK
     this.sdk = new AppDevSdk({
-      debug: true,
+      debug: false,
       appKey: APP_KEY,
       getAccessToken: this.getAccessToken,
       wsConfig: {},

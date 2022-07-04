@@ -68,7 +68,22 @@ Page({
   },
 
   showAddDeviceMenu() {
-    showWifiConfTypeMenu();
+    wx.showActionSheet({
+      itemList: ['配网插件方式', '自定义配网ui方式'],
+      success: ({ tapIndex }) => {
+        if (tapIndex === 0) {
+          wx.navigateTo({
+            // Todo 请填写 物联网开发平台 > 新建的productId
+            url: '/pages/device-configuration-plugin/device-configuration-plugin?productId=YOUR_PRODUCT_ID',
+          });
+        } else {
+          showWifiConfTypeMenu();
+        }
+      },
+      fail(err) {
+        console.log('fail', err);
+      }
+    });
   },
 
   addBleDevice() {

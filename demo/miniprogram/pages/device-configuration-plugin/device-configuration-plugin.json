@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "device-configuration": "plugin://iotexplorer-weapp-plugin/DeviceConfiguration"
+  },
+  "navigationBarTitleText": "",
+  "enablePullDownRefresh": false
+}

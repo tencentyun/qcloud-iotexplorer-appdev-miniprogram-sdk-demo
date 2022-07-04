@@ -6,6 +6,7 @@
     "pages/add-device/air-kiss/air-kiss",
     "pages/add-device/smart-config/smart-config",
     "pages/add-device/soft-ap/soft-ap",
+    "pages/add-device/ble-combo/ble-combo",
     "pages/firmware-upgrade/firmware-upgrade",
     "pages/share/share-list/share-list",
     "pages/share/receive-share/receive-share",
@@ -19,9 +20,20 @@
         "error/error",
         "add-file/add-file"
       ]
+    },
+    {
+      "root": "pages/device-configuration-plugin",
+      "pages": [
+        "device-configuration-plugin"
+      ],
+      "plugins": {
+        "iotexplorer-weapp-plugin": {
+          "version": "3.1.2",
+          "provider": "wxb711dd9e4296e7f6"
+        }
+      }
     }
   ],
-    
   "window": {
     "backgroundColor": "#FFF",
     "backgroundTextStyle": "dark",
