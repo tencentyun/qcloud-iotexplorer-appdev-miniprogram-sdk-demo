@@ -33,7 +33,7 @@
         hover-start-time="20"
         hover-stay-time="70"
         hover-class="hover"
-        bindtap="showAddDeviceMenu" 
+        bindtap="handleAddDevice" 
         wx:if="{{!inited || (deviceList.length + shareDeviceList.length > 0)}}"
       >
         <image class="float-add-device-btn-icon" src="/assets/common/plus-blue.svg" />
@@ -45,8 +45,7 @@
       </view>
       <view class="empty-device-list" wx:elif="{{deviceList.length === 0 && shareDeviceList.length === 0}}">
         <view class="empty-device-list-desc">暂无设备</view>
-        <single-button text="添加设备" type="primary" bind:click="showAddDeviceMenu" />
-        <single-button text="添加标准蓝牙设备" type="primary" bind:click="addBleDevice" style="margin-top: 10px;"/>
+        <single-button text="添加设备" type="primary" bind:click="handleAddDevice" />
       </view>
       <block wx:else>
         <view class="device-list" wx:if="{{deviceList.length}}">

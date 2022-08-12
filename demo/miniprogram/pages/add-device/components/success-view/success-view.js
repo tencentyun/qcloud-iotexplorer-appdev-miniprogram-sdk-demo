@@ -1,11 +1,11 @@
-const showWifiConfTypeMenu = require('../../wifiConfTypeMenu');
+const showAddDeviceMenu = require('../../addDeviceMenu');
 
 Component({
   methods: {
     onBottomButtonClick(e) {
       switch (e.detail.btn.id) {
         case 'restart':
-          showWifiConfTypeMenu(true);
+          showAddDeviceMenu(true);
           break;
         case 'complete':
           this.triggerEvent('complete', {}, {});

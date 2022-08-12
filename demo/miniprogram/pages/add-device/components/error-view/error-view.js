@@ -1,4 +1,4 @@
-const showWifiConfTypeMenu = require('../../wifiConfTypeMenu');
+const showAddDeviceMenu = require('../../addDeviceMenu');
 
 Component({
   properties: {
@@ -25,7 +25,7 @@ Component({
           break;
         }
         case 'select-type':
-          showWifiConfTypeMenu(true);
+          showAddDeviceMenu(true);
           break;
         case 'show-log':
           this.setData({ showLog: true });

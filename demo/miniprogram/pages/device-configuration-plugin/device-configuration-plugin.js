@@ -22,12 +22,20 @@ const {
   BleComboDualModeDeviceAdapter,
 } = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo');
 
-const { pluginSdk } = requirePlugin('iotexplorer-weapp-plugin');
+let pluginSdk;
+try {
+  const weappPlugin = requirePlugin('iotexplorer-weapp-plugin');
+  pluginSdk = weappPlugin.pluginSdk;
+} catch (error) {
+  console.error('请参考本项目中 PLUGIN-README.md 文档添加腾讯连连小程序插件');
+}
+
 const app = getApp();
 const actions = require('../../redux/actions');
 
 Page({
   data: {
+    pluginAvailable: !!pluginSdk,
     deviceConfProps: {
       productId: '',
       // familyId: '填写你的familyId',
@@ -49,6 +57,10 @@ Page({
     this.setData({
       'deviceConfProps.productId': params.productId,
     });
+
+    if (!pluginSdk) {
+      return;
+    }
 
     try {
       await pluginSdk.init({
@@ -84,9 +96,13 @@ Page({
     wx.offAppHide(this.onAppHide);
   },
   onAppShow() {
-    pluginSdk.onAppShow();
+    if (pluginSdk) {
+      pluginSdk.onAppShow();
+    }
   },
   onAppHide() {
-    pluginSdk.onAppHide();
+    if (pluginSdk) {
+      pluginSdk.onAppHide();
+    }
   }
 });

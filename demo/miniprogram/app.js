@@ -4,7 +4,7 @@ const APP_KEY = 'YOUR_APP_KEY_HERE';
 // 如果在开发过程中需要更换 AppKey，请按照以下步骤操作：
 // 1. 修改 app.js 以及 cloudfunctions/login/index.js 代码中配置的 AppKey 和 AppSecret。
 // 2. 在微信开发者工具的文件列表中，对 cloudfunctions/login 右键，选择【上传并部署：云端安装依赖】。
-// 3. 在微信开发者工具的工具栏中，选择【清缓存】>【清除数据缓存】。
+// 3. 在微信开发者工具的工具栏中，选择【清缓存】>【清除模拟器缓存】>【清除数据缓存】。
 // 4. 在手机微信的小程序列表中，删除当前小程序。
 // 5. 重新编译运行小程序。
 
@@ -133,8 +133,21 @@ App({
     } catch (err) {
       // 云函数部署指引
       if (err.errMsg && err.errMsg.indexOf('找不到对应的FunctionName') > -1) {
-        throw { code: 'CLOUDFUNC_NOT_FOUND', msg: '请创建并部署 cloudfunctions/login 中的云函数到云开发' };
+        throw {
+          code: 'CLOUDFUNC_NOT_FOUND',
+          msg: '未找到 login 云函数，请创建并部署 cloudfunctions/login 中的云函数到云开发',
+          cause: err,
+        };
       }
+
+      if (err.errMsg && err.errMsg.indexOf('Environment not found') > -1) {
+        throw {
+          code: 'CLOUDBASE_ENV_NOT_FOUND',
+          msg: '未找到云开发环境，请检查 app.js 中 wx.cloud.init 调用的 env 参数是否正确填写',
+          cause: err,
+        };
+      }
+
       throw err;
     }
   },

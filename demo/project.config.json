@@ -33,7 +33,8 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "showES6CompileOption": false
+    "showES6CompileOption": false,
+    "ignoreUploadUnusedFiles": true
   },
   "appid": "",
   "projectname": "qcloud-iotexplorer-appdev-miniprogram-sdk-demo",

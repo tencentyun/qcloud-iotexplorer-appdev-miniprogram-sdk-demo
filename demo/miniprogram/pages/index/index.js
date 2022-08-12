@@ -1,6 +1,6 @@
 const actions = require('../../redux/actions');
 const { subscribeStore } = require('../../libs/store-subscribe');
-const showWifiConfTypeMenu = require('../add-device/wifiConfTypeMenu');
+const showAddDeviceMenu = require('../add-device/addDeviceMenu');
 const app = getApp();
 
 Page({
@@ -67,28 +67,38 @@ Page({
       });
   },
 
-  showAddDeviceMenu() {
+  handleAddDevice() {
     wx.showActionSheet({
       itemList: ['配网插件方式', '自定义配网ui方式'],
       success: ({ tapIndex }) => {
         if (tapIndex === 0) {
-          wx.navigateTo({
-            // Todo 请填写 物联网开发平台 > 新建的productId
-            url: '/pages/device-configuration-plugin/device-configuration-plugin?productId=YOUR_PRODUCT_ID',
-          });
+          // Todo 请填写物联网开发平台中创建的产品的产品 ID，或在弹出的提示框中输入
+          const productId = '';
+
+          if (!productId) {
+            wx.showModal({
+              title: '请输入产品 ID',
+              editable: true,
+              success: ({ content, confirm }) => {
+                if (content && confirm) {
+                  this.goPluginAddDevice(content);
+                }
+              },
+            });
+          } else {
+            this.goPluginAddDevice(productId);
+          }
         } else {
-          showWifiConfTypeMenu();
+          // 自定义配网ui方式
+          showAddDeviceMenu();
         }
-      },
-      fail(err) {
-        console.log('fail', err);
       }
     });
   },
 
-  addBleDevice() {
+  goPluginAddDevice(productId) {
     wx.navigateTo({
-      url: '/pages/add-device/llsync/llsync'
-    })
-  }
+      url: `/pages/device-configuration-plugin/device-configuration-plugin?productId=${productId}`,
+    });
+  },
 });

@@ -1,3 +1,7 @@
 <device-configuration
+  wx:if="{{pluginAvailable}}"
   props="{{deviceConfProps}}"
 />
+<view wx:else style="padding: 0 20px; margin-top: 200px">
+  请参考本项目中 PLUGIN-README.md 文档添加腾讯连连小程序插件
+</view>
