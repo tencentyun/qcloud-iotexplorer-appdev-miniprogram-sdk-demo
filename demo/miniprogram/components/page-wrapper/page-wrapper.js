@@ -42,7 +42,7 @@ Component({
       try {
         // SDK 初始化并登录
         await app.sdk.init();
-        this.onLoginSuccess();
+        this.handleLoginSuccess();
       } catch (err) {
         console.error('login fail', err);
 
