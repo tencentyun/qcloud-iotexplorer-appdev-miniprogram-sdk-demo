@@ -15,28 +15,30 @@ const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss')
 const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
 const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
 const BleComboPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo').default;
-const promisify = require('./libs/wx-promisify');
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');
 
 App({
+  globalData: {
+
+  },
+
   onLaunch() {
     const systemInfo = wx.getSystemInfoSync();
     const platform = (systemInfo.platform || '').toLowerCase();
 
-    this.globalData = {
-      ...this.globalData,
+    Object.assign(this.globalData, {
       isIpx: (systemInfo.screenHeight / systemInfo.screenWidth) > 1.86,
       isAndroid: platform.indexOf('android') > -1,
       isIOS: platform.indexOf('ios') > -1,
-    };
+    });
 
     // 初始化云开发
     if (!wx.cloud) {
       console.error('小程序基础库版本过低，请使用 2.2.3 或以上版本的支持库以使用云开发能力');
     } else {
       wx.cloud.init({
-        // Todo 此处填写您的云开发环境
+        // Todo 请填写您的云开发环境 ID
         env: '此处填写您的云开发环境 ID',
       });
     }
@@ -94,22 +96,15 @@ App({
   // sdk.init() 会调用该函数获取物联网开发平台 AccessToken
   async getAccessToken() {
     // 小程序配置指引
-    if (APP_KEY === 'YOUR_APP_KEY_HERE') {
+    if (APP_KEY === 'YOUR_APP_KEY_HERE' || !APP_KEY) {
       throw { msg: '请在 miniprogram/app.js 文件中填写 APP_KEY', code: 'INVALID_APP_KEY' };
     }
 
-    // 小程序用户信息
-    // 在 page-wrapper 组件中请求获取，写入到 app.globalData.userInfo
-    const { userInfo } = this.globalData;
-
-    // 是否需要注册
-    const needRegister = !this.getIsRegisteredSync() && !!userInfo;
-
-    // 注册/登录参数，注册时需要传入用户昵称和头像，下次登录时可以不传入
-    const loginParams = needRegister ? {
-      Avatar: userInfo.avatarUrl,
-      NickName: userInfo.nickName,
-    } : {};
+    // 注册/登录参数，固定传入默认的昵称和头像（新用户会应用此处传入的昵称和头像；已注册的用户仅进行登录，不会更新昵称和头像）
+    const loginParams = {
+      Avatar: 'https://thirdwx.qlogo.cn/mmopen/vi_32/POgEwh4mIHO4nibH0KlMECNjjGxQUq24ZEaGT4poC6icRiccVGKSyXwibcPq4BWmiaIGuG1icwxaQX6grC9VemZoJ8rg/132',
+      NickName: '微信用户',
+    };
 
     try {
       // 云函数 (cloudfunctions/login/index.js) 中调用 微信号注册登录 应用端 API
@@ -123,8 +118,9 @@ App({
         data: loginParams,
       });
 
+      console.log('[getAccessToken] cloudfunction login result', res.result);
       const { code, msg, data } = res.result;
-      console.log(code, msg, data );
+
       // 异常处理
       if (code) {
         throw { code, msg };
@@ -132,9 +128,6 @@ App({
 
       // 取得 AccessToken
       const { Token, ExpireAt } = data.Data;
-
-      // 标记为已注册状态，下次登录时不需要请求获取用户昵称和头像
-      await this.setIsRegistered();
 
       return { Token, ExpireAt };
     } catch (err) {
@@ -144,26 +137,5 @@ App({
       }
       throw err;
     }
-  },
-
-  getIsRegisteredSync() {
-    return !!wx.getStorageSync('iot-explorer-user-registered');
-  },
-
-  async setIsRegistered(isRegistered = true) {
-    if (!isRegistered) {
-      return promisify(wx.removeStorage)({
-        key: 'iot-explorer-user-registered',
-      });
-    }
-
-    return promisify(wx.setStorage)({
-      key: 'iot-explorer-user-registered',
-      data: isRegistered,
-    });
-  },
-
-  globalData: {
-    userInfo: null,
   },
 });

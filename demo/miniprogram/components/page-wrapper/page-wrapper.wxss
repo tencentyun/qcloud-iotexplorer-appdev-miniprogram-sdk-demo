@@ -19,13 +19,6 @@
   height: 357rpx;
 }
 
-.login-auth-notice {
-  text-align: center;
-  margin-top: 142rpx;
-  font-size: 28rpx;
-  color: #444;
-}
-
 .login-auth-btn {
-  margin-top: 32rpx;
+  margin-top: 72rpx;
 }
