@@ -1,5 +1,5 @@
 <block>
-  <view class="container" wx:if="{{show === 'auth'}}">
+  <view class="container" wx:if="{{state === 'fail'}}">
     <view class="page-title">
       <view>腾讯云物联网开发平台</view>
       <view>小程序 Demo</view>
@@ -9,19 +9,15 @@
       class="login-auth-bg"
     />
 
-    <view class="login-auth-notice">
-      使用前需要您授权登录
-    </view>
-
     <button
       class="btn btn-primary login-auth-btn"
-      bindtap="onLoginButtonTap"
+      bindtap="handleLoginButtonTap"
     >
-      授权登录
+      登录
     </button>
   </view>
-  <mp-loading type="dot-gray" wx:elif="{{show === 'loading'}}"></mp-loading>
-  <block wx:elif="{{show === 'page'}}">
+  <mp-loading type="dot-gray" wx:elif="{{state === 'loading'}}"></mp-loading>
+  <block wx:elif="{{state === 'ready'}}">
     <slot></slot>
   </block>
 </block>

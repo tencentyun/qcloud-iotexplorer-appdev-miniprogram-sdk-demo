@@ -93,7 +93,7 @@ exports.main = async (event) => {
   const { Avatar, NickName } = event;
 
   // Demo 配置指引
-  if (APP_KEY === 'YOUR_APP_KEY_HERE' || APP_SECRET === 'YOUR_APP_SECRET_HERE') {
+  if (!APP_KEY || !APP_SECRET || APP_KEY === 'YOUR_APP_KEY_HERE' || APP_SECRET === 'YOUR_APP_SECRET_HERE') {
     return {
       code: 'CLOUDFUNC_INVALID_APP_KEY_SECRET',
       msg: '请在 cloudfunctions/login/index.js 中填写 APP_KEY 与 APP_SECRET，并重新部署云函数',
