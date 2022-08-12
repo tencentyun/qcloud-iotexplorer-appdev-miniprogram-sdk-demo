@@ -1,6 +1,7 @@
 const actions = require('../../redux/actions');
 const { subscribeStore } = require('../../libs/store-subscribe');
 const showAddDeviceMenu = require('../add-device/addDeviceMenu');
+const addDeviceByQrCode = require('../add-device/qrCode');
 const app = getApp();
 
 Page({
@@ -69,36 +70,46 @@ Page({
 
   handleAddDevice() {
     wx.showActionSheet({
-      itemList: ['配网插件方式', '自定义配网ui方式'],
+      itemList: ['配网插件方式', '自定义配网ui方式', '扫描设备调试二维码'],
       success: ({ tapIndex }) => {
-        if (tapIndex === 0) {
-          // Todo 请填写物联网开发平台中创建的产品的产品 ID，或在弹出的提示框中输入
-          const productId = '';
-
-          if (!productId) {
-            wx.showModal({
-              title: '请输入产品 ID',
-              editable: true,
-              success: ({ content, confirm }) => {
-                if (content && confirm) {
-                  this.goPluginAddDevice(content);
-                }
-              },
-            });
-          } else {
-            this.goPluginAddDevice(productId);
-          }
-        } else {
-          // 自定义配网ui方式
-          showAddDeviceMenu();
+        switch (tapIndex) {
+          case 0:
+            this.handleAddDeviceByPlugin();
+            break;
+          case 1:
+            showAddDeviceMenu();
+            break;
+          case 2:
+            // 此处扫码绑定设备仅适用于开发调试，请勿用于生产环境
+            addDeviceByQrCode();
+            break;
         }
       }
     });
   },
 
-  goPluginAddDevice(productId) {
-    wx.navigateTo({
-      url: `/pages/device-configuration-plugin/device-configuration-plugin?productId=${productId}`,
-    });
+  handleAddDeviceByPlugin() {
+    const goPluginAddDevice = (productId) => {
+      wx.navigateTo({
+        url: `/pages/device-configuration-plugin/device-configuration-plugin?productId=${productId}`,
+      });
+    };
+
+    // Todo 请填写物联网开发平台中创建的产品的产品 ID，或在弹出的提示框中输入
+    const productId = '';
+
+    if (!productId) {
+      wx.showModal({
+        title: '请输入产品 ID',
+        editable: true,
+        success: ({ content, confirm }) => {
+          if (content && confirm) {
+            goPluginAddDevice(content);
+          }
+        },
+      });
+    } else {
+      goPluginAddDevice(productId);
+    }
   },
 });
