@@ -119,11 +119,11 @@ App({
       });
 
       console.log('[getAccessToken] cloudfunction login result', res.result);
-      const { code, msg, data } = res.result;
+      const { code, msg, data, reqId } = res.result;
 
       // 异常处理
       if (code) {
-        throw { code, msg };
+        throw { code, msg, reqId };
       }
 
       // 取得 AccessToken
