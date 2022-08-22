@@ -1,6 +1,9 @@
 const { fetchAllList } = require('./libs/utillib');
 
-const requestApi = (action, data, opts) => getApp().sdk.requestApi(action, data, opts);
+const requestApi = (action, data, opts) => {
+  const { sdk } = getApp();
+  return sdk.init().then(() => sdk.requestApi(action, data, opts));
+};
 
 const getDeviceList = async () => requestApi('AppGetFamilyDeviceList', {
   FamilyId: 'default',

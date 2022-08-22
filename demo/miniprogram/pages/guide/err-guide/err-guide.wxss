@@ -1,0 +1,42 @@
+.err-guide__container {
+  padding: 16px;
+}
+
+.err-guide__header {
+  margin-bottom: 16px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.err-guide__subtitle {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+.err-guide__paragraph {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.err-guide__link {
+  color: #00a4ff;
+}
+
+.err-guide__desc {
+  color: #333;
+}
+
+.err-guide__meta {
+  padding: 8px;
+  background-color: #eee;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.err-guide__pre {
+  font-family: monospace, sans-serif;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

@@ -29,6 +29,12 @@
       "plugins": {
         
       }
+    },
+    {
+      "root": "pages/guide",
+      "pages": [
+        "err-guide/err-guide"
+      ]
     }
   ],
   "window": {
