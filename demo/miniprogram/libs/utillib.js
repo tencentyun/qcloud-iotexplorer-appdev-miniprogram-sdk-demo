@@ -1,5 +1,6 @@
 const urlParse = require('url-parse');
 const querystring = require('query-string');
+const { showGuide, hasGuide } = require('./err-guide');
 
 module.exports.delay = timeout => new Promise(resolve => setTimeout(() => resolve(), timeout));
 
@@ -22,7 +23,7 @@ module.exports.fetchAllList = async (fetchFn) => {
   return list;
 };
 
-module.exports.getErrorMsg = (err) => {
+const getErrorMsg = (err) => {
   if (!err) return;
   let message = '';
 
@@ -35,6 +36,23 @@ module.exports.getErrorMsg = (err) => {
   }
 
   return message;
+};
+
+module.exports.getErrorMsg = getErrorMsg;
+
+module.exports.showErrorModal = (err, title) => {
+  wx.showModal({
+    title: title,
+    content: getErrorMsg(err),
+    confirmText: '我知道了',
+    cancelText: '查看帮助',
+    showCancel: hasGuide(err),
+    success: (res) => {
+      if (res.cancel) {
+        showGuide(err);
+      }
+    },
+  });
 };
 
 const pad = (str, len) => {

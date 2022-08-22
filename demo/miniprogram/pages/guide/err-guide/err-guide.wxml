@@ -1,0 +1,60 @@
+<page-meta>
+  <navigation-bar
+    title="{{title}}"
+  />
+</page-meta>
+
+<template name="title">
+  <view class="err-guide__header">{{text}}</view>
+</template>
+
+<template name="paragraph2">
+  <view class="err-guide__paragraph">
+    <block wx:if="{{!!children}}">
+      <template is="{{item.type}}" data="{{...item}}" wx:for="{{children}}" wx:key="index" />
+    </block>
+    <text wx:else>{{text}}</text>
+  </view>
+</template>
+
+<template name="paragraph">
+  <view class="err-guide__paragraph">
+    <block wx:if="{{!!children}}">
+      <template is="{{item.type === 'paragraph' ? 'paragraph2' : item.type}}" data="{{...item}}" wx:for="{{children}}" wx:key="index" />
+    </block>
+    <text wx:else>{{text}}</text>
+  </view>
+</template>
+
+<template name="subtitle">
+  <view class="err-guide__subtitle">{{text}}</view>
+</template>
+
+<template name="text">
+  <text>{{text}}</text>
+</template>
+
+<template name="link">
+  <text class="err-guide__link" data-text="{{link}}" bindtap="copyText">{{text}}</text>
+</template>
+
+<template name="image">
+  <image src="{{src}}" mode="widthFix" data-src="{{src}}" bindtap="showImage" />
+</template>
+
+<view class="err-guide__container">
+  <view wx:if="{{userId || (showError && error)}}" class="err-guide__meta">
+    <block wx:if="{{userId}}">
+      <view class="err-guide__paragraph">
+        <view class="err-guide__desc">用户 ID：<text data-text="{{userId}}" bindtap="copyText" bindlongpress="copyText">{{userId}}</text></view>
+      </view>
+    </block>
+    <block wx:if="{{showError && error}}">
+      <view class="err-guide__paragraph">
+        <view class="err-guide__paragraph">错误信息</view>
+        <view class="err-guide__paragraph err-guide__pre">{{error}}</view>
+      </view>
+    </block>
+  </view>
+  <template is="{{item.type}}" data="{{...item}}" wx:for="{{content}}" wx:key="index" />
+</view>

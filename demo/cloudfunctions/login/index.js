@@ -30,6 +30,8 @@ class AppDevSdk {
       finalReqData.RequestId = shortid();
     }
 
+    const reqId = finalReqData.RequestId;
+
     requestOpts.data = this.assignSignature({
       Action,
       ...finalReqData,
@@ -43,12 +45,12 @@ class AppDevSdk {
 
     const { code, msg, data = {} } = response;
 
-    if (code) {
-      return Promise.reject({ code, msg });
+    if (data.Error) {
+      return Promise.reject({ code: data.Error.Code, msg: data.Error.Message, reqId });
     }
 
-    if (data.Error) {
-      return Promise.reject({ code: data.Error.Code, msg: data.Error.Message });
+    if (code) {
+      return Promise.reject({ code, msg, reqId });
     }
 
     return data;

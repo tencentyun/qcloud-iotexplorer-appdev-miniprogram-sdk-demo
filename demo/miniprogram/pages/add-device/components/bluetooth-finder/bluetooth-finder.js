@@ -1,5 +1,7 @@
 // pages/add-device/components/bluetooth-finder.js
-import {serviceIdMap, bluetoothAdapter} from './blueToothAdapter';
+import { showErrorModal } from '../../../../libs/utillib';
+import { serviceIdMap, bluetoothAdapter } from './blueToothAdapter';
+
 Component({
   /**
    * 组件的属性列表
@@ -65,8 +67,8 @@ Component({
             loading: false,
           },
         });
-        wx.showModal({ content: '连接蓝牙设备失败'});
         console.error('连接设备失败', err);
+        showErrorModal(err, '连接蓝牙设备失败');
       }
     },
     onBottomButtonClick(e) {

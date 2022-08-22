@@ -1,5 +1,5 @@
 const { secureAddDeviceInFamily } = require('../../models');
-const { getErrorMsg, parseUrl } = require('../../libs/utillib');
+const { showErrorModal, parseUrl } = require('../../libs/utillib');
 
 const addDevice = async ({
   Signature,
@@ -26,13 +26,8 @@ const addDevice = async ({
       },
     });
   } catch (err) {
-    console.error('addDevice2Family fail', err);
-    wx.showModal({
-      title: '绑定设备失败',
-      content: getErrorMsg(err),
-      confirmText: '我知道了',
-      showCancel: false,
-    });
+    console.error('绑定设备失败', err);
+    showErrorModal(err, '绑定设备失败');
   } finally {
     wx.hideLoading();
   }
