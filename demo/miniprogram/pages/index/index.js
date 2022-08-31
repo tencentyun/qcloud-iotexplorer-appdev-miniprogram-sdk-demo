@@ -70,7 +70,7 @@ Page({
 
   handleAddDevice() {
     wx.showActionSheet({
-      itemList: ['配网插件方式', '自定义配网ui方式', '扫描设备调试二维码'],
+      itemList: ['配网插件方式', '自定义配网ui方式', '扫描设备二维码'],
       success: ({ tapIndex }) => {
         switch (tapIndex) {
           case 0:
@@ -80,7 +80,7 @@ Page({
             showAddDeviceMenu();
             break;
           case 2:
-            // 此处扫码绑定设备仅适用于开发调试，请勿用于生产环境
+            // 使用控制台设备调试二维码绑定设备仅适用于开发调试，请勿用于生产环境
             addDeviceByQrCode();
             break;
         }
