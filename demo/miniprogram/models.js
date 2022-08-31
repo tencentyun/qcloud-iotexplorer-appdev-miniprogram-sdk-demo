@@ -207,6 +207,28 @@ const secureAddDeviceInFamily = async ({
   RoomId,
 });
 
+const sigBindDeviceInFamily = async ({
+  Signature,
+  DeviceTimestamp,
+  ProductId,
+  DeviceName,
+  ConnId,
+  FamilyId,
+  RoomId,
+  BindType,
+  SignMethod,
+}) => requestApi('AppSigBindDeviceInFamily', {
+  Signature,
+  DeviceTimestamp,
+  ProductId,
+  DeviceName,
+  ConnId,
+  FamilyId,
+  RoomId,
+  BindType,
+  SignMethod,
+});
+
 module.exports = {
   requestApi,
   getDeviceList,
@@ -230,4 +252,5 @@ module.exports = {
   removeShareDeviceUser,
   setUserDeviceConfig,
   secureAddDeviceInFamily,
+  sigBindDeviceInFamily,
 };

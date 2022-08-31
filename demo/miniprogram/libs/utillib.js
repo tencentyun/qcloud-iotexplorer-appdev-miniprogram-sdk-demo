@@ -1,5 +1,6 @@
 const urlParse = require('url-parse');
 const querystring = require('query-string');
+const base64js = require('base64-js');
 const { showGuide, hasGuide } = require('./err-guide');
 
 module.exports.delay = timeout => new Promise(resolve => setTimeout(() => resolve(), timeout));
@@ -108,4 +109,12 @@ module.exports.parseUrl = (url) => {
   }
 
   return uri;
+};
+
+module.exports.base64ToHex = (base64String) => {
+  const bytes = Array.from(base64js.toByteArray(base64String));
+  return bytes.map(byte => {
+    const byteHex = byte.toString(16);
+    return byteHex.length === 1 ? `0${byteHex}` : byteHex;
+  }).join('');
 };
