@@ -77,7 +77,9 @@ App({
           }
 
           // 当设备列表更新时，重新进行订阅
-          this.sdk.subscribeDevices(deviceList);
+          if (this.sdk.isLogin) {
+            this.sdk.subscribeDevices(deviceList);
+          }
         },
       },
     ]);
