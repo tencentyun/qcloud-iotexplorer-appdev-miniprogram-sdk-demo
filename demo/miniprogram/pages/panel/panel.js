@@ -323,9 +323,15 @@ Page({
           cancelText: '取消',
           success: ({ confirm }) => {
             if (confirm) {
-              wx.navigateTo({
-                url: `/pages/firmware-upgrade/firmware-upgrade?deviceId=${this.deviceId}`,
-              });
+              if (this.data.deviceInfo.NetType === 'ble') {
+                wx.navigateTo({
+                  url: `/pages/ble-firmware-upgrade/ble-firmware-upgrade?deviceId=${this.deviceId}`,
+                });
+              } else {
+                wx.navigateTo({
+                  url: `/pages/firmware-upgrade/firmware-upgrade?deviceId=${this.deviceId}`,
+                });
+              }
             }
           },
         });
@@ -343,11 +349,13 @@ Page({
       wx.hideLoading();
     }
   },
+
   onFileManage() {
     wx.navigateTo({
       url: '/pages/file-manage/add-file/add-file'
     })
   },
+
   onGoShareList() {
     wx.navigateTo({
       url: `/pages/share/share-list/share-list?deviceId=${this.deviceId}`,

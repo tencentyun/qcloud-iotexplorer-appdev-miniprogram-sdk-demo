@@ -1,7 +1,4 @@
 // pages/add-device/llsync.js
-import wxPromisify from '../../../libs/wx-promisify';
-import bluetoothAdapter from '../components/bluetooth-finder/blueToothAdapter';
-let deviceAdapter = null;
 Page({
 
   /**
@@ -17,17 +14,19 @@ Page({
   onLoad: function (options) {
 
   },
+
   onBluetoothConnected(e) {
-    console.log('deviceAdapter:',  e.detail);
-    deviceAdapter = e.detail;
+    console.log('deviceAdapter:', e.detail);
+    this.deviceAdapter = e.detail;
   },
+
   async onNextStep(data) {
     console.log('开始绑定', data);
     try {
       wx.showLoading({
-        title:'正在绑定..'
+        title: '正在绑定..'
       })
-      const deviceId = await deviceAdapter.bindDevice({familyId: 'default'});
+      const deviceId = await this.deviceAdapter.bindDevice({ familyId: 'default' });
       console.log(deviceId);
       wx.showModal({
         title: '绑定成功',

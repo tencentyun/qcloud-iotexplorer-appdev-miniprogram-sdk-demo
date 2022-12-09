@@ -1,6 +1,6 @@
 // pages/add-device/components/bluetooth-finder.js
 import { showErrorModal } from '../../../../libs/utillib';
-import { serviceIdMap, bluetoothAdapter } from './blueToothAdapter';
+import { serviceIdMap, bluetoothAdapter } from '../../../../blueToothAdapter';
 
 Component({
   /**

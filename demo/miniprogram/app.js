@@ -15,8 +15,23 @@ const AirKissPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-airkiss')
 const SmartConfigPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-smartconfig').default;
 const SoftApPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-softap').default;
 const BleComboPlug = require('qcloud-iotexplorer-appdev-plugin-wificonf-blecombo').default;
+const { default: insightLogger, LogLevel } = require('qcloud-iotexplorer-logger');
+
 const { subscribeStore } = require('./libs/store-subscribe');
 const actions = require('./redux/actions');
+
+// 小程序 SDK console 日志过滤
+// 若返回 false 则不打印到 console
+insightLogger.setDefaultConsoleTransportFilter((info) => {
+  // 不打印指定事件的日志
+  // if (info.event === 'xxx') return false;
+
+  // 不打印 debug 或以上级别的日志
+  if (info.level >= LogLevel.debug) return false;
+
+  // 其他日志打印到 console
+  return true;
+});
 
 App({
   globalData: {

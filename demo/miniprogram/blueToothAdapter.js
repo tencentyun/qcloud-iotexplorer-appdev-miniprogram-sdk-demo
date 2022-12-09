@@ -6,7 +6,8 @@ const app = getApp();
 
 LLSyncDeviceAdapter.injectOptions({
   appDevSdk: app.sdk
-})
+});
+
 export const serviceIdMap = {
   BLE_COMBO_LLSYNC: BleComboLLSyncDeviceAdapter.serviceId,
   BLE_COMBO_ESP: BleComboEspDeviceAdapter.serviceId,
