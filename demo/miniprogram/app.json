@@ -8,6 +8,7 @@
     "pages/add-device/soft-ap/soft-ap",
     "pages/add-device/ble-combo/ble-combo",
     "pages/firmware-upgrade/firmware-upgrade",
+    "pages/ble-firmware-upgrade/ble-firmware-upgrade",
     "pages/share/share-list/share-list",
     "pages/share/receive-share/receive-share",
     "pages/add-device/llsync/llsync"

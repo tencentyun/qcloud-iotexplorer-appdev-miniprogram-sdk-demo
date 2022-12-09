@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "page-wrapper": "/components/page-wrapper/page-wrapper",
+    "single-button": "/components/single-button/single-button"
+  },
+  "navigationBarTitleText": "蓝牙设备固件升级"
+}
