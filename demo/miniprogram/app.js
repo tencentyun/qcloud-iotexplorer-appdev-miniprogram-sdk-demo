@@ -113,7 +113,7 @@ App({
   // sdk.init() 会调用该函数获取物联网开发平台 AccessToken
   async getAccessToken() {
     // 小程序配置指引
-    if (APP_KEY === 'YOUR_APP_KEY_HERE' || !APP_KEY) {
+    if (APP_KEY === ['Y', 'O', 'U', 'R', '_', 'A', 'P', 'P', '_', 'K', 'E', 'Y', '_', 'H', 'E', 'R', 'E'].join('') || !APP_KEY) {
       throw { msg: '请在 miniprogram/app.js 文件中填写 APP_KEY', code: 'INVALID_APP_KEY' };
     }
 
